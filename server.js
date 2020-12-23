@@ -10,9 +10,7 @@ var server = app.listen(PORT, () => {
 const io = require('socket.io')(server)
 
 // Middleware
-app.use(express.urlencoded({
-    extended: true
-}))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 // Routes
