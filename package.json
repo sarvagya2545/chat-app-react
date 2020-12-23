@@ -1,0 +1,16 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "server": "nodemon server.js"
+  },
+  "author": "Sarvagya Sharma",
+  "license": "ISC",
+  "description": "Chat app but now in react!",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.11.8",
+    "socket.io": "^3.0.4"
+  }
+}
