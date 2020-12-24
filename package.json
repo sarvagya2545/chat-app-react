@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client"
   },
   "author": "Sarvagya Sharma",
   "license": "ISC",
@@ -11,6 +12,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "mongoose": "^5.11.8",
+    "react-router-dom": "^5.2.0",
     "socket.io": "^3.0.4"
   }
 }

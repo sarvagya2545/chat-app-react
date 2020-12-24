@@ -7,8 +7,6 @@ var server = app.listen(PORT, () => {
     console.log(`Server started on port ${3000}`)
 })
 
-const io = require('socket.io')(server)
-
 // Middleware
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
@@ -19,6 +17,7 @@ app.get('/', (req,res) => {
 })
 
 // Socket programming
+const io = require('socket.io')(server)
 io.on('connection', (socket) => {
     console.log('A user has connected');
 
