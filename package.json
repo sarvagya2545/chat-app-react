@@ -10,8 +10,12 @@
   "license": "ISC",
   "description": "Chat app but now in react!",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "mongoose": "^5.11.8",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "react-router-dom": "^5.2.0",
     "socket.io": "^3.0.4"
   }

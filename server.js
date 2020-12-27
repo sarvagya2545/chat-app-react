@@ -1,7 +1,9 @@
 const express = require('express')
-const app = express()
 const mongoose = require('mongoose')
+const passport = require('passport')
+require('./config/passport')
 
+const app = express()
 // Server set up
 const PORT = process.env.PORT || 5000
 var server = app.listen(PORT, () => console.log(`Server started on port ${3000}`))
