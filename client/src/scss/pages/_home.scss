@@ -1,0 +1,11 @@
+.home {
+    display: flex;
+    height: 100vh;
+}
+
+.hero-section {
+    background-image: url('../../images/bg-login.jpg');
+    background-size: cover;
+    padding: 5em 5.37em;
+    flex: 1;
+}

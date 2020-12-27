@@ -1,0 +1,18 @@
+body {
+    font-family: sans-serif;
+    font-size: 1.4rem;
+}
+
+.header-main, .header-secondary {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.header-main {
+    color: $color-light-primary;
+    font-size: 6rem;
+}
+
+.header-secondary {
+    color: $color-light-secondary;
+    font-size: 3.2rem;
+}
