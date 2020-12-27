@@ -10,6 +10,10 @@ const userSchema = mongoose.Schema({
         }
     },
     auth: {
+        username: {
+            type: String,
+            required: true
+        },
         email: {
             type: String,
             required: true
@@ -19,24 +23,13 @@ const userSchema = mongoose.Schema({
                 type: String
             }
         },
-        // google: {
-        //     id: {
-        //         type: String
-        //     }
-        // },
-        // facebook: {
-        //     type: String
-        // }
     }
 })
 
 // apply middleware before saving
-userSchema.pre('save', async function() {
+userSchema.pre('save', async function(next) {
     try {
-
-        if(this.config.method !== 'local') {
-            next();
-        }
+        if(this.config.method !== 'local') next();
 
         // hash the password before saving it
         const salt = await bcrypt.genSalt(10);
@@ -57,5 +50,5 @@ userSchema.methods.isValidPassword = async function (password) {
     }
 }
 
-const User = new mongoose.model('User', userSchema);
+const User = mongoose.model('user', userSchema);
 module.exports = User;

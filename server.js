@@ -6,7 +6,7 @@ require('./config/passport')
 const app = express()
 // Server set up
 const PORT = process.env.PORT || 5000
-var server = app.listen(PORT, () => console.log(`Server started on port ${3000}`))
+var server = app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
 
 // Middleware
 app.use(express.urlencoded({ extended: true }))
@@ -25,9 +25,6 @@ mongoose
     .catch(err => console.log(err));
 
 // Routes
-app.get('/', (req,res) => {
-    res.send('Hello')
-})
 app.use('/api/users', require('./routes/api/users'))
 
 // Socket programming
