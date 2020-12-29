@@ -1,0 +1,50 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    padding: 3rem 2rem;
+    
+    .form-group {
+        display: flex;
+        flex-direction: column-reverse;
+        margin: 10px 0;
+        position: relative;
+
+        &:last-of-type {
+            margin-bottom: 20px;
+        }
+    }
+
+    .input {
+        font-family: inherit;
+        border: none;
+        border-bottom: 2px solid black;
+        padding: .7rem;
+        outline: none;
+        z-index: 1;
+        background-color: transparent;
+        
+        &:focus {
+            border-bottom: 2px solid $color-secondary;
+        }
+        
+        &:focus + label,
+        &:not(:placeholder-shown) + label {
+            color: $color-secondary;
+            transform: translate(-1rem, -1.75rem) scale(0.75);
+        }
+
+        & + label {
+            position: absolute;
+            color: $color-form-placeholders;
+            bottom: .8rem;
+            left: 1rem;
+            transition: transform .2s ease;
+            // change transform origin for having them float to the same position
+            transform-origin: 0% 0%;
+        }
+
+        &::placeholder {
+            opacity: 0;
+        }
+    }
+}

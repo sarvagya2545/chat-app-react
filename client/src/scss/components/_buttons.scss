@@ -1,0 +1,22 @@
+.btn {
+    border: none;
+    font-family: inherit; 
+    outline: none;
+}
+
+.btn-submit {
+    display: inline-block;
+    width: min-content;
+    padding: 1em 2em;
+    text-transform: uppercase;
+    margin-top: 10px;
+    background-color: $color-primary;
+    color: #fff;
+    transition: all 0.2s ease;
+}
+
+.btn-submit:hover {
+    cursor: pointer;
+    transform: translateY(-1px);
+    box-shadow: rgba(0, 0, 0, 0.5) 0 5px 10px;
+}
