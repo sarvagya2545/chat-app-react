@@ -15,7 +15,8 @@
     transition: all 0.2s ease;
 }
 
-.btn-submit:hover {
+.btn-submit:hover,
+.btn-submit:focus {
     cursor: pointer;
     transform: translateY(-1px);
     box-shadow: rgba(0, 0, 0, 0.5) 0 5px 10px;

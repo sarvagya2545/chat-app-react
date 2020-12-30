@@ -46,11 +46,12 @@ export const register = (formData) => (dispatch) => {
 
     axios.post(`/users/signup`, formData, config)
         .then(res => {
-            console.log('res.data', res.data)
+            // console.log('res.data', res.data)
             dispatch({
                 type: REGISTER_SUCCESS,
                 payload: res.data
             })
+            localStorage.setItem('x-chat-token', res.data.token)
         })
         .catch(err => {
             console.log(err.response);
@@ -66,11 +67,12 @@ export const login = (formData) => (dispatch) => {
 
     axios.post(`/users/login`, formData, config)
         .then(res => {
-            console.log('res.data', res.data)
+            // console.log('res.data', res.data)
             dispatch({
                 type: LOGIN_SUCCESS,
                 payload: res.data
             })
+            localStorage.setItem('x-chat-token', res.data.token)
         })
         .catch(err => {
             console.log(err.response);
