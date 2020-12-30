@@ -3,14 +3,15 @@ const mongoose = require('mongoose')
 const passport = require('passport')
 require('./config/passport')
 
+const cors = require('cors')
+
 const app = express()
-// Server set up
-const PORT = process.env.PORT || 5000
-var server = app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
+const server = require('http').createServer(app)
 
 // Middleware
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(cors())
 
 // Mongoose connect
 const db = require('./config/keys').mongoURI;
@@ -36,3 +37,7 @@ io.on('connection', (socket) => {
         console.log('User has disconnected');
     })
 })
+
+// Server set up
+const PORT = process.env.PORT || 5000
+server.listen(PORT, () => console.log(`Server started on port ${PORT}`))

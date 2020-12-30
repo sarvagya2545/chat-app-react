@@ -76,5 +76,15 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
+    },
+    getUser: async (req,res) => {
+        try {
+            // .select('-auth.local.password') excludes the password from the user data
+            const user = await User.findById(req.user.id).select('-auth.local.password');
+            if (!user) throw Error('User does not exist');
+            res.json(user);
+        } catch (error) {
+            res.status(400).json({ msg: e.message })
+        }
     }
 }

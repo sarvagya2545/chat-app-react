@@ -1,27 +1,24 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { register } from '../redux/actions/authActions';
 
 class SignUpForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
-        }
-
-        this.onChangeHandler = this.onChangeHandler.bind(this);
+    state = {
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
     }
 
-    onChangeHandler(e) {
+    onChangeHandler = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         })
     }
 
-    onSubmitHandler(e) {
+    onSubmitHandler = (e) => {
         e.preventDefault();
-        // register the user
+        this.props.register(this.state)
     }
 
     render() { 
@@ -49,4 +46,4 @@ class SignUpForm extends Component {
     }
 }
  
-export default SignUpForm;
+export default connect(null, { register })(SignUpForm);

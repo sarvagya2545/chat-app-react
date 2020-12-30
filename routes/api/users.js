@@ -18,4 +18,9 @@ router.route('/login')
     .post(loginValidationRules(), validate, passportSignIn, UserController.login)
 ;
 
+// get the users details from the token
+router.route('/current')
+    .get(passportJWT, UserController.getUser)
+;
+
 module.exports = router;

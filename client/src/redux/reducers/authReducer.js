@@ -1,3 +1,5 @@
+import { NO_USER_LOADED, USER_LOADING } from "../actions/types";
+
 const initState = {
     isAuthenticated: false,
     token: null,
@@ -7,7 +9,22 @@ const initState = {
 };
 
 const authReducer = (state = initState, action) => {
-    return state;
+    switch(action.type) {
+        case USER_LOADING:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case NO_USER_LOADED:
+            return {
+                ...state,
+                isLoading: false
+            }
+        default: 
+            return {
+                ...state
+            }    
+    }
 }
 
 export default authReducer;
