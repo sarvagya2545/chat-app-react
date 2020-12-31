@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, NO_USER_LOADED, REGISTER_SUCCESS, USER_LOADING } from "../actions/types";
+import { LOGIN_SUCCESS, NO_USER_LOADED, REGISTER_SUCCESS, USER_LOADED, USER_LOADING, USER_LOAD_ERROR } from "../actions/types";
 
 const initState = {
     isAuthenticated: false,
@@ -16,12 +16,14 @@ const authReducer = (state = initState, action) => {
                 isLoading: true
             }
         case NO_USER_LOADED:
+        case USER_LOAD_ERROR:
             return {
                 ...state,
                 isLoading: false
             }
         case LOGIN_SUCCESS: 
         case REGISTER_SUCCESS:
+        case USER_LOADED:
             return {
                 ...state,
                 isLoading: false,

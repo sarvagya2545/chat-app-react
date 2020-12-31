@@ -2,6 +2,7 @@ import {
     USER_LOADING,
     USER_LOADED,
     NO_USER_LOADED,
+    USER_LOAD_ERROR,
     AUTH_ERROR,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
@@ -27,12 +28,15 @@ export const loadUser = () => (dispatch, getState) => {
     }
 
     // perform an axios request to get the user's data from token
-    axios.get('http://localhost:5000/users/current', config)
+    axios.get('/users/current', config)
         .then(res => {
             // set the status of user as loaded
             console.log(res.data);
+            dispatch({ type: USER_LOADED, payload: res.data })
         })
         .catch(err => {
+            dispatch({ type: USER_LOAD_ERROR })
+            // localStorage.removeItem('x-chat-token')
             console.log(err);
         })
 }
