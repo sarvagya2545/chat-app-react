@@ -5,7 +5,7 @@ const User = require('../../models/User');
 const signToken = (user) => {
     return jwt.sign({
         iss: 'Sarvagya',
-        sub: user.id,
+        sub: user._id,
         iat: new Date().getTime(),
         exp: new Date().setDate(new Date().getDate() + 1)
     }, jwtSecret);
@@ -82,7 +82,8 @@ module.exports = {
             // .select('-auth.local.password') excludes the password from the user data
             const user = await User.findById(req.user.id).select('-auth.local.password');
             if (!user) throw Error('User does not exist');
-            res.json(user);
+            const token = signToken(user);
+            res.json({ token, user });
         } catch (error) {
             res.status(400).json({ msg: e.message })
         }
