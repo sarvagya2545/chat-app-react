@@ -1,0 +1,34 @@
+.chat-heading {
+    display: flex;
+    align-items: center;
+
+    padding: 1rem 1.3rem;
+    background-color: $color-grey-light;
+    border: 1px solid $color-grey-1;
+}
+
+.pfp {
+    background-color: $color-grey-1;
+    display: inline-block;
+    height: $pfp-size;
+    width: $pfp-size;
+    border-radius: 50%;
+    overflow: hidden;
+
+    &-img {
+        height: 100%;
+        width: 100%;
+    }
+}
+
+.chat-person {
+    margin-left: 1.3rem;
+
+    &-name {
+        font-weight: 500;
+    }
+
+    &-status {
+        color: $color-grey-dark;
+    }
+}
