@@ -1,0 +1,38 @@
+.chat-room-list-item {
+    padding: 0 0 0 1.5rem;
+    display: flex;
+    align-items: center;
+    font-size: 1.6rem;
+    font-family: 'Montserrat', sans-serif;
+
+    &:hover {
+        background-color: $color-grey-hover;
+        cursor: pointer;
+    }
+
+    &.selected {
+        background-color: $color-grey-4;
+    }
+}
+
+.chat-room-item-details {
+    flex: 1;
+    padding:  0 0 0 1.5rem;
+
+    & > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 1.5rem 0;
+        border-bottom: 0.5px solid $color-grey-4;
+
+        p {
+            font-size: 1.6rem;
+        }
+
+        span {
+            font-size: 1.3rem;
+            color: $color-grey-dark;
+        }
+    }
+}

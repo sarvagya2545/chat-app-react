@@ -29,7 +29,12 @@ mongoose
 app.use('/api/users', require('./routes/api/users'))
 
 // Socket programming
-const io = require('socket.io')(server)
+const io = require('socket.io')(server, {
+    cors: {
+        origin: 'http://localhost:3000',
+        methods: ['GET', 'POST']
+    }
+})
 io.on('connection', (socket) => {
     console.log('A user has connected');
 

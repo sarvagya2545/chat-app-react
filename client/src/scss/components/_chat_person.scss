@@ -19,6 +19,11 @@
         height: 100%;
         width: 100%;
     }
+
+    &.pfp-md {
+        height: $pfp-md;
+        width: $pfp-md;
+    }
 }
 
 .chat-person {
