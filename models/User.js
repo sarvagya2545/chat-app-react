@@ -23,6 +23,15 @@ const userSchema = mongoose.Schema({
                 type: String
             }
         },
+    },
+    rooms: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'room'
+            }
+        ],
+        default: []
     }
 })
 
