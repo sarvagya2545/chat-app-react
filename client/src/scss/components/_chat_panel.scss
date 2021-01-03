@@ -1,6 +1,8 @@
 .chat-panel {
     width: 30%;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
 
     &-header {
         background-color: $color-grey-light;
@@ -15,6 +17,24 @@
     }
 
     ul {
-        padding-right: $space-scroll;
+        // padding-right: $space-scroll;
+        flex: 1;
+        overflow: scroll;
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        border-radius: 10px;
+        width: $space-scroll;
+    }
+   
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: $color-scroll-bar;
+        border-radius: 0;
     }
 }

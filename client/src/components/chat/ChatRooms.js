@@ -10,6 +10,7 @@ class ChatRooms extends Component {
                 <ChatRoomListItem/>
                 <ChatRoomListItem selected/>
                 <ChatRoomListItem/>
+                <ChatRoomListItem/>
             </ul>
         );
     }
