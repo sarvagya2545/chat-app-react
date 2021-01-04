@@ -9,3 +9,12 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAIL = 'REGISTER_FAIL';
+
+// CHAT REDUCER ACTIONS
+export const JOIN_ROOM = "JOIN_ROOM";
+export const LEAVE_ROOM = "LEAVE_ROOM";
+export const USER_JOIN = "USER_JOIN";
+export const USER_LEAVE = "USER_LEAVE";
+export const SEND_MESSAGE = "SEND_MESSAGE";
+export const RECIEVE_MESSAGE = "RECIEVE_MESSAGE";
+export const CHANGE_CURRENT_ROOM = "CHANGE_CURRENT_ROOM";

@@ -4,20 +4,26 @@ import ChatForm from '../components/chat/ChatForm';
 import ChatHeading from '../components/chat/ChatHeading';
 import ChatRooms from '../components/chat/ChatRooms';
 import ChatPanelHeader from '../components/chat/ChatPanelHeader';
-import io from 'socket.io-client';
-
-
-let socket;
+import { connectToSocket, disconnectFromSocket } from '../redux/actions/chatActions';
+import { connect } from 'react-redux';
 
 class Chat extends Component {
     state = {}
 
+    componentDidUpdate() {
+        if(this.props.isAuthenticated) {
+            console.log('authenticated')
+        } else {
+            console.log('not authenticated')
+        }
+    }
+
     componentDidMount() {
-        // get current chat rooms from database
+        this.props.connectToSocket();
+    }
 
-        // connect thru socket 
-
-        // socket = io('http://localhost:5000')
+    componentWillUnmount() {
+        this.props.disconnectFromSocket();
     }
 
     render() { 
@@ -37,4 +43,11 @@ class Chat extends Component {
     }
 }
  
-export default Chat;
+const mapStateToProps = state => {
+    return {
+        isAuthenticated: state.auth.isAuthenticated,
+        user: state.auth.user
+    }
+}
+
+export default connect(mapStateToProps, { connectToSocket, disconnectFromSocket })(Chat);
