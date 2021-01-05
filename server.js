@@ -5,14 +5,6 @@ const app = express()
 const PORT = process.env.PORT || 5000
 var server = app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
 
-// Initialize sockets
-const io = require('socket.io')(server, {
-    cors: {
-        origin: 'http://localhost:3000',
-        methods: ['GET', 'POST']
-    }
-})
-
 const mongoose = require('mongoose')
 const passport = require('passport')
 require('./config/passport')
@@ -38,12 +30,7 @@ mongoose
 
 // Routes
 app.use('/api/users', require('./routes/api/users'))
+app.use('/api/rooms', require('./routes/api/rooms'))
 
 // Socket programming
-io.on('connection', (socket) => {
-    console.log('A user has connected');
-
-    socket.on('disconnect', () => {
-        console.log('User has disconnected');
-    })
-})
+require('./config/socketconfig')(server);
