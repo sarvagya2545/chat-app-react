@@ -11,10 +11,15 @@ import {
 import io from 'socket.io-client';
 let socket;
 
-export const connectToSocket = () => (dispatch) => {
+export const connectToSocket = () => dispatch => {
+    // connect to socket
     socket = io('http://localhost:5000')
 }
 
 export const disconnectFromSocket = () => dispatch => {
     socket.disconnect();
+}
+
+export const loadRooms = () => dispatch => {
+
 }

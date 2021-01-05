@@ -11,11 +11,7 @@ class Chat extends Component {
     state = {}
 
     componentDidUpdate() {
-        if(this.props.isAuthenticated) {
-            console.log('authenticated')
-        } else {
-            console.log('not authenticated')
-        }
+        
     }
 
     componentDidMount() {

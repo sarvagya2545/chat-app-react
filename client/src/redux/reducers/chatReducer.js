@@ -1,6 +1,6 @@
 const initState = {
-    chatRooms: [],
-    currentChatRoom: null,
+    chatRooms: [{ id: 1 }, { id: 2 }],
+    currentChatRoom: 2,
     messages: []   
 }
 
