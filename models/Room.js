@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const roomSchema = mongoose.Schema({
     roomId: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     people: {
         type: [
@@ -23,6 +24,10 @@ const roomSchema = mongoose.Schema({
         ]
     }
 })
+
+roomSchema.query.byRoomId = function(roomid) {
+    return this.where({ roomId: roomid })
+}
 
 const Room = mongoose.model('room', roomSchema);
 module.exports = Room

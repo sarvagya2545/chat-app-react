@@ -39,11 +39,16 @@ passport.use(new LocalStrategy({
             return done(null, false);
         }
 
+        console.log(foundUserbyUsername)
+        console.log(foundUserbyEmail)
+
         // user is either the one by email or the one by username
         const user = foundUserbyEmail || foundUserbyUsername;
 
         // Check if the password is correct
         const isMatch = await user.isValidPassword(password);
+
+        console.log(isMatch)
 
         // If not, handle it
         if (!isMatch) {
