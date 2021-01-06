@@ -3,47 +3,79 @@ const Room = require('../../models/Room')
 const { v4: uuidv4 } = require('uuid')
 
 module.exports = {
-    getRoomsOfUser: async (req,res) => {
-        console.log(req.user.rooms)
-        let allRooms = [];
+    getRoomsOfUser: async (req, res) => {
+        try {
+            console.log(req.user.rooms)
+            let allRooms = [];
+            for (let roomId of req.user.rooms) {
+                const room = await Room.findOne({ roomId: roomId })
+                if (room) allRooms.push(room);
+            }
+            res.status(200).json({ rooms: allRooms })
+        } catch (error) {
+            res.status(500).json({ errorMessage: 'error while joining rooms', error })
+        }
+    },
+    createRoom: async (req, res) => {
+        try {
+            // get the user by its id from database
+            const user = await User.findById(req.user.id)
 
-        for(let roomId of req.user.rooms) {
-            const room = await Room.findOne({ roomId: roomId })
-            allRooms.push(room);
+            // create a new room and save its roomId in users room list
+            const newRoom = new Room({
+                roomId: uuidv4(),
+                people: [user.id],
+                messages: []
+            })
+
+            // save the room in database
+            await newRoom.save()
+
+            // update the user's room list
+            user.rooms = [...user.rooms, newRoom.roomId]
+
+            await user.save()
+
+            res.status(201).json({ newRoom })
+        } catch (error) {
+            res.status(500).json({ error, errorMessage: 'Error while creating room' })
+        }
+    },
+    joinRoomById: async (req, res) => {
+        // get the room by roomId
+        const foundRoom = await Room.findOne({ roomId: req.params.roomid })
+        if (!foundRoom) {
+            // if not found return not found error
+            return res.status(404).json({ error: 'Room not found' })
         }
 
-        console.log(allRooms)
-
-        res.status(200).json({ rooms: allRooms })
-    },
-    createRoom: async (req,res) => {
-        // get the user by its id from database
+        // find user in db
         const user = await User.findById(req.user.id)
-        
-        // create a new room and save its roomId in users room list
-        const newRoom = new Room({
-            roomId: uuidv4(),
-            people: [ user.id ],
-            messages: []
-        })
 
-        // save the room in database
-        await newRoom.save()
+        if(!user) {
+            return res.status(404).json({ error: 'User not found in db' })
+        }
 
-        // update the user's room list
-        user.rooms = [ ...user.rooms, newRoom.roomId ]
+        if(user.rooms.includes(foundRoom.roomId)) {
+            if(foundRoom.people.includes(req.user.id)) {
+                return res.status(400).json({ error: 'User already joined in the room' })
+            }
+        }
 
+        // update & save user
+        user.rooms = [ ...user.rooms, foundRoom.roomId ]
         await user.save()
 
-        res.status(201).json({ newRoom })
+        // update & save rooms
+        foundRoom.people = [ ...foundRoom.people, req.user.id ]
+        await foundRoom.save()
+
+        return res.status(200).json({ foundRoom })
     },
-    joinRoomById: async (req,res) => {
-        res.send('room by id')
-    },
-    exitRoom: async (req,res) => {
+    exitRoom: async (req, res) => {
         res.send('exit room')
     },
-    deleteRoom: async (req,res) => {
+    deleteRoom: async (req, res) => {
         res.send('permanently delete room')
     }
 }
