@@ -73,7 +73,32 @@ module.exports = {
         return res.status(200).json({ foundRoom })
     },
     exitRoom: async (req, res) => {
-        res.send('exit room')
+        // get the room by roomId
+        const foundRoom = await Room.findOne({ roomId: req.params.roomid })
+        if (!foundRoom) {
+            // if not found return not found error
+            return res.status(404).json({ error: 'Room not found' })
+        }
+
+        // find user in db
+        const user = await User.findById(req.user.id)
+
+        if(!user) {
+            return res.status(404).json({ error: 'User not found in db' })
+        }
+
+        if(user.rooms.includes(foundRoom.roomId)) {
+            if(foundRoom.people.includes(req.user.id)) {
+                // only now should we update the data in db
+                user.rooms = user.rooms.filter(room => room !== foundRoom.roomId)
+                foundRoom.people = foundRoom.people.filter(personId => personId.toString() !== req.user.id)
+
+                user.save()
+                foundRoom.save()
+
+                return res.status(200).json({ foundRoom })
+            }
+        }
     },
     deleteRoom: async (req, res) => {
         res.send('permanently delete room')
