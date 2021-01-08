@@ -4,10 +4,12 @@ import pfp from '../../images/pfp.svg';
 import cx from "classnames";
 
 class ChatRoomListItem extends Component {
-    state = {  }
     render() { 
         return (
-            <li className={cx('chat-room-list-item', { 'selected': this.props.selected })}>
+            <li 
+                className={cx('chat-room-list-item', { 'selected': this.props.selected })}
+                onClick={this.props.onClick}
+            >
                 <Pfp pfp={pfp} size="md"/>
                 <div className="chat-room-item-details">
                     <div>

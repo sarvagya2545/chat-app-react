@@ -1,4 +1,4 @@
-import { LOAD_ROOMS, CONNECT, DISCONNECT } from '../actions/types';
+import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM } from '../actions/types';
 
 const initState = {
     connected: false,
@@ -23,6 +23,11 @@ const chatReducer = (state = initState, action) => {
             return {
                 ...state,
                 chatRooms: action.payload,
+            }
+        case CHANGE_CURRENT_ROOM: 
+            return {
+                ...state,
+                currentChatRoom: action.payload
             }
         default:
             return {

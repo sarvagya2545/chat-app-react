@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
 import ChatRoomListItem from '../chat/ChatRoomListItem';
 import { connect } from 'react-redux';
-import { loadRooms } from '../../redux/actions/chatActions';
+import { loadRooms, changeChatRoomTo } from '../../redux/actions/chatActions';
 
 class ChatRooms extends Component {
+
+    setCurrentChatRoom = (roomId) => {
+        this.props.changeChatRoomTo(roomId)
+    }
+
     render() {
         return (
             <ul>
-                {this.props.rooms.map((room, index) => {
+                {this.props.rooms.map(room => {
                     return (
                         <ChatRoomListItem
-                            selected={room.id === this.props.currentChatRoom}
-                            key={index}
+                            selected={room.roomId === this.props.currentChatRoom}
+                            key={room.roomId}
+                            onClick={() => this.setCurrentChatRoom(room.roomId)}
                         />
                     )
                 })}
@@ -27,4 +33,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { loadRooms })(ChatRooms);
+export default connect(mapStateToProps, { loadRooms, changeChatRoomTo })(ChatRooms);

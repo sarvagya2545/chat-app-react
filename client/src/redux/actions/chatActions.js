@@ -35,3 +35,7 @@ export const loadRooms = () => dispatch => {
         })
         .catch(err => console.log(err));
 }
+
+export const changeChatRoomTo = (roomId) => dispatch => {
+    dispatch({ type: CHANGE_CURRENT_ROOM, payload: roomId })
+}

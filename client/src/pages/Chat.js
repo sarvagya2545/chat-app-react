@@ -6,6 +6,7 @@ import ChatRooms from '../components/chat/ChatRooms';
 import ChatPanelHeader from '../components/chat/ChatPanelHeader';
 import { connectToSocket, disconnectFromSocket, loadRooms } from '../redux/actions/chatActions';
 import { connect } from 'react-redux';
+import EmptyChat from '../components/chat/EmptyChat';
 
 class Chat extends Component {
     componentDidMount() {
@@ -25,9 +26,13 @@ class Chat extends Component {
                     <ChatRooms/>
                 </div>
                 <div className="chat-main">
-                    <ChatHeading/>              
-                    <ChatBox/>
-                    <ChatForm/>
+                    {this.props.currentChatRoom === null ? 
+                        <EmptyChat/> : <>
+                                <ChatHeading/>              
+                                <ChatBox/>
+                                <ChatForm/>
+                          </>
+                    }
                 </div>
             </div>
         );
@@ -37,7 +42,8 @@ class Chat extends Component {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.isAuthenticated,
-        user: state.auth.user
+        user: state.auth.user,
+        currentChatRoom: state.chat.currentChatRoom
     }
 }
 
