@@ -1,4 +1,4 @@
-const { body, validationResult } = require('express-validator');
+const { body } = require('express-validator');
 
 const checkAlphaNumeric = val => {
     const regex = /^[a-zA-Z0-9_]+$/;
@@ -52,28 +52,7 @@ const loginValidationRules = () => {
     ]
 }
 
-const validate = (req, res, next) => {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-        return next()
-    }
-
-    let extractedErrors = {}
-    errors.array().map(err => {
-        extractedErrors = {
-            ...extractedErrors,
-            [err.param]: err.msg
-        }
-    })
-    // console.log(errors);
-
-    return res.status(400).json({
-        errors: extractedErrors,
-    });
-}
-
 module.exports = {
     signupValidationRules,
-    loginValidationRules,
-    validate
+    loginValidationRules
 }

@@ -3,7 +3,8 @@ const passport = require('passport');
 const router = express.Router();
 const UserController = require('../controllers/users');
 require('../../config/passport')
-const { validate, signupValidationRules, loginValidationRules } = require('../../validators/authValidators');
+const { signupValidationRules, loginValidationRules } = require('../../validators/authValidators');
+const validate = require('../../validators/validate');
 
 const passportSignIn = passport.authenticate('local', { session: false })
 const passportJWT = passport.authenticate('jwt', { session: false })
