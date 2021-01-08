@@ -32,7 +32,7 @@ export const loadUser = () => (dispatch, getState) => {
     axios.get('/users/current', config)
         .then(res => {
             // set the status of user as loaded
-            console.log(res.data);
+            // console.log(res.data);
             dispatch({ type: USER_LOADED, payload: res.data })
         })
         .catch(err => {
@@ -127,6 +127,7 @@ export const login = (formData) => (dispatch) => {
 export const logout = () => dispatch => {
     localStorage.removeItem('x-chat-token')
     dispatch({ type: LOGOUT_SUCCESS })
+    dispatch({ type: NO_ERRORS })
 }
 
 // Setup config/headers and token
@@ -134,7 +135,7 @@ export const tokenConfig = () => {
     // Get token from local storage
     const token = localStorage.getItem('x-chat-token');
 
-    console.log('token ', token)
+    // console.log('token ', token)
 
     if (!token) {
         return null

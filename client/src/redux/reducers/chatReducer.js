@@ -1,11 +1,34 @@
+import { LOAD_ROOMS, CONNECT, DISCONNECT } from '../actions/types';
+
 const initState = {
-    chatRooms: [{ id: 1 }, { id: 2 }],
-    currentChatRoom: 2,
+    connected: false,
+    chatRooms: [],
+    currentChatRoom: null,
     messages: []   
 }
 
 const chatReducer = (state = initState, action) => {
-    return state;
+    switch(action.type) {
+        case CONNECT: 
+            return {
+                ...state,
+                connected: true
+            }
+        case DISCONNECT: 
+            return {
+                ...state,
+                connected: false
+            }
+        case LOAD_ROOMS:
+            return {
+                ...state,
+                chatRooms: action.payload,
+            }
+        default:
+            return {
+                ...state
+            }
+    }
 }
 
 export default chatReducer;

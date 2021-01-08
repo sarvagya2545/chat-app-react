@@ -10,6 +10,9 @@ export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAIL = 'REGISTER_FAIL';
 
 // CHAT REDUCER ACTIONS
+export const CONNECT = "CONNECT";
+export const DISCONNECT = "DISCONNECT";
+export const LOAD_ROOMS = "LOAD_ROOMS";
 export const JOIN_ROOM = "JOIN_ROOM";
 export const LEAVE_ROOM = "LEAVE_ROOM";
 export const USER_JOIN = "USER_JOIN";

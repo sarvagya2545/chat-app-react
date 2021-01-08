@@ -27,7 +27,7 @@ router.route('/:roomid/delete')
     .delete(stopAllRequests, RoomController.deleteRoom)
 ;
 
-// only while development to avoid accidental deletion of a room
+/* only while development to avoid accidental deletion of a room */
 function stopAllRequests(req,res,next) {
     res.send('delete not allowed')
 }

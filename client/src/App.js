@@ -15,7 +15,6 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          {/* <Route path="/chat" component={Chat}/> */}
           <ProtectedRoute path="/chat" component={Chat}/>
           <Route path="/" component={Home}/>
         </Switch>
