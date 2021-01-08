@@ -3,7 +3,6 @@ export const USER_LOADING = 'USER_LOADING';
 export const USER_LOADED = 'USER_LOADED';
 export const NO_USER_LOADED = 'NO_USER_LOADED';
 export const USER_LOAD_ERROR = 'USER_LOAD_ERROR';
-export const AUTH_ERROR = 'AUTH_ERROR';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
@@ -18,3 +17,7 @@ export const USER_LEAVE = "USER_LEAVE";
 export const SEND_MESSAGE = "SEND_MESSAGE";
 export const RECIEVE_MESSAGE = "RECIEVE_MESSAGE";
 export const CHANGE_CURRENT_ROOM = "CHANGE_CURRENT_ROOM";
+
+// ERROR REDUCER ACTIONS
+export const NO_ERRORS = "NO_ERRORS";
+export const AUTH_ERROR = 'AUTH_ERROR';

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import LoginOrSignUp from '../components/home/LoginOrSignUp';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class Home extends Component {
     componentDidUpdate() {
         if(this.props.isAuthenticated) {
-            console.log('authenticated');
             this.props.history.push('/chat')
         }
     }
@@ -29,4 +29,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Home);
+export default withRouter(connect(mapStateToProps)(Home));

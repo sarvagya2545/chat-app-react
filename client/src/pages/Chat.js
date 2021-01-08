@@ -4,18 +4,13 @@ import ChatForm from '../components/chat/ChatForm';
 import ChatHeading from '../components/chat/ChatHeading';
 import ChatRooms from '../components/chat/ChatRooms';
 import ChatPanelHeader from '../components/chat/ChatPanelHeader';
-import { connectToSocket, disconnectFromSocket } from '../redux/actions/chatActions';
+import { connectToSocket, disconnectFromSocket, loadRooms } from '../redux/actions/chatActions';
 import { connect } from 'react-redux';
 
 class Chat extends Component {
-    state = {}
-
-    componentDidUpdate() {
-        
-    }
-
     componentDidMount() {
         this.props.connectToSocket();
+        this.props.loadRooms();
     }
 
     componentWillUnmount() {
@@ -46,4 +41,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { connectToSocket, disconnectFromSocket })(Chat);
+export default connect(mapStateToProps, { connectToSocket, disconnectFromSocket, loadRooms })(Chat);

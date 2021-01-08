@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Chat from './pages/Chat';
 import { loadUser } from './redux/actions/authActions';
 import store from './redux/store';
+import ProtectedRoute from './components/utils/ProtectedRoute';
 
 class App extends Component {
   componentDidMount() {
@@ -14,7 +15,8 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route path="/chat" component={Chat}/>
+          {/* <Route path="/chat" component={Chat}/> */}
+          <ProtectedRoute path="/chat" component={Chat}/>
           <Route path="/" component={Home}/>
         </Switch>
       </BrowserRouter>

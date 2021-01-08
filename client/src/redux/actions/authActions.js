@@ -8,7 +8,8 @@ import {
     LOGIN_FAIL,
     LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
-    REGISTER_FAIL
+    REGISTER_FAIL,
+    NO_ERRORS
 } from './types';
 
 import axios from 'axios';
@@ -41,6 +42,7 @@ export const loadUser = () => (dispatch, getState) => {
         })
 }
 
+// register function
 export const register = (formData) => (dispatch) => {
     const config = {
         headers: {
@@ -48,6 +50,7 @@ export const register = (formData) => (dispatch) => {
         }
     }
 
+    // signup request axios
     axios.post(`/users/signup`, formData, config)
         .then(res => {
             // console.log('res.data', res.data)
@@ -55,13 +58,25 @@ export const register = (formData) => (dispatch) => {
                 type: REGISTER_SUCCESS,
                 payload: res.data
             })
+            dispatch({ type: NO_ERRORS })
             localStorage.setItem('x-chat-token', res.data.token)
         })
         .catch(err => {
-            console.log(err.response);
+            const errors = err.response.data.errors
+            console.log(err.response)
+
+            const errorData = { 
+                errors: errors,
+                status: err.response.status,
+                errType: 'Registration error'
+            }
+
+            dispatch({ type: REGISTER_FAIL })
+            dispatch({ type: AUTH_ERROR, payload: errorData })
         })
 } 
 
+// login function
 export const login = (formData) => (dispatch) => {
     const config = {
         headers: {
@@ -76,12 +91,43 @@ export const login = (formData) => (dispatch) => {
                 type: LOGIN_SUCCESS,
                 payload: res.data
             })
+            dispatch({ type: NO_ERRORS })
             localStorage.setItem('x-chat-token', res.data.token)
         })
         .catch(err => {
+            dispatch({ type: LOGIN_FAIL })
             console.log(err.response);
+
+            if(err.response.status === 401) {
+                // unauthorized 
+                const errorData = {
+                    errors: {
+                        usernameOrEmail: 'Either email/username or password entered is incorrect'
+                    },
+                    status: 401,
+                    errType: 'Login error'
+                }
+                dispatch({ type: AUTH_ERROR, payload: errorData })
+            }
+
+            if(err.response.status === 400) {
+                const errors = err.response.data.errors;
+                const errorData = { 
+                    errors: errors,
+                    status: err.response.status,
+                    errType: 'Login error'
+                }
+    
+                dispatch({ type: AUTH_ERROR, payload: errorData })
+            }
         })
 } 
+
+// logout function
+export const logout = () => dispatch => {
+    localStorage.removeItem('x-chat-token')
+    dispatch({ type: LOGOUT_SUCCESS })
+}
 
 // Setup config/headers and token
 export const tokenConfig = () => {

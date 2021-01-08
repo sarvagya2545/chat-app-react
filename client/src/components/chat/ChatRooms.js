@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ChatRoomListItem from '../chat/ChatRoomListItem';
 import { connect } from 'react-redux';
+import { loadRooms } from '../../redux/actions/chatActions';
 
 class ChatRooms extends Component {
-    state = {  }
     render() {
         return (
             <ul>
@@ -27,4 +27,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(ChatRooms);
+export default connect(mapStateToProps, { loadRooms })(ChatRooms);

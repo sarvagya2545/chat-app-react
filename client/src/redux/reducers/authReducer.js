@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, NO_USER_LOADED, REGISTER_SUCCESS, USER_LOADED, USER_LOADING, USER_LOAD_ERROR } from "../actions/types";
+import { LOGIN_SUCCESS, LOGOUT_SUCCESS, NO_USER_LOADED, REGISTER_SUCCESS, USER_LOADED, USER_LOADING, USER_LOAD_ERROR } from "../actions/types";
 
 const initState = {
     isAuthenticated: false,
@@ -31,6 +31,15 @@ const authReducer = (state = initState, action) => {
                 user: action.payload.user,
                 isAuthenticated: true,
                 authMethod: action.payload.user.config.method
+            }    
+        case LOGOUT_SUCCESS: 
+            return {
+                ...state,
+                isAuthenticated: false,
+                token: null,
+                user: null,
+                isLoading: false,
+                authMethod: null
             }    
         default: 
             return {

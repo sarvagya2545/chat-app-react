@@ -21,5 +21,5 @@ export const disconnectFromSocket = () => dispatch => {
 }
 
 export const loadRooms = () => dispatch => {
-
+    console.log('Load rooms');
 }
