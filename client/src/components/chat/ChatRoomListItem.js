@@ -13,7 +13,7 @@ class ChatRoomListItem extends Component {
                 <Pfp pfp={pfp} size="md"/>
                 <div className="chat-room-item-details">
                     <div>
-                        <p>Name</p>
+                        <p>{this.props.name || "Name"}</p>
                         <span>message...</span>
                     </div>
                 </div>

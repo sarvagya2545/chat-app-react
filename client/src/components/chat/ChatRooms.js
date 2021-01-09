@@ -18,6 +18,7 @@ class ChatRooms extends Component {
                             selected={room.roomId === this.props.currentChatRoom}
                             key={room.roomId}
                             onClick={() => this.setCurrentChatRoom(room.roomId)}
+                            name={room.roomName}
                         />
                     )
                 })}

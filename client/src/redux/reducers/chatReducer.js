@@ -2,6 +2,7 @@ import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM } from '../actions
 
 const initState = {
     connected: false,
+    chatRoomsObject: {},
     chatRooms: [],
     currentChatRoom: null,
     messages: []   
@@ -22,7 +23,8 @@ const chatReducer = (state = initState, action) => {
         case LOAD_ROOMS:
             return {
                 ...state,
-                chatRooms: action.payload,
+                chatRooms: action.payload.rooms,
+                chatRoomsObject: action.payload.roomsObject
             }
         case CHANGE_CURRENT_ROOM: 
             return {

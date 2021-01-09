@@ -19,6 +19,7 @@ class Chat extends Component {
     }
 
     render() { 
+        const { currentChatRoom } = this.props;
         return (
             <div className="chat-container-main">
                 <div className="chat-panel">
@@ -26,7 +27,7 @@ class Chat extends Component {
                     <ChatRooms/>
                 </div>
                 <div className="chat-main">
-                    {this.props.currentChatRoom === null ? 
+                    {currentChatRoom === null ? 
                         <EmptyChat/> : <>
                                 <ChatHeading/>              
                                 <ChatBox/>

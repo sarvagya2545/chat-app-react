@@ -31,11 +31,21 @@ export const loadRooms = () => dispatch => {
     const config = tokenConfig();
     axios.get('/rooms/user', config)
         .then(res => {
-            dispatch({ type: LOAD_ROOMS, payload: res.data.rooms })
+            console.log(res);
+            const roomsObject = convertRoomsArrayToObject(res.data.rooms)
+            dispatch({ type: LOAD_ROOMS, payload: { roomsObject, rooms: res.data.rooms } })
         })
         .catch(err => console.log(err));
 }
 
 export const changeChatRoomTo = (roomId) => dispatch => {
     dispatch({ type: CHANGE_CURRENT_ROOM, payload: roomId })
+}
+
+const convertRoomsArrayToObject = (rooms) => {
+    const roomsObject = {};
+    rooms.forEach(room => {
+        roomsObject[room.roomId] = room
+    })
+    return roomsObject;
 }

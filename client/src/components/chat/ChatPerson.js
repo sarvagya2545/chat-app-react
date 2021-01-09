@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class ChatPerson extends Component {
-    state = {  }
     render() { 
+        const { roomName } = this.props;
         return (
             <div className="chat-person">
-                <h3 className="chat-person-name">Sahaj</h3>
+                <h3 className="chat-person-name">{roomName}</h3>
                 <p className="chat-person-status">online</p>
             </div>
         );
     }
 }
- 
-export default ChatPerson;
+
+const mapStateToProps = state => {
+    const roomsObject = state.chat.chatRoomsObject
+    const currentChatRoom = state.chat.currentChatRoom
+
+    return {
+        roomName: roomsObject[currentChatRoom].roomName
+    }
+}
+
+export default connect(mapStateToProps)(ChatPerson);
