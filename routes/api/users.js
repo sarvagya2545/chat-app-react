@@ -24,4 +24,14 @@ router.route('/current')
     .get(passportJWT, UserController.getUser)
 ;
 
+// get user from handle name
+router.route('/handle/:handle')
+    .get(UserController.getUserByHandle)
+;
+
+// DEVELOPMENT ONLY
+router.route('/change/password')
+    .post(UserController.changePassword)
+;
+
 module.exports = router;

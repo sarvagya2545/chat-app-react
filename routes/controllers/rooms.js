@@ -21,10 +21,25 @@ module.exports = {
             // get the user by its id from database
             const user = await User.findById(req.user.id)
 
+            // get from body
+            const { roomName, people } = req.body;
+
+            // people is an array of usernames, convert it into an array of ids
+            const newPeople = [];
+            if(people != null) {
+                for(let personName of people) {
+                    const newPersonObj = await User.findOne({ 'auth.username': personName })
+                    if(newPersonObj) newPeople.push(newPersonObj._id)
+                }
+            }
+
+            const users = newPeople.length == 0 ? [ user.id ] : [ user.id, ...newPeople ]
+
             // create a new room and save its roomId in users room list
             const newRoom = new Room({
+                roomName: roomName,
                 roomId: uuidv4(),
-                people: [user.id],
+                people: users,
                 messages: []
             })
 
@@ -32,12 +47,17 @@ module.exports = {
             await newRoom.save()
 
             // update the user's room list
-            user.rooms = [...user.rooms, newRoom.roomId]
-
-            await user.save()
+            for(let user of users) {
+                // console.log(user)
+                newuser = await User.findById(user)
+                newuser.rooms = [...newuser.rooms, newRoom.roomId]
+                console.log(newuser)
+                await newuser.save()
+            }
 
             res.status(201).json({ newRoom })
         } catch (error) {
+            console.log(error)
             res.status(500).json({ error, errorMessage: 'Error while creating room' })
         }
     },

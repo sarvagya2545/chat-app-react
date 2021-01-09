@@ -3,6 +3,8 @@ const passport = require('passport');
 const router = express.Router();
 const RoomController = require('../controllers/rooms');
 require('../../config/passport')
+const { createRoomValidationRules } = require('../../validators/roomValidators');
+const validate = require('../../validators/validate');
 
 const passportJWT = passport.authenticate('jwt', { session: false })
 
@@ -10,7 +12,7 @@ const passportJWT = passport.authenticate('jwt', { session: false })
 router.get('/user', passportJWT, RoomController.getRoomsOfUser);
 
 // create a new room
-router.post('/new', passportJWT, RoomController.createRoom);
+router.post('/new', passportJWT, createRoomValidationRules(), validate, RoomController.createRoom);
 
 // join an existing room by id
 router.route('/:roomid/join')

@@ -87,5 +87,27 @@ module.exports = {
         } catch (error) {
             res.status(400).json({ msg: e.message })
         }
+    },
+    getUserByHandle: async (req,res) => {
+        try {
+            const user = await User.find({ 'auth.username': req.params.handle })
+
+            if(!user) {
+                return res.status(404).json({ error: 'No user found' })
+            }
+
+            return res.status(200).json({ user })
+        } catch(err) {
+            return res.status(500).json({ err })
+        }
+    },
+    changePassword: async (req,res) => {
+        
+        const { newPassword, userName } = req.body;
+        
+        const user = await User.findOne({ 'auth.username': userName })
+        user.auth.local.password = newPassword;
+
+        await user.save()
     }
 }
