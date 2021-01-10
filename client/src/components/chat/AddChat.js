@@ -27,7 +27,7 @@ class AddChat extends Component {
         e.preventDefault();
 
         // add chat room to the database
-
+        console.log('clicked')
     }
 
     onChangeHandler = e => {
@@ -105,8 +105,10 @@ class AddChat extends Component {
                 </form>
                 {this.state.selectedPeople.length !== 0 ? (
                     <button 
+                        type="button"
                         className="btn btn-create-room"
                         onClick={this.onClickHandler}
+                        disabled={this.state.roomName === "" || this.state.selectedPeople.length === 0}
                     >
                         Create Room
                     </button>

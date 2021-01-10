@@ -28,8 +28,28 @@
     background-color: $color-primary-3;
     color: #fff;
     cursor: pointer;
+    position: relative;
 
     &:hover {
         box-shadow: 0px -3px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    &:disabled {
+        background-color: $color-grey-1;
+
+        &:hover {
+            box-shadow: none;
+            cursor: not-allowed;
+
+            &::before {
+                content: "Enter the name of the room";
+                position: absolute;
+                background-color: #000;
+                padding: 1.5rem 3rem;
+                width: 100%;
+                top: 0;
+                left: 0;
+            }
+        }
     }
 }
