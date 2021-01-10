@@ -7,6 +7,7 @@ import axios from "axios";
 class AddChat extends Component {
     state = {
         searchedPeople: [],
+        selectedPeople: [],
         searchTerm: "",
     };
 
@@ -30,6 +31,32 @@ class AddChat extends Component {
         this.setState({ searchTerm: e.target.value ,searchedPeople: filteredUserList })
     }
 
+    personIsSelected = (person) => {
+        const arr = this.state.selectedPeople;
+
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].id === person.id) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    toggleSelectedPeople = (person) => {
+        if (!this.personIsSelected(person)) {
+            console.log("push");
+            this.setState({ selectedPeople: [...this.state.selectedPeople, person] });
+        } else {
+            const newArray = this.state.selectedPeople.filter(
+                (selectedPerson) => person.id !== selectedPerson.id
+            );
+            this.setState({
+                selectedPeople: newArray,
+            });
+        }
+    };
+
     render() {
         return (
             <div className={cx("add-chat", { hidden: !this.props.visible })}>
@@ -48,7 +75,12 @@ class AddChat extends Component {
                         onChange={this.onChangeHandler}
                     />
                 </form>
-                <PeopleSearch people={this.state.searchedPeople} />
+                <PeopleSearch
+                    people={this.state.searchedPeople}
+                    personIsSelected={this.personIsSelected}
+                    toggleSelectedPeople={this.toggleSelectedPeople}
+                    selectedPeople={this.state.selectedPeople}
+                />
             </div>
         );
     }
