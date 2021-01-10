@@ -22,7 +22,7 @@ class PeopleSearchItem extends Component {
                 <div className="chat-room-item-details">
                     <div>
                         <p>{this.props.name || "Name"}</p>
-                        <span>{this.props.username || "Username"}</span>
+                        <span>{this.props.email || "Email"}</span>
                     </div>
                 </div>
             </li>

@@ -5,9 +5,13 @@ class PeopleSearch extends Component {
     render() { 
         return (
             <div className="people-search">
-                <PeopleSearchItem/>
-                <PeopleSearchItem/>
-                <PeopleSearchItem/>
+                {this.props.people.map(person => (
+                    <PeopleSearchItem
+                        key={person.id}
+                        name={person.username}
+                        email={person.email}
+                    />
+                ))}
             </div>
         );
     }
