@@ -4,18 +4,14 @@ import pfp from '../../images/pfp.svg';
 import cx from 'classnames';
 
 class PeopleSearchItem extends Component {
-    state = {
-        selected: false
-    }
-
     onClickHandler = e => {
-        this.setState({ selected: !this.state.selected })
+        this.props.select({ id: this.props.personId, name: this.props.name })
     }
 
     render() { 
         return (
             <li 
-                className={cx("people-search-item", { "selected": this.state.selected })}
+                className={cx("people-search-item", { "selected": this.props.selected })}
                 onClick={this.onClickHandler}
             >
                 <Pfp pfp={pfp} size="md"/>

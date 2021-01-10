@@ -23,7 +23,9 @@ class AddChat extends Component {
 
     onChangeHandler = e => {
         const filteredUserList = this.completeUserList.filter(user => {
-            return user.username.toLowerCase().includes(e.target.value.toLowerCase()) || user.email.toLowerCase().includes(e.target.value.toLowerCase()) 
+            const includeUserName = user.username.toLowerCase().includes(e.target.value.toLowerCase())
+            const includesEmail = user.email.toLowerCase().includes(e.target.value.toLowerCase())
+            return  includeUserName || includesEmail
         })
         this.setState({ searchTerm: e.target.value ,searchedPeople: filteredUserList })
     }

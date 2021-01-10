@@ -8,6 +8,41 @@
         display: flex;
         list-style-type: none;
         align-items: center;
+
+        &:hover {
+            background-color: $color-grey-hover;
+        }
+
+        &.selected {
+            position: relative;
+            background-color: $color-grey-hover;
+
+            .pfp {
+                width: $pfp-sm;
+                height: $pfp-sm;
+                margin-left: 0.5rem;
+                margin-right: 1rem;
+                margin-bottom: 1rem;
+
+                &::before {
+                    content: '\2714';
+                    background-color: $color-primary;
+                    color: #fff;
+                    
+                    height: 2rem;
+                    width: 2rem;
+                    border-radius: 100%;
+                    
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    
+                    position: absolute;
+                    bottom: 1.2rem;
+                    left: 4rem;
+                }
+            }
+        }
     }
 
     ::-webkit-scrollbar {
