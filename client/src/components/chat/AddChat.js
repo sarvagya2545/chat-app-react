@@ -9,6 +9,7 @@ class AddChat extends Component {
         searchedPeople: [],
         selectedPeople: [],
         searchTerm: "",
+        roomName: ""
     };
 
     completeUserList = [];
@@ -20,6 +21,13 @@ class AddChat extends Component {
                 this.completeUserList = res.data.users;
             })
             .catch(err => console.log(err))
+    }
+
+    onClickHandler = e => {
+        e.preventDefault();
+
+        // add chat room to the database
+
     }
 
     onChangeHandler = e => {
@@ -81,8 +89,25 @@ class AddChat extends Component {
                     toggleSelectedPeople={this.toggleSelectedPeople}
                     selectedPeople={this.state.selectedPeople}
                 />
+                {/* To be removed and added into another page into the future */}
+                <form className="form form-room-name">
+                    <div className="form-group">
+                        <input 
+                            name="roomName"
+                            type="text" 
+                            className="chat-room-name input"
+                            value={this.state.roomName} 
+                            onChange={e => this.setState({ roomName: e.target.value })}
+                            placeholder="Enter the room name"
+                        />
+                        <label htmlFor="roomName" className="label">Enter your room name:</label>
+                    </div>
+                </form>
                 {this.state.selectedPeople.length !== 0 ? (
-                    <button className="btn btn-create-room">
+                    <button 
+                        className="btn btn-create-room"
+                        onClick={this.onClickHandler}
+                    >
                         Create Room
                     </button>
                 ): null}
