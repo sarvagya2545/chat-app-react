@@ -81,6 +81,11 @@ class AddChat extends Component {
                     toggleSelectedPeople={this.toggleSelectedPeople}
                     selectedPeople={this.state.selectedPeople}
                 />
+                {this.state.selectedPeople.length !== 0 ? (
+                    <button className="btn btn-create-room">
+                        Create Room
+                    </button>
+                ): null}
             </div>
         );
     }

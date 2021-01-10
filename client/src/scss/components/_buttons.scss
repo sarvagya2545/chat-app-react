@@ -21,3 +21,15 @@
     transform: translateY(-1px);
     box-shadow: rgba(0, 0, 0, 0.5) 0 5px 10px;
 }
+
+.btn-create-room {
+    font-size: 1.4rem;
+    padding: 1.5rem 3rem;
+    background-color: $color-primary-3;
+    color: #fff;
+    cursor: pointer;
+
+    &:hover {
+        box-shadow: 0px -3px 10px rgba(0, 0, 0, 0.3);
+    }
+}

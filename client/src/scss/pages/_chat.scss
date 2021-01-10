@@ -23,6 +23,8 @@
     transition: transform .3s ease-out;
     background-color: #fff;
     font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: column;
 
     &.hidden {
         transform: translateX(-100%);

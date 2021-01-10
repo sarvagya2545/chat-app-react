@@ -4,6 +4,11 @@
     flex-wrap: wrap;
     max-height: 15vh;
     overflow: scroll;
+
+    &.no-badges {
+        padding: 0;
+        height: 0;
+    }
 }
 
 .badge {
@@ -15,7 +20,7 @@
     font-size: 1.2rem;
     border-radius: 1rem;
     padding-left: .8rem;
-    margin: .7rem 0;
+    margin: .7rem .3rem;
     
     .btn-close-badge {
         border-radius: 1rem;

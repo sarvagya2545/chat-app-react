@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import PeopleSearchItem from "./PeopleSearchItem";
 import Badge from "../utils/badge";
+import cx from "classnames";
 
 class PeopleSearch extends Component {
     render() {
         return (
             <div className="people-search">
-                <div className="people-selected">
+                <div className={cx("people-selected", { "no-badges": this.props.selectedPeople.length === 0 })}>
                     {this.props.selectedPeople.map((person) => (
                         <Badge
                             person={person}
