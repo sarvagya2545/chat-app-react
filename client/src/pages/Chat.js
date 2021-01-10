@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import ChatBox from '../components/chat/ChatBox';
 import ChatForm from '../components/chat/ChatForm';
 import ChatHeading from '../components/chat/ChatHeading';
-import ChatRooms from '../components/chat/ChatRooms';
-import ChatPanelHeader from '../components/chat/ChatPanelHeader';
 import { connectToSocket, disconnectFromSocket, loadRooms } from '../redux/actions/chatActions';
 import { connect } from 'react-redux';
 import EmptyChat from '../components/chat/EmptyChat';
+import ChatPanel from '../components/chat/ChatPanel';
+import AddChat from '../components/chat/AddChat';
 
 class Chat extends Component {
     componentDidMount() {
@@ -18,14 +18,18 @@ class Chat extends Component {
         this.props.disconnectFromSocket();
     }
 
+    state = { addChat: false }
+
+    toggleVisible = () => {
+        this.setState({ addChat: !this.state.addChat })
+    }
+
     render() { 
         const { currentChatRoom } = this.props;
         return (
             <div className="chat-container-main">
-                <div className="chat-panel">
-                    <ChatPanelHeader/>
-                    <ChatRooms/>
-                </div>
+                <AddChat visible={this.state.addChat} addChatToggle={this.toggleVisible}/>
+                <ChatPanel addChatToggle={this.toggleVisible}/>
                 <div className="chat-main">
                     {currentChatRoom === null ? 
                         <EmptyChat/> : <>

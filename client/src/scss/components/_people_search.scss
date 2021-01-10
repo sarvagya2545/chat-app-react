@@ -1,0 +1,28 @@
+.people-search {
+    margin-right: $space-scroll;
+    height: 78vh;
+    overflow: scroll;
+
+    &-item {
+        padding: 0 0 0 1.5rem;
+        display: flex;
+        list-style-type: none;
+        align-items: center;
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        border-radius: 10px;
+        width: $space-scroll;
+    }
+   
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: $color-scroll-bar;
+        border-radius: 0;
+    }
+}

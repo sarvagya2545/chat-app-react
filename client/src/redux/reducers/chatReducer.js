@@ -4,8 +4,7 @@ const initState = {
     connected: false,
     chatRoomsObject: {},
     chatRooms: [],
-    currentChatRoom: null,
-    messages: []   
+    currentChatRoom: null
 }
 
 const chatReducer = (state = initState, action) => {

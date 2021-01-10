@@ -18,7 +18,7 @@ class ChatPanelHeader extends Component {
                     <img src={pfp} alt="pfp" className="pfp-img" />
                 </div>
                 <button onClick={this.logoutClick}>Logout</button>
-                <div className="btn-add-chat">
+                <div className="btn-add-chat" onClick={this.props.addChatToggle}>
                     <img src={addImage} alt="add"/>
                 </div>
             </div>

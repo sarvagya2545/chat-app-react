@@ -15,27 +15,36 @@
     background-image: url('../../images/whatsapp-web-background.png');
 }
 
-// Chat message send form
-.chat-form {
-    padding: 1.3rem 2rem;
-    background-color: $color-grey-2;
-    width: 100%;
-    display: flex;
+// add chat form
+.add-chat {
+    position: absolute;
+    height: 100vh;
+    width: $sidebar-size;
+    transition: transform .3s ease-out;
+    background-color: #fff;
+    font-family: 'Montserrat', sans-serif;
 
-    .input-send {
-        flex: 1;
-        padding: 1rem 1.8rem;
-        border: none;
-        border-radius: 100px;
-        margin-right: 1.5rem;
-        outline: none;
-        font-family: inherit;
+    &.hidden {
+        transform: translateX(-100%);
     }
 
-    .btn-send {
-        cursor: pointer;
-        background-color: inherit;
-        border: none;
-        outline: none;
+    &-header {
+        display: flex;
+        justify-content: flex-start;
+        padding: 1.5em 2em;
+        padding-top: 4em;
+        background-color: $color-primary-3;
+        color: #fff;
+
+        .header {
+            font-size: 2rem;
+            display: flex;
+        }
+
+        .close-btn {
+            background-color: transparent;
+            padding: 0 1rem 0 0;
+            cursor: pointer;
+        }
     }
 }
