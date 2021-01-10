@@ -3,6 +3,9 @@ import cx from "classnames";
 import goBack from "../../images/go_back.svg";
 import PeopleSearch from "./PeopleSearch";
 import axios from "axios";
+import { connect } from 'react-redux';
+import { createChatRoom } from '../../redux/actions/chatActions';
+import { tokenConfig } from '../../redux/actions/authActions';
 
 class AddChat extends Component {
     state = {
@@ -15,8 +18,10 @@ class AddChat extends Component {
     completeUserList = [];
 
     componentDidMount() {
-        axios.get('/users/all')
+        const config = tokenConfig();
+        axios.get('/users/all', config)
             .then(res => {
+                console.log(res.data.users);
                 this.setState({ searchedPeople: res.data.users })
                 this.completeUserList = res.data.users;
             })
@@ -27,7 +32,8 @@ class AddChat extends Component {
         e.preventDefault();
 
         // add chat room to the database
-        console.log('clicked')
+        const { selectedPeople, roomName } = this.state;
+        this.props.createChatRoom({ selectedPeople, roomName })
     }
 
     onChangeHandler = e => {
@@ -118,4 +124,4 @@ class AddChat extends Component {
     }
 }
 
-export default AddChat;
+export default connect(null, { createChatRoom })(AddChat);

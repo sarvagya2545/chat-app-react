@@ -27,8 +27,8 @@ module.exports = {
             // people is an array of usernames, convert it into an array of ids
             const newPeople = [];
             if(people != null) {
-                for(let personName of people) {
-                    const newPersonObj = await User.findOne({ 'auth.username': personName })
+                for(let person of people) {
+                    const newPersonObj = await User.findOne({ 'auth.username': person.name })
                     if(newPersonObj) newPeople.push(newPersonObj._id)
                 }
             }

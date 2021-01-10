@@ -101,10 +101,12 @@ module.exports = {
             return res.status(500).json({ err })
         }
     },
-    getAllUsers: async (req,res) => {
+    getAllUsersExceptSelf: async (req,res) => {
         const usersFromDB = await User.find()
 
-        const users = usersFromDB.map(user => {
+        console.log( 'Filtered Users', usersFromDB.filter(user => user._id != req.user.id))
+
+        const users = usersFromDB.filter(user => user._id != req.user.id).map(user => {
             return {
                 username: user.auth.username,
                 email: user.auth.email,

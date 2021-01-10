@@ -1,10 +1,11 @@
-import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM } from '../actions/types';
+import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATING, ROOM_CREATED } from '../actions/types';
 
 const initState = {
     connected: false,
     chatRoomsObject: {},
     chatRooms: [],
-    currentChatRoom: null
+    currentChatRoom: null,
+    addRoomLoading: false
 }
 
 const chatReducer = (state = initState, action) => {
@@ -29,6 +30,21 @@ const chatReducer = (state = initState, action) => {
             return {
                 ...state,
                 currentChatRoom: action.payload
+            }
+        case ROOM_CREATING: 
+            return {
+                ...state,
+                addRoomLoading: true
+            }    
+        case ROOM_CREATED:
+            return {
+                ...state,
+                addRoomLoading: false,
+                chatRooms: [ ...state.chatRooms, action.payload ],
+                chatRoomsObject: {
+                    ...state.chatRoomsObject,
+                    [action.payload.roomId]: action.payload
+                }
             }
         default:
             return {

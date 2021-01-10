@@ -6,6 +6,8 @@ import {
     SEND_MESSAGE,
     RECIEVE_MESSAGE,
     LEAVE_ROOM,
+    ROOM_CREATING,
+    ROOM_CREATED,
     CHANGE_CURRENT_ROOM,
     CONNECT,
     DISCONNECT
@@ -37,6 +39,24 @@ export const loadRooms = () => dispatch => {
         })
         .catch(err => console.log(err));
 }
+
+export const createChatRoom = ({ selectedPeople, roomName }) => dispatch => {
+    const config = tokenConfig();
+    const bodyData = {
+        roomName,
+        people: selectedPeople
+    }
+
+    dispatch({ type: ROOM_CREATING })
+
+    axios.post('/rooms/new', bodyData, config)
+        .then(res => {
+            console.log(res);
+            dispatch({ type: ROOM_CREATED, payload: res.data.newRoom })
+        })
+        .catch(err => console.log(err))
+}
+
 
 export const changeChatRoomTo = (roomId) => dispatch => {
     dispatch({ type: CHANGE_CURRENT_ROOM, payload: roomId })

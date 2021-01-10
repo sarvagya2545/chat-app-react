@@ -31,7 +31,7 @@ router.route('/handle/:handle')
 
 // get all the users in the database
 router.route('/all')
-    .get(UserController.getAllUsers)
+    .get(passportJWT, UserController.getAllUsersExceptSelf)
 ;
 
 // DEVELOPMENT ONLY
