@@ -29,6 +29,11 @@ router.route('/handle/:handle')
     .get(UserController.getUserByHandle)
 ;
 
+// get all the users in the database
+router.route('/all')
+    .get(UserController.getAllUsers)
+;
+
 // DEVELOPMENT ONLY
 router.route('/change/password')
     .post(UserController.changePassword)

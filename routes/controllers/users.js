@@ -101,6 +101,19 @@ module.exports = {
             return res.status(500).json({ err })
         }
     },
+    getAllUsers: async (req,res) => {
+        const usersFromDB = await User.find()
+
+        const users = usersFromDB.map(user => {
+            return {
+                username: user.auth.username,
+                email: user.auth.email,
+                id: user._id
+            }
+        })
+
+        res.json({ users })
+    },  
     changePassword: async (req,res) => {
         
         const { newPassword, userName } = req.body;
