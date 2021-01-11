@@ -26,19 +26,24 @@ module.exports = {
 
             // people is an array of usernames, convert it into an array of ids
             const newPeople = [];
+            const newPeopleObjs = [];
             if(people != null) {
                 for(let person of people) {
                     const newPersonObj = await User.findOne({ 'auth.username': person.name })
-                    if(newPersonObj) newPeople.push(newPersonObj._id)
+                    if(newPersonObj) {
+                        newPeople.push(newPersonObj._id)
+                        newPeopleObjs.push(newPersonObj)
+                    }
                 }
             }
 
             const users = newPeople.length == 0 ? [ user.id ] : [ user.id, ...newPeople ]
 
             // create a new room and save its roomId in users room list
+            const newRoomId = uuidv4()
             const newRoom = new Room({
                 roomName: roomName,
-                roomId: uuidv4(),
+                roomId: newRoomId,
                 people: users,
                 messages: []
             })
@@ -47,13 +52,12 @@ module.exports = {
             await newRoom.save()
 
             // update the user's room list
-            for(let user of users) {
-                // console.log(user)
-                newuser = await User.findById(user)
-                newuser.rooms = [...newuser.rooms, newRoom.roomId]
-                console.log(newuser)
-                await newuser.save()
-            }
+           for(person of newPeopleObjs) {
+              console.log('person: ', person);
+              person.rooms.push(newRoomId.toString())
+              person.save();
+              console.log('person updated: ', person);
+           }
 
             res.status(201).json({ newRoom })
         } catch (error) {
