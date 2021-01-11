@@ -9,9 +9,9 @@ import ChatPanel from '../components/chat/ChatPanel';
 import AddChat from '../components/chat/AddChat';
 
 class Chat extends Component {
-    componentDidMount() {
-        this.props.connectToSocket();
-        this.props.loadRooms();
+    async componentDidMount() {
+        await this.props.connectToSocket();
+        await this.props.loadRooms();
     }
 
     componentWillUnmount() {
