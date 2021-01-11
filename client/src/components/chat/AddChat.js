@@ -28,12 +28,13 @@ class AddChat extends Component {
             .catch(err => console.log(err))
     }
 
-    onClickHandler = e => {
+    onClickHandler = async e => {
         e.preventDefault();
 
         // add chat room to the database
         const { selectedPeople, roomName } = this.state;
-        this.props.createChatRoom({ selectedPeople, roomName })
+        await this.props.createChatRoom({ selectedPeople, roomName })
+        this.props.addChatToggle()
     }
 
     onChangeHandler = e => {
@@ -105,6 +106,7 @@ class AddChat extends Component {
                             value={this.state.roomName} 
                             onChange={e => this.setState({ roomName: e.target.value })}
                             placeholder="Enter the room name"
+                            autoComplete="off"
                         />
                         <label htmlFor="roomName" className="label">Enter your room name:</label>
                     </div>

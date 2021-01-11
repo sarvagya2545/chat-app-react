@@ -1,11 +1,10 @@
-import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATING, ROOM_CREATED } from '../actions/types';
+import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATING, ROOM_CREATED, EXIT_ROOM } from '../actions/types';
 
 const initState = {
     connected: false,
     chatRoomsObject: {},
     chatRooms: [],
-    currentChatRoom: null,
-    addRoomLoading: false
+    currentChatRoom: null
 }
 
 const chatReducer = (state = initState, action) => {
@@ -31,21 +30,28 @@ const chatReducer = (state = initState, action) => {
                 ...state,
                 currentChatRoom: action.payload
             }
-        case ROOM_CREATING: 
-            return {
-                ...state,
-                addRoomLoading: true
-            }    
         case ROOM_CREATED:
             return {
                 ...state,
-                addRoomLoading: false,
                 chatRooms: [ ...state.chatRooms, action.payload ],
                 chatRoomsObject: {
                     ...state.chatRoomsObject,
                     [action.payload.roomId]: action.payload
                 }
             }
+        case EXIT_ROOM:
+            const { [action.payload]: roomId , ...newChatRooms } = state.chatRoomsObject
+            console.log(action.payload);
+            console.log(roomId)
+            console.log(newChatRooms)
+            console.log(state.chatRooms)
+            console.log(state.chatRooms.filter(room => room.roomId !== roomId.roomId))
+            return {
+                ...state,
+                chatRooms: state.chatRooms.filter(room => room.roomId !== roomId.roomId),
+                chatRoomsObject: newChatRooms,
+                currentChatRoom: null
+            }    
         default:
             return {
                 ...state

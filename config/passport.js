@@ -10,6 +10,8 @@ passport.use(new JwtStrategy({
     secretOrKey: jwtSecret
 }, async (payload, done) => {
     try {
+        console.log(payload)
+
         // Find the user specified in token
         const user = await User.findById(payload.sub).select('-auth.local.password');
 

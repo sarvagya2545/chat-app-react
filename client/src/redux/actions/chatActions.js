@@ -6,11 +6,11 @@ import {
     SEND_MESSAGE,
     RECIEVE_MESSAGE,
     LEAVE_ROOM,
-    ROOM_CREATING,
     ROOM_CREATED,
     CHANGE_CURRENT_ROOM,
     CONNECT,
-    DISCONNECT
+    DISCONNECT,
+    EXIT_ROOM
 } from './types';
 
 import io from 'socket.io-client';
@@ -47,8 +47,6 @@ export const createChatRoom = ({ selectedPeople, roomName }) => dispatch => {
         people: selectedPeople
     }
 
-    dispatch({ type: ROOM_CREATING })
-
     axios.post('/rooms/new', bodyData, config)
         .then(res => {
             console.log(res);
@@ -57,6 +55,18 @@ export const createChatRoom = ({ selectedPeople, roomName }) => dispatch => {
         .catch(err => console.log(err))
 }
 
+export const exitChatRoom = (roomId) => dispatch => {
+    console.log(roomId)
+    const config = tokenConfig();
+    console.log(config);
+
+    axios.post(`/rooms/${roomId}/exit`, {},config)
+        .then(res => {
+            console.log('roomId' ,res.data.foundRoom.roomId);
+            dispatch({ type: EXIT_ROOM, payload: res.data.foundRoom.roomId })
+        })
+        .catch(err => console.log(err))
+}
 
 export const changeChatRoomTo = (roomId) => dispatch => {
     dispatch({ type: CHANGE_CURRENT_ROOM, payload: roomId })
