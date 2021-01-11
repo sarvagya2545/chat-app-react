@@ -55,14 +55,17 @@ export const createChatRoom = ({ selectedPeople, roomName }) => dispatch => {
         .catch(err => console.log(err))
 }
 
-export const exitChatRoom = (roomId) => dispatch => {
-    console.log(roomId)
+export const exitChatRoom = (roomId, roomName) => dispatch => {
+    console.log(roomName);
+    let isLeaving = window.confirm(`Are you sure you want to leave the room "${roomName}"?`);
+
+    // if user does not leave, stop the execution immediately
+    if(!isLeaving) return null
+
     const config = tokenConfig();
-    console.log(config);
 
     axios.post(`/rooms/${roomId}/exit`, {},config)
         .then(res => {
-            console.log('roomId' ,res.data.foundRoom.roomId);
             dispatch({ type: EXIT_ROOM, payload: res.data.foundRoom.roomId })
         })
         .catch(err => console.log(err))

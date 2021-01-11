@@ -81,7 +81,7 @@ class AddChat extends Component {
                     </button>
                     <div className="header">New Chat</div>
                 </div>
-                <form className="chat-form chat-form-search">
+                <form className="chat-form chat-form-search" onSubmit={e => e.preventDefault()}>
                     <input
                         type="text"
                         className="input-send"
@@ -97,7 +97,7 @@ class AddChat extends Component {
                     selectedPeople={this.state.selectedPeople}
                 />
                 {/* To be removed and added into another page into the future */}
-                <form className="form form-room-name">
+                <form className="form form-room-name"  onSubmit={e => e.preventDefault()}>
                     <div className="form-group">
                         <input 
                             name="roomName"

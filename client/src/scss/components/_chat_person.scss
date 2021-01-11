@@ -41,4 +41,16 @@
 .exit {
     margin-left: auto;
     cursor: pointer;
+    
+    &:hover::before {
+        content: 'Exit Room?';
+        width: fit-content;
+        position: relative;
+        bottom: 5px;
+        right: 10px;
+    }
+
+    &:hover img {
+        filter: invert(11%) sepia(92%) saturate(7457%) hue-rotate(1deg) brightness(108%) contrast(110%);
+    }
 }

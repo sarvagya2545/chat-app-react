@@ -15,7 +15,7 @@ class ChatHeading extends Component {
                     <img src={pfp} alt="pfp" className="pfp-img"/>
                 </div>
                 <ChatPerson/>
-                <div className="exit" onClick={e => this.props.exitChatRoom(this.props.currentRoomId)}>
+                <div className="exit" onClick={e => this.props.exitChatRoom(this.props.currentRoomId, this.props.currentRoomName)}>
                     <img src={LeaveIcon} alt="leave room"/>
                 </div>
             </div>
@@ -24,8 +24,10 @@ class ChatHeading extends Component {
 }
 
 const mapStateToProps = (state) => {
+    const currentRoomId = state.chat.currentChatRoom
     return {
-        currentRoomId: state.chat.currentChatRoom
+        currentRoomId: currentRoomId,
+        currentRoomName: state.chat.chatRoomsObject[currentRoomId].roomName
     }
 }
  
