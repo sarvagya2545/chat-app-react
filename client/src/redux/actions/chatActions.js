@@ -33,7 +33,7 @@ export const loadRooms = () => dispatch => {
     const config = tokenConfig();
     axios.get('/rooms/user', config)
         .then(res => {
-            console.log(res);
+            // console.log(res);
             const roomsObject = convertRoomsArrayToObject(res.data.rooms)
             dispatch({ type: LOAD_ROOMS, payload: { roomsObject, rooms: res.data.rooms } })
         })
@@ -56,7 +56,6 @@ export const createChatRoom = ({ selectedPeople, roomName }) => dispatch => {
 }
 
 export const exitChatRoom = (roomId, roomName) => dispatch => {
-    console.log(roomName);
     let isLeaving = window.confirm(`Are you sure you want to leave the room "${roomName}"?`);
 
     // if user does not leave, stop the execution immediately

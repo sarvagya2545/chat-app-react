@@ -27,7 +27,8 @@ const mapStateToProps = (state) => {
     const currentRoomId = state.chat.currentChatRoom
     return {
         currentRoomId: currentRoomId,
-        currentRoomName: state.chat.chatRoomsObject[currentRoomId].roomName
+        currentRoomName: state.chat.chatRoomsObject[currentRoomId] ? 
+                    state.chat.chatRoomsObject[currentRoomId].roomName : null
     }
 }
  

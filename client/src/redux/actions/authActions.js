@@ -131,11 +131,11 @@ export const logout = () => dispatch => {
 }
 
 // Setup config/headers and token
-export const tokenConfig = () => {
+export const tokenConfig = (defaultToken) => {
     // Get token from local storage
-    const token = localStorage.getItem('x-chat-token');
+    const token = localStorage.getItem('x-chat-token') || defaultToken;
 
-    console.log('token ', token)
+    // console.log('token ', token)
 
     if (!token) {
         return null

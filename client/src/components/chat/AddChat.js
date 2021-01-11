@@ -12,20 +12,24 @@ class AddChat extends Component {
         searchedPeople: [],
         selectedPeople: [],
         searchTerm: "",
-        roomName: ""
+        roomName: "",
+        usersLoaded: false
     };
 
     completeUserList = [];
 
-    componentDidMount() {
-        const config = tokenConfig();
-        axios.get('/users/all', config)
-            .then(res => {
-                console.log(res.data.users);
-                this.setState({ searchedPeople: res.data.users })
-                this.completeUserList = res.data.users;
-            })
-            .catch(err => console.log(err))
+    async componentDidMount() {
+        this.loadRooms()
+    }
+
+    loadRooms = async () => {
+        const config = tokenConfig(this.props.token);
+        const res = await axios.get('/users/all', config)
+        if(!res.data) {
+            return
+        }
+        this.setState({ searchedPeople: res.data.users })
+        this.completeUserList = res.data.users;
     }
 
     onClickHandler = async e => {
@@ -60,7 +64,6 @@ class AddChat extends Component {
 
     toggleSelectedPeople = (person) => {
         if (!this.personIsSelected(person)) {
-            console.log("push");
             this.setState({ selectedPeople: [...this.state.selectedPeople, person] });
         } else {
             const newArray = this.state.selectedPeople.filter(
@@ -126,4 +129,10 @@ class AddChat extends Component {
     }
 }
 
-export default connect(null, { createChatRoom })(AddChat);
+const mapStateToProps = (state) => {
+    return {
+        token: state.auth.token
+    }
+}
+
+export default connect(mapStateToProps, { createChatRoom })(AddChat);
