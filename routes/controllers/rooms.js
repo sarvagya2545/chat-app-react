@@ -38,6 +38,7 @@ module.exports = {
             }
 
             const users = newPeople.length == 0 ? [ user.id ] : [ user.id, ...newPeople ]
+            const userObjs = newPeople.length == 0 ? [ user ] : [ user, ...newPeopleObjs ]
 
             // create a new room and save its roomId in users room list
             const newRoomId = uuidv4()
@@ -52,12 +53,9 @@ module.exports = {
             await newRoom.save()
 
             // update the user's room list
-           for(person of newPeopleObjs) {
-              console.log('person: ', person);
-              person.rooms.push(newRoomId.toString())
-              person.save();
-              console.log('person updated: ', person);
-           }
+            userObjs.forEach(async userObj => {
+                await User.update({ _id: userObj._id }, { rooms: [ ...userObj.rooms, newRoomId.toString() ] })
+            })
 
             res.status(201).json({ newRoom })
         } catch (error) {
