@@ -9,6 +9,18 @@ module.exports = (server) => {
     io.on("connection", (socket) => {
         console.log("A user has connected");
 
+        socket.on('connectToRoom', ({ room }) => {
+            console.log(room.roomId, room.roomName);
+            socket.join(room.roomId)
+        })
+
+        socket.on("message", ({ room, messageObject }) => {
+            console.log('room ', room)
+            console.log('message ', messageObject)
+
+            io.to(room).sockets.emit('message', messageObject)
+        })
+
         socket.on("disconnect", () => {
             console.log("User has disconnected");
         });

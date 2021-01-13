@@ -10,8 +10,8 @@ import AddChat from '../components/chat/AddChat';
 
 class Chat extends Component {
     async componentDidMount() {
-        await this.props.connectToSocket();
-        await this.props.loadRooms();
+        const rooms = await this.props.loadRooms();
+        this.props.connectToSocket(rooms);
     }
 
     componentWillUnmount() {

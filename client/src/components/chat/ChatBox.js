@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
 import Message from './Message';
+import { connect } from 'react-redux';
 
 class ChatBox extends Component {
-    state = {  }
+    componentDidMount() {
+        
+    }
+
     render() { 
+        const { messages } = this.props;
         return (
             <div className="chat-box">
-                <Message/>
-                <li className="chat-list-item">
-                    <div className="chat-message others">
-                        <span className="msg-owner-name">Sarvagya</span>
-                        This is a chat message
-                        <span className="chat-message-time">
-                            Sent: 7:00PM
-                        </span>
-                    </div>
-                </li>
+                {messages.map(message => <Message isMine/>)}
             </div>
         );
     }
 }
- 
-export default ChatBox;
+
+const mapStateToProps = state => {
+    const currentChatRoom = state.chat.currentChatRoom
+    return {
+        messages: state.chat.chatRoomsObject[currentChatRoom].messages
+    }
+}
+
+export default connect(mapStateToProps)(ChatBox);
