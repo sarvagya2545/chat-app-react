@@ -7,10 +7,10 @@ class Message extends Component {
         return (
             <li className="chat-list-item">
                 <div className={cx("chat-message", { "mine" : isMine }, { "others": !isMine })}>
-                    { !isMine ? (<span className="msg-owner-name">Sarvagya</span>) : null }
-                    This is a chat message
+                    { !isMine ? (<span className="msg-owner-name">{this.props.name}</span>) : null }
+                    { this.props.text }
                     <span className="chat-message-time">
-                        Sent: 7:00PM
+                        Sent: { this.props.time }
                     </span>
                 </div>
             </li>

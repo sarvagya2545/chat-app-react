@@ -1,4 +1,4 @@
-import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATED, EXIT_ROOM } from '../actions/types';
+import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATED, EXIT_ROOM, RECIEVE_MESSAGE } from '../actions/types';
 
 const initState = {
     connected: false,
@@ -46,7 +46,25 @@ const chatReducer = (state = initState, action) => {
                 chatRooms: state.chatRooms.filter(room => room.roomId !== roomId.roomId),
                 chatRoomsObject: newChatRooms,
                 currentChatRoom: null
-            }    
+            }   
+        case RECIEVE_MESSAGE:
+            console.log('payload',action.payload)
+            const roomObject = state.chatRoomsObject[action.payload.room]
+            console.log('roomObject', roomObject)
+            const messages = roomObject.messages
+            return {
+                ...state,
+                chatRoomsObject: {
+                    ...state.chatRoomsObject,
+                    [action.payload.room]: {
+                        ...roomObject,
+                        messages: [
+                            ...messages,
+                            action.payload
+                        ]
+                    }
+                }
+            } 
         default:
             return {
                 ...state

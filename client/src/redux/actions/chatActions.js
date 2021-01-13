@@ -28,7 +28,8 @@ export const connectToSocket = (rooms) => dispatch => {
     });
 
     socket.on('message', (res) => {
-        console.log(res)
+        console.log('message: ', res)
+        dispatch({ type: RECIEVE_MESSAGE, payload: res })
     })
 }
 
