@@ -48,9 +48,7 @@ const chatReducer = (state = initState, action) => {
                 currentChatRoom: null
             }   
         case RECIEVE_MESSAGE:
-            console.log('payload',action.payload)
             const roomObject = state.chatRoomsObject[action.payload.room]
-            console.log('roomObject', roomObject)
             const messages = roomObject.messages
             return {
                 ...state,

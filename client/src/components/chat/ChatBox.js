@@ -15,12 +15,13 @@ class ChatBox extends Component {
         const { messages } = this.props;
         return (
             <div className="chat-box">
-                {messages.map(message => (
+                {messages.map((message,index) => (
                     <Message 
                         isMine={this.isMine(message.by)} 
                         text={message.text} 
                         time={message.time}
                         name={message.by}
+                        key={index}
                     />
                 ))}
             </div>
