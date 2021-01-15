@@ -1,4 +1,4 @@
-import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATED, EXIT_ROOM, RECIEVE_MESSAGE } from '../actions/types';
+import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATED, EXIT_ROOM, RECIEVE_MESSAGE, TYPING_START, TYPING_END } from '../actions/types';
 
 const initState = {
     connected: false,
@@ -61,8 +61,66 @@ const chatReducer = (state = initState, action) => {
                             action.payload
                         ]
                     }
-                }
-            } 
+                },
+                chatRooms: state.chatRooms.map(room => {
+                    if(action.payload.room === room.roomId) {
+                        return {
+                            ...room,
+                            messages: [
+                                ...messages,
+                                action.payload
+                            ]
+                        }
+                    }
+                    return room;
+                })
+            }
+        case TYPING_START: 
+            return {
+                ...state,
+                chatRoomsObject: {
+                    ...state.chatRoomsObject,
+                    [action.payload.roomId]: {
+                        ...state.chatRoomsObject[action.payload.roomId],
+                        typing: {
+                            user: action.payload.user
+                        }
+                    }
+                },
+                chatRooms: state.chatRooms.map(room => {
+                    if (room.roomId === action.payload.roomId) {
+                        return {
+                            ...room,
+                            typing: {
+                                user: action.payload.user
+                            }
+                        }
+                    }
+
+                    return room;
+                })
+            }
+        case TYPING_END:
+            return {
+                ...state,
+                chatRoomsObject: {
+                    ...state.chatRoomsObject,
+                    [action.payload.roomId]: {
+                        ...state.chatRoomsObject[action.payload.roomId],
+                        typing: null
+                    }
+                },
+                chatRooms: state.chatRooms.map(room => {
+                    if (room.roomId === action.payload.roomId) {
+                        return {
+                            ...room,
+                            typing: undefined
+                        }
+                    }
+
+                    return room;
+                })
+            }
         default:
             return {
                 ...state

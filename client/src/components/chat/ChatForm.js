@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import sendImg from '../../images/send_img.svg';
 import { connect } from 'react-redux';
-import { sendMessage } from '../../redux/actions/chatActions';
+import { sendMessage, emitTyping } from '../../redux/actions/chatActions';
 
 class ChatForm extends Component {
     state = { message: '' }
@@ -14,6 +14,12 @@ class ChatForm extends Component {
         this.setState({ message: '' })
     }
 
+    emitTyping = e => {
+        // console.log('emit typing')
+        // console.log(this.props.room)
+        this.props.emitTyping({ user: this.props.username, roomId: this.props.room })
+    }
+
     render() { 
         return (
             <form className="chat-form" onSubmit={e => this.sendMessage(e)}>
@@ -23,6 +29,7 @@ class ChatForm extends Component {
                     placeholder="Type your message..."
                     value={this.state.message}
                     onChange={e => this.setState({ message: e.target.value })}
+                    onInput={this.emitTyping}
                 />
                 <button className="btn-send">
                     <img src={sendImg} alt="send"/>
@@ -39,4 +46,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { sendMessage })(ChatForm);
+export default connect(mapStateToProps, { sendMessage, emitTyping })(ChatForm);

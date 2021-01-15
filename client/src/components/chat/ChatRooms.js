@@ -19,6 +19,7 @@ class ChatRooms extends Component {
                             key={room.roomId}
                             onClick={() => this.setCurrentChatRoom(room.roomId)}
                             name={room.roomName}
+                            isTyping={room.typing}
                         />
                     )
                 })}

@@ -22,6 +22,8 @@ export const USER_LEAVE = "USER_LEAVE";
 export const SEND_MESSAGE = "SEND_MESSAGE";
 export const RECIEVE_MESSAGE = "RECIEVE_MESSAGE";
 export const CHANGE_CURRENT_ROOM = "CHANGE_CURRENT_ROOM";
+export const TYPING_START = "TYPING_START";
+export const TYPING_END = "TYPING_END";
 
 // ERROR REDUCER ACTIONS
 export const NO_ERRORS = "NO_ERRORS";

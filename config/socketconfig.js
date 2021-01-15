@@ -21,6 +21,13 @@ module.exports = (server) => {
             io.to(room).sockets.emit('message', messageObject)
         })
 
+        socket.on("typing", ({ user, roomId }) => {
+            // console.log(user)
+            // console.log(roomId)
+            // io.to(roomId).sockets.emit('typing', { user, roomId })
+            socket.to(roomId).emit('typing', { user, roomId })
+        })
+
         socket.on("disconnect", () => {
             console.log("User has disconnected");
         });

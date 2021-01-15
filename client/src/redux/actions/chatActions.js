@@ -10,13 +10,17 @@ import {
     CHANGE_CURRENT_ROOM,
     CONNECT,
     DISCONNECT,
-    EXIT_ROOM
+    EXIT_ROOM,
+    TYPING,
+    TYPING_START,
+    TYPING_END
 } from './types';
 
 import io from 'socket.io-client';
 import axios from 'axios';
 import { tokenConfig } from './authActions';
 let socket;
+let timeout;
 
 export const connectToSocket = (rooms) => dispatch => {
     // connect to socket
@@ -30,6 +34,15 @@ export const connectToSocket = (rooms) => dispatch => {
     socket.on('message', (res) => {
         console.log('message: ', res)
         dispatch({ type: RECIEVE_MESSAGE, payload: res })
+    })
+
+    socket.on('typing', ({ user, roomId }) => {
+        console.log('typing')
+        dispatch({ type: TYPING_START, payload: { user, roomId } })
+        clearTimeout(timeout)
+        timeout = setTimeout(() => {
+            dispatch({ type: TYPING_END, payload: { roomId } })
+        }, 500)
     })
 }
 
@@ -64,8 +77,8 @@ export const sendMessage = ({ room, message, userName }) => dispatch => {
     socket.emit('message', { room, messageObject });
 }
 
-export const recieveMessage = () => dispatch => {
-    
+export const emitTyping = ({ user, roomId }) => dispatch => {
+    socket.emit('typing', { user, roomId })
 }
 
 export const createChatRoom = ({ selectedPeople, roomName }) => dispatch => {
