@@ -4,7 +4,7 @@ import goBack from "../../images/go_back.svg";
 import PeopleSearch from "./PeopleSearch";
 import axios from "axios";
 import { connect } from 'react-redux';
-import { createChatRoom } from '../../redux/actions/chatActions';
+import { createChatRoom, getAllPeopleList } from '../../redux/actions/chatActions';
 import { tokenConfig } from '../../redux/actions/authActions';
 
 class AddChat extends Component {
@@ -30,6 +30,7 @@ class AddChat extends Component {
         }
         this.setState({ searchedPeople: res.data.users })
         this.completeUserList = res.data.users;
+        this.props.getAllPeopleList(this.completeUserList)
     }
 
     onClickHandler = async e => {
@@ -135,4 +136,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { createChatRoom })(AddChat);
+export default connect(mapStateToProps, { createChatRoom, getAllPeopleList })(AddChat);

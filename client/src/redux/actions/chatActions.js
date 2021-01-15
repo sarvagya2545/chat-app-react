@@ -11,9 +11,9 @@ import {
     CONNECT,
     DISCONNECT,
     EXIT_ROOM,
-    TYPING,
     TYPING_START,
-    TYPING_END
+    TYPING_END,
+    GET_ALL_PEOPLE
 } from './types';
 
 import io from 'socket.io-client';
@@ -123,4 +123,13 @@ const convertRoomsArrayToObject = (rooms) => {
         roomsObject[room.roomId] = room
     })
     return roomsObject;
+}
+
+export const getAllPeopleList = (listOfPeople) => dispatch => {
+    const obj = {}
+    listOfPeople.forEach(person => {
+        obj[person.id] = person
+    })
+
+    dispatch({ type: GET_ALL_PEOPLE, payload: obj })
 }

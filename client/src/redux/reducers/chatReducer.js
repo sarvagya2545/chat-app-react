@@ -1,10 +1,11 @@
-import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATED, EXIT_ROOM, RECIEVE_MESSAGE, TYPING_START, TYPING_END } from '../actions/types';
+import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATED, EXIT_ROOM, RECIEVE_MESSAGE, TYPING_START, TYPING_END, GET_ALL_PEOPLE } from '../actions/types';
 
 const initState = {
     connected: false,
     chatRoomsObject: {},
     chatRooms: [],
-    currentChatRoom: null
+    currentChatRoom: null,
+    peopleList: {}
 }
 
 const chatReducer = (state = initState, action) => {
@@ -120,6 +121,11 @@ const chatReducer = (state = initState, action) => {
 
                     return room;
                 })
+            }
+        case GET_ALL_PEOPLE: 
+            return {
+                ...state,
+                peopleList: action.payload
             }
         default:
             return {
