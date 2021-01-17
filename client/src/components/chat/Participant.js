@@ -4,7 +4,7 @@ import ChatRoomListItem from './ChatRoomListItem';
 class Participant extends Component {
     render() { 
         return (
-            <ChatRoomListItem message="status"/>
+            <ChatRoomListItem message="status" name={this.props.name}/>
         );
     }
 }

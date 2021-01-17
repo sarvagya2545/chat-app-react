@@ -40,6 +40,7 @@ class AddChat extends Component {
         const { selectedPeople, roomName } = this.state;
         await this.props.createChatRoom({ selectedPeople, roomName })
         this.props.addChatToggle()
+        this.setState({ selectedPeople: [], searchTerm: "", roomName: "" })
     }
 
     onChangeHandler = e => {
