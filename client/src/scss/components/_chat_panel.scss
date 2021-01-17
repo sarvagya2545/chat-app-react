@@ -25,20 +25,4 @@
         flex: 1;
         overflow: scroll;
     }
-
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    /* Track */
-    ::-webkit-scrollbar-track {
-        border-radius: 10px;
-        width: $space-scroll;
-    }
-   
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-        background: $color-scroll-bar;
-        border-radius: 0;
-    }
 }

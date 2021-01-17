@@ -29,3 +29,7 @@ export const GET_ALL_PEOPLE = "GET_ALL_PEOPLE";
 // ERROR REDUCER ACTIONS
 export const NO_ERRORS = "NO_ERRORS";
 export const AUTH_ERROR = 'AUTH_ERROR';
+
+// UI ACTIONS
+export const OPEN_INFO_PANEL = "OPEN_INFO_PANEL";
+export const CLOSE_INFO_PANEL = "CLOSE_INFO_PANEL";

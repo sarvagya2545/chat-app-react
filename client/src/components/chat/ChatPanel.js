@@ -7,7 +7,7 @@ class ChatPanel extends Component {
     render() { 
         const { addChatToggle } = this.props;
         return (
-            <div className="chat-panel">
+            <div className="chat-panel custom-scroll">
                 <ChatPanelHeader addChatToggle={addChatToggle}/>
                 <ChatRooms/>
             </div>

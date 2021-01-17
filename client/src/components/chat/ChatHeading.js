@@ -2,12 +2,24 @@ import React, { Component } from 'react';
 // import Avatar from '../../images/avatar.jpg'
 import pfp from '../../images/pfp.svg';
 import ChatPerson from '../chat/ChatPerson';
-import LeaveIcon from '../../images/leave_room.svg';
+import threedots from '../../images/3dots.svg';
+import cx from 'classnames';
 import { connect } from 'react-redux';
+import { openInfoPanel } from '../../redux/actions/uiActions';
 import { exitChatRoom } from '../../redux/actions/chatActions';
 
 class ChatHeading extends Component {
-    state = {  }
+    state = { isDropDown: false }
+
+    roomInfoClickHandler = e => {
+        this.props.openInfoPanel();
+        this.setState({ isDropDown: false })
+    }
+
+    exitClickHandler = e => {
+        this.props.exitChatRoom(this.props.currentRoomId, this.props.currentRoomName)
+    }
+
     render() { 
         return (
             <div className="chat-heading">
@@ -15,8 +27,17 @@ class ChatHeading extends Component {
                     <img src={pfp} alt="pfp" className="pfp-img"/>
                 </div>
                 <ChatPerson/>
-                <div className="exit" onClick={e => this.props.exitChatRoom(this.props.currentRoomId, this.props.currentRoomName)}>
-                    <img src={LeaveIcon} alt="leave room"/>
+                <div 
+                    className={cx('three-dots', 'custom-dropdown', { 'hidden': !this.state.isDropDown })}
+                >
+                    <img 
+                        src={threedots} alt="menu"
+                        onClick={e => this.setState({ isDropDown: !this.state.isDropDown })}
+                    />
+                    <div className="list">
+                        <button className="btn" onClick={this.roomInfoClickHandler}>Room Info</button>
+                        <button className="btn" onClick={this.exitClickHandler}>Exit</button>
+                    </div>
                 </div>
             </div>
         );
@@ -32,4 +53,4 @@ const mapStateToProps = (state) => {
     }
 }
  
-export default connect(mapStateToProps, { exitChatRoom })(ChatHeading);
+export default connect(mapStateToProps, { openInfoPanel, exitChatRoom })(ChatHeading);

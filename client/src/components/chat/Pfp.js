@@ -5,7 +5,7 @@ class Pfp extends Component {
     state = {  }
     render() { 
         return (
-            <div className={cx('pfp', {'pfp-md' : this.props.size === "md"})}>
+            <div className={cx('pfp', {'pfp-md' : this.props.size === "md"}, { 'pfp-xl': this.props.size === "xl" })}>
                 <img src={this.props.pfp} alt="pfp" className="pfp-img" />
             </div>
         );

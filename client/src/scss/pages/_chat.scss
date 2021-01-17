@@ -8,6 +8,7 @@
     flex-direction: column;
     height: 100vh;
     font-family: 'Montserrat', sans-serif;
+    position: relative;
 }
 
 .chat-box {
@@ -48,5 +49,15 @@
             padding: 0 1rem 0 0;
             cursor: pointer;
         }
+    }
+}
+
+// chat-right-panel
+.group-chat-status {
+    width: $chat-group-status-bar-size;
+    display: none;
+
+    &.visible {
+        display: block;
     }
 }

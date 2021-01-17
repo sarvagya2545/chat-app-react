@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import EmptyChat from '../components/chat/EmptyChat';
 import ChatPanel from '../components/chat/ChatPanel';
 import AddChat from '../components/chat/AddChat';
+import ChatInfo from '../components/chat/ChatInfo';
 
 class Chat extends Component {
     async componentDidMount() {
@@ -27,7 +28,7 @@ class Chat extends Component {
     render() { 
         const { currentChatRoom } = this.props;
         return (
-            <div className="chat-container-main">
+            <div className="chat-container-main custom-scroll">
                 <AddChat visible={this.state.addChat} addChatToggle={this.toggleVisible}/>
                 <ChatPanel addChatToggle={this.toggleVisible}/>
                 <div className="chat-main">
@@ -39,6 +40,7 @@ class Chat extends Component {
                           </>
                     }
                 </div>
+                <ChatInfo/>
             </div>
         );
     }

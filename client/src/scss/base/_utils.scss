@@ -1,3 +1,69 @@
 .typing {
     color: darken($color-secondary, 30%) !important;
 }
+
+.custom-scroll {
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        border-radius: 10px;
+        width: $space-scroll;
+    }
+   
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: $color-scroll-bar;
+        border-radius: 0;
+    }
+}
+
+.custom-dropdown {
+    
+    width: fit-content;
+    height: fit-content;
+    padding: 1rem;
+    border-radius: 50%;
+
+    &, &.hidden:hover {
+        background-color: $color-grey-1;
+    }
+
+    img {
+        vertical-align: middle;
+        display: inline-block;
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        width: max-content;
+        box-shadow: 0 0 3px $color-grey-dark;
+        top: 6rem;
+        right: 2rem;
+
+        button {
+            border: none;
+            background-color: $color-light-primary;
+            padding: 1em;
+            font-size: 1.6rem;
+            text-align: left;
+            cursor: pointer;
+
+            &:hover {
+                background-color: $color-grey-3;
+            }
+        }
+    }
+
+    &.hidden {
+        background-color: inherit;
+
+        .list {
+            display: none;
+        }
+    }
+}

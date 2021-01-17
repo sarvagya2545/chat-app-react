@@ -4,6 +4,10 @@ import pfp from '../../images/pfp.svg';
 import cx from "classnames";
 
 class ChatRoomListItem extends Component {
+    getMessage() {
+        return this.props.message ? this.props.message : 'message....';
+    }
+
     render() { 
 
         const { selected, isTyping, onClick, name } = this.props;
@@ -16,7 +20,7 @@ class ChatRoomListItem extends Component {
                 <div className="chat-room-item-details">
                     <div>
                         <p>{name || "Name"}</p>
-                        <span className={cx({ 'typing': isTyping })}>{isTyping ? `${isTyping.user} is typing...` : 'message...'}</span>
+                        <span className={cx({ 'typing': isTyping })}>{isTyping ? `${isTyping.user} is typing...` : this.getMessage()}</span>
                     </div>
                 </div>
             </li>
