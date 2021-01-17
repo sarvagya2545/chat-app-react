@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { openInfoPanel } from '../../redux/actions/uiActions';
 
 class ChatPerson extends Component {
 
@@ -18,7 +19,7 @@ class ChatPerson extends Component {
     render() { 
         const { roomName, isTyping, typingUser } = this.props;
         return (
-            <div className="chat-person">
+            <div className="chat-person" onClick={e => this.props.openInfoPanel()}>
                 <h3 className="chat-person-name">{roomName}</h3>
                 <p className="chat-person-status">{isTyping ? `${typingUser} is typing...` : `${this.getAllPeopleString()}`}</p>
             </div>
@@ -41,4 +42,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(ChatPerson);
+export default connect(mapStateToProps, { openInfoPanel })(ChatPerson);
