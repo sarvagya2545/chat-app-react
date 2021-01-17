@@ -74,6 +74,14 @@
         background-color: inherit;
         border: none;
         outline: none;
+
+        &:disabled {
+            cursor: not-allowed;
+
+            img {
+                filter: opacity(0.3);
+            }
+        }
     }
 
     &-search {

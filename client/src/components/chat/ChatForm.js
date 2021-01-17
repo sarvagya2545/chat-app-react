@@ -9,7 +9,9 @@ class ChatForm extends Component {
     sendMessage = e => {
         e.preventDefault();
         console.log(this.state.message)
-        this.props.sendMessage({ room: this.props.room, message: this.state.message, userName: this.props.username });
+        if(this.state.message.trim() !== "") {
+            this.props.sendMessage({ room: this.props.room, message: this.state.message, userName: this.props.username });
+        }
 
         this.setState({ message: '' })
     }
@@ -31,7 +33,10 @@ class ChatForm extends Component {
                     onChange={e => this.setState({ message: e.target.value })}
                     onInput={this.emitTyping}
                 />
-                <button className="btn-send">
+                <button 
+                    className="btn-send"
+                    disabled={this.state.message.trim() === ""}
+                >
                     <img src={sendImg} alt="send"/>
                 </button>
             </form>
