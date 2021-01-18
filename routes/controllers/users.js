@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { jwtSecret } = require('../../config/keys');
 const User = require('../../models/User');
+const bcrypt = require('bcryptjs');
 
 const signToken = (user) => {
     return jwt.sign({
@@ -26,6 +27,10 @@ module.exports = {
                 return res.status(400).json({ errors: { username: `Username ${username} already exists. Choose a new username` } })
             }
 
+            // hash the password before saving it
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(password, salt);
+
             const newUser = new User({
                 config: {
                     method: 'local'
@@ -34,7 +39,7 @@ module.exports = {
                     username,
                     email,
                     local: {
-                        password
+                        password: hashedPassword
                     }
                 }
             });

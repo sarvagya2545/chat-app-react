@@ -35,21 +35,6 @@ const userSchema = mongoose.Schema({
     }
 })
 
-// apply middleware before saving
-userSchema.pre('save', async function(next) {
-    try {
-        if(this.config.method !== 'local') next();
-
-        // hash the password before saving it
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(this.auth.local.password, salt);
-        this.auth.local.password = hashedPassword;
-        next();
-    } catch (error) {
-        next(error);
-    }
-})
-
 userSchema.methods.isValidPassword = async function (password) {
     // this points to User model
     try {
