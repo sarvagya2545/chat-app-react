@@ -5,7 +5,6 @@ import {
     USER_LEAVE,
     SEND_MESSAGE,
     RECIEVE_MESSAGE,
-    LEAVE_ROOM,
     ROOM_CREATED,
     CHANGE_CURRENT_ROOM,
     CONNECT,
@@ -51,7 +50,8 @@ export const connectToSocket = (rooms, user) => dispatch => {
 
     socket.on('userOnlineStatus', onlineUsers => {
         console.log(onlineUsers)
-        dispatch({ type: USER_STATUS_CHANGED })
+        const onlineUserIds = onlineUsers.map(onlineUser => onlineUser.id)
+        dispatch({ type: USER_STATUS_CHANGED, payload: onlineUserIds })
     })
 }
 

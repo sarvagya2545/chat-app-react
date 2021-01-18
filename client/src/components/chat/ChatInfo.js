@@ -15,6 +15,16 @@ class ChatInfo extends Component {
         this.props.closeInfoPanel()
     }
 
+    peopleOnline = () => {
+        console.log(this.props.onlinePeopleInChatIds)
+        const arrayLength = this.props.onlinePeopleInChatIds.length;
+        return arrayLength > 0 ? arrayLength: 0;
+    }
+
+    getStatus = (personId) => {
+        return this.props.onlinePeopleInChatIds.includes(personId) ? "online" : "offline"
+    }
+
     render() { 
         return (
             <div className={cx("group-chat-status", { "visible": this.props.infoPanelOpen })}>
@@ -31,9 +41,10 @@ class ChatInfo extends Component {
                 </div>
 
                 <div className="participants">
-                    <p>{3} people online</p>
+                    <p>{this.peopleOnline()} people online</p>
                     <ul>
-                        {this.props.peopleInChat.map((person,index) => <Participant name={person.username} key={index}/>)}
+                        {this.props.peopleInChat
+                            .map((person,index) => <Participant status={this.getStatus(person.id)} name={person.username} key={index}/>)}
                     </ul>
                 </div>
 
@@ -61,10 +72,16 @@ const mapStateToProps = (state) => {
         }
     }
 
+    console.log('peopleInRoomIds', peopleInRoomIds)
+    const onlinePeopleIds = state.chat.onlineUserIds;
+    console.log('onlinePeopleIds', onlinePeopleIds)
+    const onlinePeopleInChatIds = peopleInRoomIds ? peopleInRoomIds.filter(personInRoomId => onlinePeopleIds.includes(personInRoomId)) : []
+
     return {
         infoPanelOpen: state.ui.infoPanelOpen,
         currentRoomId: currentRoomId,
         peopleInChat,
+        onlinePeopleInChatIds,
         currentRoomName: state.chat.chatRoomsObject[currentRoomId] ? 
                     state.chat.chatRoomsObject[currentRoomId].roomName : null
     }

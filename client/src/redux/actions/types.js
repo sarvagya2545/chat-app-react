@@ -16,7 +16,6 @@ export const LOAD_ROOMS = "LOAD_ROOMS";
 export const ROOM_CREATED = "ROOM_CREATED";
 export const EXIT_ROOM = "EXIT_ROOM";
 export const JOIN_ROOM = "JOIN_ROOM";
-export const LEAVE_ROOM = "LEAVE_ROOM";
 export const USER_JOIN = "USER_JOIN";
 export const USER_LEAVE = "USER_LEAVE";
 export const SEND_MESSAGE = "SEND_MESSAGE";
