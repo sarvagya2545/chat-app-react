@@ -13,7 +13,8 @@ import {
     EXIT_ROOM,
     TYPING_START,
     TYPING_END,
-    GET_ALL_PEOPLE
+    GET_ALL_PEOPLE,
+    USER_STATUS_CHANGED
 } from './types';
 
 import io from 'socket.io-client';
@@ -22,7 +23,7 @@ import { tokenConfig } from './authActions';
 let socket;
 let timeout;
 
-export const connectToSocket = (rooms) => dispatch => {
+export const connectToSocket = (rooms, user) => dispatch => {
     // connect to socket
     socket = io('http://localhost:5000')
     dispatch({ type: CONNECT });
@@ -30,6 +31,8 @@ export const connectToSocket = (rooms) => dispatch => {
         socket.emit('connectToRoom', { room })
         console.log(`Joined room: ${room.roomName}`)
     });
+
+    socket.emit('online', ({ userId: user }))
 
     socket.on('message', (res) => {
         console.log('message: ', res)
@@ -44,9 +47,15 @@ export const connectToSocket = (rooms) => dispatch => {
             dispatch({ type: TYPING_END, payload: { roomId } })
         }, 500)
     })
+
+    socket.on('userOnlineStatus', onlineUsers => {
+        console.log(onlineUsers)
+        dispatch({ type: USER_STATUS_CHANGED })
+    })
 }
 
-export const disconnectFromSocket = () => dispatch => {
+export const disconnectFromSocket = userId => dispatch => {
+    socket.emit('offline', ({ userId }))
     socket.disconnect();
     dispatch({ type: DISCONNECT });
 }

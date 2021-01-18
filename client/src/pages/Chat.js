@@ -12,11 +12,13 @@ import ChatInfo from '../components/chat/ChatInfo';
 class Chat extends Component {
     async componentDidMount() {
         const rooms = await this.props.loadRooms();
-        this.props.connectToSocket(rooms);
+        const userId = this.props.user._id;
+        this.props.connectToSocket(rooms, userId);
     }
 
     componentWillUnmount() {
-        this.props.disconnectFromSocket();
+        const userId = this.props.user._id;
+        this.props.disconnectFromSocket(userId);
     }
 
     state = { addChat: false }
