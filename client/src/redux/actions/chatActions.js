@@ -14,7 +14,8 @@ import {
     TYPING_START,
     TYPING_END,
     GET_ALL_PEOPLE,
-    USER_STATUS_CHANGED
+    USER_STATUS_CHANGED,
+    CLOSE_INFO_PANEL
 } from './types';
 
 import io from 'socket.io-client';
@@ -118,6 +119,9 @@ export const exitChatRoom = (roomId, roomName) => dispatch => {
     axios.post(`/rooms/${roomId}/exit`, {}, config)
         .then(res => {
             dispatch({ type: EXIT_ROOM, payload: res.data.foundRoom.roomId })
+
+            // close group info panel if open
+            dispatch({ type: CLOSE_INFO_PANEL })
         })
         .catch(err => console.log(err))
 }
