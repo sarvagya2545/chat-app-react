@@ -50,6 +50,12 @@ module.exports = (server) => {
             socket.join(room.roomId)
         })
 
+        socket.on('exitRoom', ({ room, userId, userName }) => {
+            console.log('user exits the room', { room, userId, userName });
+            socket.to(room).emit('exitRoom', { user: { userId, userName }, room })
+            socket.leave(room);
+        })
+
         socket.on("message", ({ room, messageObject }) => {
             console.log('room ', room)
             console.log('message ', messageObject)
@@ -62,23 +68,6 @@ module.exports = (server) => {
             // console.log(roomId)
             // io.to(roomId).sockets.emit('typing', { user, roomId })
             socket.to(roomId).emit('typing', { user, roomId })
-        })
-
-        // called just before the user is disconnected
-        socket.on('offline', (userId) => {
-            console.log('offline')
-
-            // remove the socket from the online user's list
-            onlineUsers.forEach(onlineuser => {
-                if(onlineuser.id === userId) {
-                    onlineuser.sockets.filter(socketId => socketId !== socket.id)
-                }
-            })
-
-            // if an user has no sockets, remove him from current user list
-            onlineUsers.filter(onlineuser => onlineuser.sockets.length === 0)
-
-            console.log('connected users', onlineUsers);
         })
 
         socket.on("disconnect", () => {

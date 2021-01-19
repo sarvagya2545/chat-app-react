@@ -1,6 +1,7 @@
 import {
     LOAD_ROOMS,
     JOIN_ROOM,
+    LEAVE_ROOM,
     USER_JOIN,
     USER_LEAVE,
     SEND_MESSAGE,
@@ -48,6 +49,11 @@ export const connectToSocket = (rooms, user) => dispatch => {
         }, 500)
     })
 
+    socket.on('exitRoom', ({ user: { userId, userName }, room }) => {
+        console.log('user left')
+        dispatch({ type: USER_LEAVE, payload: { userId, userName, room } })
+    })
+
     socket.on('userOnlineStatus', onlineUsers => {
         console.log(onlineUsers)
         const onlineUserIds = onlineUsers.map(onlineUser => onlineUser.id)
@@ -56,7 +62,6 @@ export const connectToSocket = (rooms, user) => dispatch => {
 }
 
 export const disconnectFromSocket = userId => dispatch => {
-    socket.emit('offline', ({ userId }))
     socket.disconnect();
     dispatch({ type: DISCONNECT });
 }
@@ -119,6 +124,9 @@ export const exitChatRoom = (roomId, roomName) => dispatch => {
     axios.post(`/rooms/${roomId}/exit`, {}, config)
         .then(res => {
             dispatch({ type: EXIT_ROOM, payload: res.data.foundRoom.roomId })
+
+            console.log('exitRooms', { room: roomId, user: res.data.user })
+            socket.emit('exitRoom', { room: roomId, userId: res.data.user._id, userName: res.data.user.auth.username })
 
             // close group info panel if open
             dispatch({ type: CLOSE_INFO_PANEL })

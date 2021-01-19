@@ -118,7 +118,7 @@ module.exports = {
                 user.save()
                 foundRoom.save()
 
-                return res.status(200).json({ foundRoom })
+                return res.status(200).json({ foundRoom, user })
             }
         }
     },

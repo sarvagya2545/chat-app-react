@@ -1,4 +1,4 @@
-import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATED, EXIT_ROOM, RECIEVE_MESSAGE, TYPING_START, TYPING_END, GET_ALL_PEOPLE, USER_STATUS_CHANGED } from '../actions/types';
+import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATED, EXIT_ROOM, RECIEVE_MESSAGE, TYPING_START, TYPING_END, GET_ALL_PEOPLE, USER_STATUS_CHANGED, USER_LEAVE } from '../actions/types';
 
 const initState = {
     connected: false,
@@ -132,6 +132,18 @@ const chatReducer = (state = initState, action) => {
             return {
                 ...state,
                 onlineUserIds: action.payload
+            }
+        case USER_LEAVE:
+            const chatRoom = state.chatRoomsObject[action.payload.room];
+            return {
+                ...state,
+                chatRoomsObject: {
+                    ...state.chatRoomsObject,
+                    [action.payload.room]: {
+                        ...chatRoom,
+                        people: chatRoom.people.filter(person => person !== action.payload.userId)
+                    }
+                }
             }
         default:
             return {
