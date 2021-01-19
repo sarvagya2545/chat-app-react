@@ -143,7 +143,13 @@ const chatReducer = (state = initState, action) => {
                         ...chatRoom,
                         people: chatRoom.people.filter(person => person !== action.payload.userId)
                     }
-                }
+                },
+                chatRooms: state.chatRooms.map(room => {
+                    return {
+                        ...room,
+                        people: room.people.filter(person => person !== action.payload.userId)
+                    }
+                })
             }
         default:
             return {
