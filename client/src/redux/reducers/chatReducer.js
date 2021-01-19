@@ -1,4 +1,4 @@
-import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATED, EXIT_ROOM, RECIEVE_MESSAGE, TYPING_START, TYPING_END, GET_ALL_PEOPLE, USER_STATUS_CHANGED, USER_LEAVE } from '../actions/types';
+import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATED, EXIT_ROOM, RECIEVE_MESSAGE, TYPING_START, TYPING_END, GET_ALL_PEOPLE, USER_STATUS_CHANGED, USER_LEAVE, JOIN_ROOM } from '../actions/types';
 
 const initState = {
     connected: false,
@@ -32,6 +32,7 @@ const chatReducer = (state = initState, action) => {
                 ...state,
                 currentChatRoom: action.payload
             }
+        case JOIN_ROOM:
         case ROOM_CREATED:
             return {
                 ...state,

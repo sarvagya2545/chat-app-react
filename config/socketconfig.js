@@ -50,6 +50,20 @@ module.exports = (server) => {
             socket.join(room.roomId)
         })
 
+        socket.on('createdChatRoom', ({ room }) => {
+            // if the users in the room are online, they should get connected
+            onlineUsers.forEach(onlineuser => {
+                const personIsOnline = room.people.some(person => onlineuser.id === person)
+                if(personIsOnline) {
+                    // send to every instance of the user
+                    onlineuser.sockets.forEach(socketId => {
+                        io.to(socketId).emit('addToRoom', { room })
+                    })
+                }
+            })
+            // if the users are offline, they will get connected to the room automatically (when they come back to the site)
+        })
+
         socket.on('exitRoom', ({ room, userId, userName }) => {
             console.log('user exits the room', { room, userId, userName });
             socket.to(room).emit('exitRoom', { user: { userId, userName }, room })

@@ -49,6 +49,10 @@ export const connectToSocket = (rooms, user) => dispatch => {
         }, 500)
     })
 
+    socket.on('addToRoom', ({ room }) => {
+        dispatch({ type: JOIN_ROOM, payload: room })
+    })
+
     socket.on('exitRoom', ({ user: { userId, userName }, room }) => {
         console.log('user left')
         dispatch({ type: USER_LEAVE, payload: { userId, userName, room } })
@@ -107,6 +111,7 @@ export const createChatRoom = ({ selectedPeople, roomName }) => dispatch => {
         .then(res => {
             console.log(res);
             dispatch({ type: ROOM_CREATED, payload: res.data.newRoom })
+            socket.emit('createdChatRoom', { room: res.data.newRoom })
             socket.emit('connectToRoom', { room: res.data.newRoom })
             console.log(res.data.newRoom.roomName)
         })
