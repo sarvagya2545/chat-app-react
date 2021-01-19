@@ -18,7 +18,7 @@ class ChatInfo extends Component {
     peopleOnline = () => {
         console.log(this.props.onlinePeopleInChatIds)
         const arrayLength = this.props.onlinePeopleInChatIds.length;
-        return arrayLength > 0 ? arrayLength: 0;
+        return arrayLength > 0 ? arrayLength - 1 : 0;
     }
 
     getStatus = (personId) => {
@@ -41,7 +41,7 @@ class ChatInfo extends Component {
                 </div>
 
                 <div className="participants">
-                    <p>{this.peopleOnline()} people online</p>
+                    <p>{this.peopleOnline()} people online except you</p>
                     <ul>
                         {this.props.peopleInChat
                             .map((person,index) => <Participant status={this.getStatus(person.id)} name={person.username} key={index}/>)}
