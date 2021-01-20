@@ -8,7 +8,6 @@ import DropDown from '../utils/DropDown';
 class ChatPanelHeader extends Component {
     
     logoutClick = e => {
-        e.preventDefault()
         this.props.logout()
     }
 
