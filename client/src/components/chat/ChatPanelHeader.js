@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import pfp from '../../images/pfp.svg';
 import addImage from '../../images/add_img.svg';
 import { logout } from '../../redux/actions/authActions';
+import DropDown from '../utils/DropDown';
 
 class ChatPanelHeader extends Component {
     
@@ -10,6 +11,14 @@ class ChatPanelHeader extends Component {
         e.preventDefault()
         this.props.logout()
     }
+
+    listOfItems = [
+        {
+            text: 'Logout',
+            callback: () => this.logoutClick(),
+            close: true
+        }
+    ];
 
     render() {
         const { username, email } = this.props;
@@ -23,10 +32,12 @@ class ChatPanelHeader extends Component {
                     <p className="username">{username}</p>
                     <p className="email">{email}</p>
                 </div>
-                <button onClick={this.logoutClick}>Logout</button>
                 <div className="btn-add-chat" onClick={this.props.addChatToggle}>
                     <img src={addImage} alt="add"/>
                 </div>
+                <DropDown
+                    listOfItems={this.listOfItems}
+                />
             </div>
         );
     }

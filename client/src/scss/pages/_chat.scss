@@ -26,6 +26,7 @@
     font-family: 'Montserrat', sans-serif;
     display: flex;
     flex-direction: column;
+    z-index: 5;
 
     &.hidden {
         transform: translateX(-100%);

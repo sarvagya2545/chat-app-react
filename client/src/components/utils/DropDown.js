@@ -5,12 +5,12 @@ import threedots from "../../images/3dots.svg";
 class DropDown extends Component {
     state = { isDropDown: false };
 
-    handleClick = item => {
+    handleClick = (item) => {
         item.callback();
-        if(item.close) {
-            this.setState({ isDropDown: false })
+        if (item.close) {
+            this.setState({ isDropDown: false });
         }
-    }
+    };
 
     render() {
         return (
@@ -25,8 +25,16 @@ class DropDown extends Component {
                     onClick={(e) => this.setState({ isDropDown: !this.state.isDropDown })}
                 />
                 <div className="list">
-                    {this.props.listOfItems.map(item => {
-                        return (<button className="btn" onClick={e => this.handleClick(item)}>{item.text}</button>)
+                    {this.props.listOfItems.map((item, index) => {
+                        return (
+                            <button
+                                className="btn"
+                                key={index}
+                                onClick={(e) => this.handleClick(item)}
+                            >
+                                {item.text}
+                            </button>
+                        );
                     })}
                 </div>
             </div>

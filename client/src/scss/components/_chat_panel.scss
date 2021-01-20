@@ -12,6 +12,8 @@
         display: flex;
         align-items: center;
 
+        position: relative;
+
         .pfp {
             margin-right: 1.5rem;
         }
@@ -19,7 +21,11 @@
         .person-info {
             margin-right: auto;
         }
-        
+
+        .three-dots {
+            margin-left: 1rem;
+        }
+
         .username {
             font-size: 1.8rem;
         }
@@ -30,6 +36,8 @@
 
         .btn-add-chat {
             cursor: pointer;
+            display: flex;
+            align-items: center;
         }
     }
 
