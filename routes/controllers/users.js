@@ -51,8 +51,10 @@ module.exports = {
 
             const userDetails = {
                 config: newUser.config,
-                email: newUser.auth.email,
-                username: newUser.auth.username
+                auth: {
+                    email: newUser.auth.email,
+                    username: newUser.auth.username
+                }
             }
 
             // Respond with token and the user details
