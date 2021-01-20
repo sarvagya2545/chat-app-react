@@ -3,6 +3,7 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
 
     &-header {
         background-color: $color-grey-light;
@@ -12,7 +13,19 @@
         align-items: center;
 
         .pfp {
+            margin-right: 1.5rem;
+        }
+
+        .person-info {
             margin-right: auto;
+        }
+        
+        .username {
+            font-size: 1.8rem;
+        }
+
+        .email {
+            font-size: 1.2rem;
         }
 
         .btn-add-chat {

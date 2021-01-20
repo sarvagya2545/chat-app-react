@@ -12,10 +12,16 @@ class ChatPanelHeader extends Component {
     }
 
     render() {
+        const { username, email } = this.props;
+
         return (
             <div className="chat-panel-header">
                 <div className="pfp">
                     <img src={pfp} alt="pfp" className="pfp-img" />
+                </div>
+                <div className="person-info">
+                    <p className="username">{username}</p>
+                    <p className="email">{email}</p>
                 </div>
                 <button onClick={this.logoutClick}>Logout</button>
                 <div className="btn-add-chat" onClick={this.props.addChatToggle}>
@@ -26,4 +32,11 @@ class ChatPanelHeader extends Component {
     }
 }
 
-export default connect(null, { logout })(ChatPanelHeader);
+const mapStateToProps = state => {
+    return {
+        username: state.auth.user.auth.username,
+        email: state.auth.user.auth.email
+    }
+}
+
+export default connect(mapStateToProps, { logout })(ChatPanelHeader);
