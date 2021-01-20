@@ -5,7 +5,11 @@
   "scripts": {
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "app": "concurrently \"npm run server\" \"npm run client\""
+    "app": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "cd client && npm run build",
+    "install-client": "cd client && npm install",
+    "heroku-postbuild": "npm run install-client && npm run build",
+    "start": "node server.js"
   },
   "author": "Sarvagya Sharma",
   "license": "ISC",
