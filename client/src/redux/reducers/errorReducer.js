@@ -1,4 +1,4 @@
-import { AUTH_ERROR, NO_ERRORS } from "../actions/types";
+import { AUTH_ERROR, CLEAR_ERRORS, NO_ERRORS } from "../actions/types";
 
 const initState = {
     errors: {},
@@ -20,6 +20,10 @@ const errorReducer = (state = initState, action) => {
                 statusCode: action.payload.status,
                 errType: action.payload.errType,
                 isError: true
+            }
+        case CLEAR_ERRORS:
+            return {
+                ...initState
             }
         default: 
             return {

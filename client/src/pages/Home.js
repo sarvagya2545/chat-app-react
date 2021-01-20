@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import LoginOrSignUp from '../components/home/LoginOrSignUp';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import ErrBox from '../components/utils/ErrBox';
 
 class Home extends Component {
     componentDidUpdate() {
@@ -18,6 +19,7 @@ class Home extends Component {
                     <h2 className="header-secondary">With anybody you want!</h2>
                 </div>
                 <LoginOrSignUp/>
+                <ErrBox/>
             </div>
         );
     }

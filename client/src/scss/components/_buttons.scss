@@ -53,3 +53,13 @@
         }
     }
 }
+
+.btn-close {
+    background-color: #fff;
+    cursor: pointer;
+
+    &:hover {
+        background-color: red;
+        color: #fff;
+    }
+}

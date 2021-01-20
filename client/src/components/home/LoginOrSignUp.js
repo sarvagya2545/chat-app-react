@@ -4,6 +4,7 @@ import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
+import ErrBox from "../utils/ErrBox";
 
 class LoginOrSignUp extends Component {
   state = {
