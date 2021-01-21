@@ -29,7 +29,7 @@ export const loadUser = () => (dispatch, getState) => {
     }
 
     // perform an axios request to get the user's data from token
-    axios.get('/users/current', config)
+    axios.get('/api/users/current', config)
         .then(res => {
             // set the status of user as loaded
             // console.log(res.data);
@@ -51,7 +51,7 @@ export const register = (formData) => (dispatch) => {
     }
 
     // signup request axios
-    axios.post(`/users/signup`, formData, config)
+    axios.post(`/api/users/signup`, formData, config)
         .then(res => {
             // console.log('res.data', res.data)
             dispatch({
@@ -84,7 +84,7 @@ export const login = (formData) => (dispatch) => {
         }
     }
 
-    axios.post(`/users/login`, formData, config)
+    axios.post(`/api/users/login`, formData, config)
         .then(res => {
             // console.log('res.data', res.data)
             dispatch({

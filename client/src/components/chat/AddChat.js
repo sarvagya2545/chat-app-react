@@ -24,7 +24,7 @@ class AddChat extends Component {
 
     loadRooms = async () => {
         const config = tokenConfig(this.props.token);
-        const res = await axios.get('/users/all', config)
+        const res = await axios.get('/api/users/all', config)
         if(!res.data) {
             return
         }

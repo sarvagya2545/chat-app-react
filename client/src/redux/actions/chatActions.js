@@ -74,7 +74,7 @@ export const loadRooms = () => async dispatch => {
     try {
         const config = tokenConfig();
         let rooms;
-        const res = await axios.get('/rooms/user', config)
+        const res = await axios.get('/api/rooms/user', config)
         console.log(res);
         rooms = res.data.rooms;
         const roomsObject = convertRoomsArrayToObject(res.data.rooms)
@@ -107,7 +107,7 @@ export const createChatRoom = ({ selectedPeople, roomName }) => dispatch => {
         people: selectedPeople
     }
 
-    axios.post('/rooms/new', bodyData, config)
+    axios.post('/api/rooms/new', bodyData, config)
         .then(res => {
             console.log(res);
             dispatch({ type: ROOM_CREATED, payload: res.data.newRoom })
@@ -126,7 +126,7 @@ export const exitChatRoom = (roomId, roomName) => dispatch => {
 
     const config = tokenConfig();
 
-    axios.post(`/rooms/${roomId}/exit`, {}, config)
+    axios.post(`/api/rooms/${roomId}/exit`, {}, config)
         .then(res => {
             dispatch({ type: EXIT_ROOM, payload: res.data.foundRoom.roomId })
 
