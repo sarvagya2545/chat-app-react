@@ -1,8 +1,8 @@
-# CHAT APP - REACT
+# Chat App - React
 
 This is a chat app made with MERN stack and Redux. UI is based on Whatsapp and Socket.IO is used along with express server to create the backend.
 
-## RUN DEV SERVER
+## Run Dev Server
 
 Run the following commands:
 
@@ -13,7 +13,7 @@ Run the following commands:
 
 Starts server at port 5000 and client at port 3000.
 
-## BUILD APP
+## Build App
 
 ```
     npm run build
