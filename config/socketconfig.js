@@ -17,10 +17,11 @@ module.exports = (server) => {
             methods: ["GET", "POST"],
         }
     };
+    let io;
     if(process.env.NODE_ENV === 'production') {
-        const io = require("socket.io")(server);
+        io = require("socket.io")(server);
     } else {
-        const io = require("socket.io")(server, socketCORSConfig);
+        io = require("socket.io")(server, socketCORSConfig);
     }
     io.on("connection", (socket) => {
         console.log("A user has connected");
