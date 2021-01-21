@@ -26,7 +26,7 @@ let timeout;
 
 export const connectToSocket = (rooms, user) => dispatch => {
     // connect to socket
-    socket = io('http://localhost:5000')
+    socket = io(window.location.origin)
     dispatch({ type: CONNECT });
     rooms !== undefined && rooms.forEach(room => {
         socket.emit('connectToRoom', { room })
