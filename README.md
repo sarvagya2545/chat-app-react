@@ -2,6 +2,8 @@
 
 This is a chat app made with MERN stack and Redux. UI is based on Whatsapp and Socket.IO is used along with express server to create the backend.
 
+Hosted at [https://chat2545.herokuapp.com/](https://chat2545.herokuapp.com/)
+
 ## Run Dev Server
 
 Run the following commands:
