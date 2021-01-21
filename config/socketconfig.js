@@ -11,13 +11,17 @@ let onlineUsers = [];
 
 module.exports = (server) => {
     // Initialize sockets
-    const socketCORSConfig = process.env.NODE_ENV !== 'production' ? {
+    const socketCORSConfig = {
         cors: {
             origin: "http://localhost:3000",
             methods: ["GET", "POST"],
         }
-    } : null;
-    const io = require("socket.io")(server, socketCORSConfig);
+    };
+    if(process.env.NODE_ENV === 'production') {
+        const io = require("socket.io")(server);
+    } else {
+        const io = require("socket.io")(server, socketCORSConfig);
+    }
     io.on("connection", (socket) => {
         console.log("A user has connected");
 
