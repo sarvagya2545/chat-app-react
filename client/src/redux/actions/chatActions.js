@@ -110,7 +110,8 @@ export const createChatRoom = ({ selectedPeople, roomName }) => dispatch => {
     axios.post('/api/rooms/new', bodyData, config)
         .then(res => {
             console.log(res);
-            dispatch({ type: ROOM_CREATED, payload: res.data.newRoom })
+            // implement in future
+            // dispatch({ type: ROOM_CREATED, payload: res.data.newRoom })
             socket.emit('createdChatRoom', { room: res.data.newRoom })
             socket.emit('connectToRoom', { room: res.data.newRoom })
             console.log(res.data.newRoom.roomName)
