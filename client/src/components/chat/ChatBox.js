@@ -4,7 +4,15 @@ import { connect } from 'react-redux';
 
 class ChatBox extends Component {
     componentDidMount() {
-        
+        this.scrollToBottom();
+    }
+
+    scrollToBottom = () => {
+        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    }
+
+    componentDidUpdate() {
+        this.scrollToBottom();
     }
 
     isMine(by) {
@@ -24,6 +32,9 @@ class ChatBox extends Component {
                         key={index}
                     />
                 ))}
+                <div style={{ float:"left", clear: "both" }}
+                    ref={(el) => { this.messagesEnd = el; }}>
+                </div>
             </div>
         );
     }
