@@ -14,6 +14,8 @@
 .chat-box {
     flex-grow: 1;
     background-image: url('../../images/whatsapp-web-background.png');
+    overflow: scroll;
+    padding-bottom: 0;
 }
 
 // add chat form
