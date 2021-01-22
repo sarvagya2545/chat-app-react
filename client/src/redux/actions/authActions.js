@@ -135,8 +135,6 @@ export const tokenConfig = (defaultToken) => {
     // Get token from local storage
     const token = localStorage.getItem('x-chat-token') || defaultToken;
 
-    // console.log('token ', token)
-
     if (!token) {
         return null
     }

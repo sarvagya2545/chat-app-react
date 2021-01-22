@@ -70,9 +70,9 @@ export const disconnectFromSocket = userId => dispatch => {
     dispatch({ type: DISCONNECT });
 }
 
-export const loadRooms = () => async dispatch => {
+export const loadRooms = (token) => async dispatch => {
     try {
-        const config = tokenConfig();
+        const config = tokenConfig(token);
         let rooms;
         const res = await axios.get('/api/rooms/user', config)
         console.log(res);

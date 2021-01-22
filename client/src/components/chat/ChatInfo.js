@@ -16,7 +16,6 @@ class ChatInfo extends Component {
     }
 
     peopleOnline = () => {
-        console.log(this.props.onlinePeopleInChatIds)
         const arrayLength = this.props.onlinePeopleInChatIds.length;
         return arrayLength > 0 ? arrayLength - 1 : 0;
     }
@@ -72,9 +71,7 @@ const mapStateToProps = (state) => {
         }
     }
 
-    console.log('peopleInRoomIds', peopleInRoomIds)
     const onlinePeopleIds = state.chat.onlineUserIds;
-    console.log('onlinePeopleIds', onlinePeopleIds)
     const onlinePeopleInChatIds = peopleInRoomIds ? peopleInRoomIds.filter(personInRoomId => onlinePeopleIds.includes(personInRoomId)) : []
 
     return {

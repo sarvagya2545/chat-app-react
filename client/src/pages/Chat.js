@@ -11,7 +11,7 @@ import ChatInfo from '../components/chat/ChatInfo';
 
 class Chat extends Component {
     async componentDidMount() {
-        const rooms = await this.props.loadRooms();
+        const rooms = await this.props.loadRooms(this.props.token);
         const userId = this.props.user._id;
         this.props.connectToSocket(rooms, userId);
     }
@@ -52,7 +52,8 @@ const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.isAuthenticated,
         user: state.auth.user,
-        currentChatRoom: state.chat.currentChatRoom
+        currentChatRoom: state.chat.currentChatRoom,
+        token: state.auth.token
     }
 }
 
