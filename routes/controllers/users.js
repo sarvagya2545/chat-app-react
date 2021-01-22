@@ -54,7 +54,8 @@ module.exports = {
                 auth: {
                     email: newUser.auth.email,
                     username: newUser.auth.username
-                }
+                },
+                _id: newUser._id
             }
 
             // Respond with token and the user details
