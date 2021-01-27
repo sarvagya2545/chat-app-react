@@ -146,7 +146,21 @@ module.exports = {
         })
 
         res.json({ users })
-    },  
+    },
+    updateUserName: async (req,res) => {
+        try {
+            const getUser = await User.findOne({ "auth.username": req.body.username })
+            if(getUser) {
+                return res.status(400).json({ error: 'This username is already taken' })
+            }
+            console.log(req.body);
+
+            await User.update({ _id: req.user._id }, { "auth.username": req.body.username })
+
+        } catch (err) {
+            console.log(err);
+        }
+    },
     changePassword: async (req,res) => {
         
         const { newPassword, userName } = req.body;

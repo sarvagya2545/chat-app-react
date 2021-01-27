@@ -1,0 +1,55 @@
+import React, { Component } from 'react';
+import axios from 'axios';
+import { tokenConfig } from '../../redux/actions/authActions';
+
+class EnterUsername extends Component {
+  state = {
+    username: '',
+    errors: {
+      isError: false,
+      msg: ''
+    }
+  }
+
+  onChangeHandler = (e) => {
+    this.setState({ [e.target.name]: e.target.value, errors: { isError: false, msg: '' } });
+    
+  }
+
+  submitUserName = async (e) => {
+    e.preventDefault();
+    const config = tokenConfig();
+    axios.patch(`/api/users/username/update`, { username: this.state.username },config)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err.response.data);
+        this.setState({
+          errors: {
+            isError: true,
+            msg: err.response.data.errors ? err.response.data.errors.username : err.response.data.error
+          }
+        })
+      });
+  }
+
+  render() {
+    return (
+      <div className="enter-username">
+        <form className="form" onSubmit={this.submitUserName}>
+          <h3>Enter a unique username</h3>
+          <p>You can use the app once you create a username</p>
+          <div className="form-group">
+              <input type="text" name="username" className="input" placeholder="Enter a unique username" value={this.state.username} onChange={this.onChangeHandler}/> 
+              <label htmlFor="username">Username</label>
+          </div>
+          {this.state.errors.isError ? (<p className="err-text">{this.state.errors.msg}</p>) : null}
+          <button className="btn btn-submit">CREATE</button>
+        </form>
+      </div>
+    );
+  }
+}
+ 
+export default EnterUsername;

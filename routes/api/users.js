@@ -3,7 +3,7 @@ const passport = require('passport');
 const router = express.Router();
 const UserController = require('../controllers/users');
 require('../../config/passport')
-const { signupValidationRules, loginValidationRules } = require('../../validators/authValidators');
+const { signupValidationRules, loginValidationRules, usernameUpdateValidationRules } = require('../../validators/authValidators');
 const validate = require('../../validators/validate');
 
 const passportSignIn = passport.authenticate('local', { session: false })
@@ -13,6 +13,13 @@ const passportGoogle = passport.authenticate('googleToken', { session: false })
 const debugMiddleware = async (req,res,next) => {
     console.log(req.headers);
     console.log(req.query);
+    next();
+}
+
+const checkIfRequiresUsernameUpdate = async (req,res,next) => {    
+    if(req.user.auth.username !== 'not-set') {
+        return res.status(401).send('Unauthorized');
+    }
     next();
 }
 
@@ -44,6 +51,11 @@ router.route('/all')
 // Google token strategy
 router.route('/google/token')
     .get(passportGoogle, UserController.googleOAuth)
+;
+
+// update username
+router.route('/username/update')
+    .patch(passportJWT, checkIfRequiresUsernameUpdate, usernameUpdateValidationRules(), validate,UserController.updateUserName)
 ;
 
 // DEVELOPMENT ONLY

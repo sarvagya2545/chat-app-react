@@ -6,6 +6,12 @@ const checkAlphaNumeric = val => {
     return result !== null;
 }
 
+const restrictedKeyWords = ['not-set'];
+
+const isNotRestricted = val => {
+    return (!restrictedKeyWords.includes(val))
+}
+
 const signupValidationRules = () => {
     return [
         body('username')
@@ -14,7 +20,10 @@ const signupValidationRules = () => {
             .withMessage('A unique username name has to be specified')
             .bail()
             .custom(checkAlphaNumeric)
-            .withMessage('The username can only contain alphanumeric characters and/or underscores'),
+            .withMessage('The username can only contain alphanumeric characters and/or underscores')
+            .bail()
+            .custom(isNotRestricted)
+            .withMessage('The entered username is a keyword and may not be used to create a user'),
 
         body('email')
             .trim()
@@ -43,7 +52,9 @@ const loginValidationRules = () => {
             .trim()
             .notEmpty()
             .withMessage('Please enter an email/username')
-            .bail(),
+            .bail()
+            .custom(isNotRestricted)
+            .withMessage('The entered username is a keyword and may not be used to create a user'),
             
         body('password')
             .trim()
@@ -52,7 +63,23 @@ const loginValidationRules = () => {
     ]
 }
 
+const usernameUpdateValidationRules = () => {
+    return [
+        body('username')
+            .trim()
+            .notEmpty()
+            .withMessage('Please provide a username')
+            .bail()
+            .custom(checkAlphaNumeric)
+            .withMessage('The username can only contain alphanumeric characters and/or underscores')
+            .bail()
+            .custom(isNotRestricted)
+            .withMessage('The entered username is a keyword and may not be used to create a user')
+    ]
+}
+
 module.exports = {
     signupValidationRules,
-    loginValidationRules
+    loginValidationRules,
+    usernameUpdateValidationRules
 }
