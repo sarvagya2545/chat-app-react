@@ -23,6 +23,12 @@ const userSchema = mongoose.Schema({
                 type: String
             }
         },
+        google: {
+            id: {
+                type: String,
+                unique: true
+            }
+        }
     },
     rooms: {
         type: [

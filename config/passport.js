@@ -1,6 +1,7 @@
 const passport = require('passport');
 const { ExtractJwt, Strategy: JwtStrategy } = require('passport-jwt');
 const { Strategy: LocalStrategy } = require('passport-local');
+const { Strategy: GoogleTokenStrategy } = require('passport-google-token');
 const User = require('../models/User');
 const { jwtSecret } =  require('./keys');
 
@@ -62,5 +63,43 @@ passport.use(new LocalStrategy({
 
     } catch (error) {
         done(error, false);
+    }
+}));
+
+// GOOGLE LOGIN STRATEGY
+passport.use('googleToken', new GoogleTokenStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET
+}, async (accessToken, refreshToken, profile, done) => {
+    try {
+        // get full profile with access and refresh tokens.
+        // console.log('profile', profile);
+        // console.log('accessToken', accessToken);
+        // console.log('refreshToken', refreshToken);
+
+        const existingGoogleUser = await User.findOne({ "auth.google.id": profile.id });
+
+        if(existingGoogleUser) {
+            return done(null, existingGoogleUser);
+        }
+
+        const newUser = new User({
+            config: {
+                method: 'google',
+            },
+            auth: {
+                username: 'not-set',
+                email: profile.emails[0].value,
+                google: {
+                    id: profile.id
+                }
+            }
+        })
+
+        console.log('newUser', newUser); 
+        newUser.save();
+        done(null, newUser); 
+    } catch (err) {
+        done(err, false, error.message);   
     }
 }));

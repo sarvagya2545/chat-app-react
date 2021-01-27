@@ -85,6 +85,14 @@ module.exports = {
             console.log(error);
         }
     },
+    googleOAuth: async (req,res) => {
+        try {
+            console.log('google oauth set up reached');
+            console.log(req.user);
+        } catch(err) {
+            console.log('google oauth set up reached but error');
+        }
+     },
     getUser: async (req,res) => {
         try {
             // .select('-auth.local.password') excludes the password from the user data

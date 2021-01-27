@@ -8,6 +8,7 @@ const validate = require('../../validators/validate');
 
 const passportSignIn = passport.authenticate('local', { session: false })
 const passportJWT = passport.authenticate('jwt', { session: false })
+const passportGoogle = passport.authenticate('googleToken', { session: false })
 
 // signup route
 router.route('/signup')
@@ -32,6 +33,11 @@ router.route('/handle/:handle')
 // get all the users in the database
 router.route('/all')
     .get(passportJWT, UserController.getAllUsersExceptSelf)
+;
+
+// Google token strategy
+router.route('/google/token')
+    .get(passportGoogle, UserController.googleOAuth)
 ;
 
 // DEVELOPMENT ONLY
