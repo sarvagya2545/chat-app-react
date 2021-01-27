@@ -9,7 +9,8 @@ import {
     LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
     REGISTER_FAIL,
-    NO_ERRORS
+    NO_ERRORS,
+    SERVER_ERROR
 } from './types';
 
 import axios from 'axios';
@@ -131,16 +132,36 @@ export const logout = () => dispatch => {
 }
 
 // Google login action
-export const googleLogin = res => dispatch => {
-    console.log('reached google login', res.accessToken);
+export const googleLogin = resGoogle => dispatch => {
+    console.log('reached google login', resGoogle.accessToken);
 
     const config = {
         "Content-type": "application/json"
     }
 
-    axios.get(`/api/users/google/token?access_token=${res.accessToken}`, config)
-        .then(res => console.log(res))
-        .then(err => console.log(err))
+    axios.get(`/api/users/google/token?access_token=${resGoogle.accessToken}`, config)
+        .then(res => {
+            dispatch({ type: LOGIN_SUCCESS, payload: res.data })
+            dispatch({ type: NO_ERRORS })
+            localStorage.setItem('x-chat-token', res.data.token)
+        })
+        .catch(err => {
+            console.log(err);
+            if(err.response) {
+                // some server error
+                dispatch({ type: SERVER_ERROR });
+            } else {
+                const errorData = {
+                    errors: {
+                        err: 'Google user data was not provided correctly'
+                    },
+                    status: 401,
+                    errType: 'Google login/signup error'
+                }
+
+                dispatch({ type: AUTH_ERROR, payload: errorData })
+            }
+        })
 }
 
 // Setup config/headers and token
