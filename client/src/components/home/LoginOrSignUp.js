@@ -35,6 +35,9 @@ class LoginOrSignUp extends Component {
           </button>
         </div>
         {this.state.screen === 1 ? <LoginForm/> : <SignUpForm/>}
+        <div className="divider">
+          OR
+        </div>
       </div>
     );
   }
