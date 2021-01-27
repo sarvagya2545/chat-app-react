@@ -10,6 +10,12 @@ const passportSignIn = passport.authenticate('local', { session: false })
 const passportJWT = passport.authenticate('jwt', { session: false })
 const passportGoogle = passport.authenticate('googleToken', { session: false })
 
+const debugMiddleware = async (req,res,next) => {
+    console.log(req.headers);
+    console.log(req.query);
+    next();
+}
+
 // signup route
 router.route('/signup')
     .post(signupValidationRules(), validate, UserController.signup)

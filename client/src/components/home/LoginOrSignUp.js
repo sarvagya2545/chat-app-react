@@ -4,6 +4,8 @@ import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
+import { googleLogin } from '../../redux/actions/authActions';
+import GoogleLogin from 'react-google-login';
 
 class LoginOrSignUp extends Component {
   state = {
@@ -12,6 +14,14 @@ class LoginOrSignUp extends Component {
   };
 
   setScreen = (screen) => this.setState({ screen });
+
+  onSuccess = (res) => {
+    this.props.googleLogin(res);
+  }
+
+  onFailure = res => {
+    console.log(res);
+  } 
 
   render() {
     const { isLoading } = this.props;
@@ -38,6 +48,15 @@ class LoginOrSignUp extends Component {
         <div className="divider">
           OR
         </div>
+        <div className="social-login">
+          <GoogleLogin
+            clientId="962267269360-1t0fcfnl8hjbg94gpr96kq6p3pljlbg2.apps.googleusercontent.com"
+            buttonText="Login With Google"
+            onSuccess={this.onSuccess}
+            onFailure={this.onFailure}
+            cookiePolicy="single_host_origin"
+          />
+        </div>
       </div>
     );
   }
@@ -49,4 +68,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(LoginOrSignUp);
+export default connect(mapStateToProps, { googleLogin })(LoginOrSignUp);

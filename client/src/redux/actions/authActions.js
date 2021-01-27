@@ -130,6 +130,19 @@ export const logout = () => dispatch => {
     dispatch({ type: NO_ERRORS })
 }
 
+// Google login action
+export const googleLogin = res => dispatch => {
+    console.log('reached google login', res.accessToken);
+
+    const config = {
+        "Content-type": "application/json"
+    }
+
+    axios.get(`/api/users/google/token?access_token=${res.accessToken}`, config)
+        .then(res => console.log(res))
+        .then(err => console.log(err))
+}
+
 // Setup config/headers and token
 export const tokenConfig = (defaultToken) => {
     // Get token from local storage
