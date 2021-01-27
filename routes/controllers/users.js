@@ -88,11 +88,26 @@ module.exports = {
     googleOAuth: async (req,res) => {
         try {
             console.log('google oauth set up reached');
-            console.log(req.user);
+            console.log('req.user', req.user);
+            const token = signToken(req.user);
+
+            const payload = {
+                token,
+                user: {
+                    ...req.user._doc,
+                    auth: {
+                        email: req.user.auth.email,
+                        username: req.user.auth.username
+                    }
+                }
+            }
+
+            res.status(200).json(payload);
         } catch(err) {
             console.log('google oauth set up reached but error');
+            console.log('err', err);
         }
-     },
+    },
     getUser: async (req,res) => {
         try {
             // .select('-auth.local.password') excludes the password from the user data
