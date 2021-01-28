@@ -4,6 +4,8 @@ import { tokenConfig } from '../../redux/actions/authActions';
 import { GoogleLogout } from 'react-google-login';
 import { connect } from 'react-redux';
 import { logout } from '../../redux/actions/authActions';
+import { USERNAME_UPDATE } from '../../redux/actions/types';
+import store from '../../redux/store';
 
 class EnterUsername extends Component {
   state = {
@@ -24,7 +26,10 @@ class EnterUsername extends Component {
     const config = tokenConfig();
     axios.patch(`/api/users/username/update`, { username: this.state.username },config)
       .then(res => {
-        console.log(res);
+        if(res.status === 200) {
+          store.dispatch({ type: USERNAME_UPDATE, payload: res.data.username })
+          console.log(res.data);
+        }
       })
       .catch(err => {
         console.log(err.response.data);

@@ -155,7 +155,9 @@ module.exports = {
             }
             console.log(req.body);
 
-            await User.update({ _id: req.user._id }, { "auth.username": req.body.username })
+            await User.findOneAndUpdate({ _id: req.user._id }, { "auth.username": req.body.username });
+
+            res.status(200).json({ status: 'OK', username: req.body.username });
 
         } catch (err) {
             console.log(err);
