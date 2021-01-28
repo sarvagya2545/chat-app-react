@@ -6,6 +6,7 @@ import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import { googleLogin } from '../../redux/actions/authActions';
 import GoogleLogin from 'react-google-login';
+import GoogleIcon from '../../images/google_icon.svg';
 
 class LoginOrSignUp extends Component {
   state = {
@@ -54,6 +55,14 @@ class LoginOrSignUp extends Component {
             buttonText="Login With Google"
             onSuccess={this.onSuccess}
             onFailure={this.onFailure}
+            render={renderProps => (
+              <button className="btn btn-google" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                <img className="social-icons" src={GoogleIcon} alt="Google"/>
+                <p>
+                  {this.state.screen === 1 ? "Login with Google" : "Signup with Google"}
+                </p>
+              </button>
+            )}
             cookiePolicy="single_host_origin"
           />
         </div>

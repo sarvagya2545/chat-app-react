@@ -79,3 +79,29 @@
         color: #fff;
     }
 }
+
+.btn-google {
+    color: $color-black;
+    background-color: $color-light-primary;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid $color-grey-1;
+    font-size: 1.6rem;
+    padding: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+
+    cursor: pointer;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    &:hover {
+        background-color: $color-grey-1;
+    }
+}

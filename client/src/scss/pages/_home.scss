@@ -77,3 +77,15 @@
         margin-left: 1rem;
     }
 }
+
+.social-login {
+    display: flex;
+    flex-direction: column;
+    padding: 0 2rem;
+}
+
+.social-icons {
+    height: 2.7rem;
+    width: 2.7rem;
+    margin: 0 1rem;
+}
