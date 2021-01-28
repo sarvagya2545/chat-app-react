@@ -119,7 +119,7 @@ class AddChat extends Component {
                 {this.state.selectedPeople.length !== 0 ? (
                     <button 
                         type="button"
-                        className="btn btn-create-room"
+                        className="btn btn-create-room btn-with-disabled"
                         onClick={this.onClickHandler}
                         disabled={this.state.roomName === "" || this.state.selectedPeople.length === 0}
                     >

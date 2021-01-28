@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { tokenConfig } from '../../redux/actions/authActions';
+import { GoogleLogout } from 'react-google-login';
+import { connect } from 'react-redux';
+import { logout } from '../../redux/actions/authActions';
 
 class EnterUsername extends Component {
   state = {
@@ -45,11 +48,25 @@ class EnterUsername extends Component {
               <label htmlFor="username">Username</label>
           </div>
           {this.state.errors.isError ? (<p className="err-text">{this.state.errors.msg}</p>) : null}
-          <button className="btn btn-submit">CREATE</button>
+          <button 
+            className="btn btn-with-disabled btn-change-username btn-col-primary"
+            disabled={this.state.username.trim() === ''}
+          >
+            CREATE
+          </button>
+          <GoogleLogout
+            clientId="962267269360-1t0fcfnl8hjbg94gpr96kq6p3pljlbg2.apps.googleusercontent.com"
+            buttonText="Log Out"
+            onLogoutSuccess={this.props.logout}
+            render={renderProps => (
+              <button className="btn btn-submit" onClick={renderProps.onClick} disabled={renderProps.disabled}>Logout</button>
+            )}
+          />
         </form>
       </div>
     );
   }
 }
- 
-export default EnterUsername;
+
+
+export default connect(null, { logout })(EnterUsername);

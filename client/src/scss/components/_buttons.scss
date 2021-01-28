@@ -22,10 +22,10 @@
     box-shadow: rgba(0, 0, 0, 0.5) 0 5px 10px;
 }
 
-.btn-create-room {
+.btn-with-disabled {
     font-size: 1.4rem;
     padding: 1.5rem 3rem;
-    background-color: $color-primary-3;
+    background-color: inherit;
     color: #fff;
     cursor: pointer;
     position: relative;
@@ -42,7 +42,7 @@
             cursor: not-allowed;
 
             &::before {
-                content: "Enter the name of the room";
+                content: "";
                 position: absolute;
                 background-color: #000;
                 padding: 1.5rem 3rem;
@@ -52,6 +52,22 @@
             }
         }
     }
+
+    &.btn-create-room:disabled:hover::before {
+        content: "Enter the name of the room";
+    }
+
+    &.btn-change-username:disabled:hover::before {
+        content: "Enter a username";
+    }
+}
+
+.btn-create-room {
+    background-color: $color-primary-3;
+}
+
+.btn-col-primary {
+    background-color: $color-primary;
 }
 
 .btn-close {
