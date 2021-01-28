@@ -51,7 +51,7 @@ class LoginOrSignUp extends Component {
         </div>
         <div className="social-login">
           <GoogleLogin
-            clientId="962267269360-1t0fcfnl8hjbg94gpr96kq6p3pljlbg2.apps.googleusercontent.com"
+            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
             buttonText="Login With Google"
             onSuccess={this.onSuccess}
             onFailure={this.onFailure}
