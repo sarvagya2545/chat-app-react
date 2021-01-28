@@ -137,7 +137,7 @@ module.exports = {
 
         console.log( 'Filtered Users', usersFromDB.filter(user => user._id != req.user.id))
 
-        const users = usersFromDB.filter(user => user._id != req.user.id).map(user => {
+        const users = usersFromDB.filter(user => user.auth.username !== 'not-set').filter(user => user._id != req.user.id).map(user => {
             return {
                 username: user.auth.username,
                 email: user.auth.email,
