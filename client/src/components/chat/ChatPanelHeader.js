@@ -24,10 +24,10 @@ class ChatPanelHeader extends Component {
 
         return (
             <div className="chat-panel-header">
-                <div className="pfp">
+                <div className="pfp" onClick={this.props.userInfoToggle}>
                     <img src={pfp} alt="pfp" className="pfp-img" />
                 </div>
-                <div className="person-info">
+                <div className="person-info" onClick={this.props.userInfoToggle}>
                     <p className="username">{username}</p>
                     <p className="email">{email}</p>
                 </div>

@@ -39,6 +39,10 @@
             display: flex;
             align-items: center;
         }
+
+        .pfp-img, .person-info {
+            cursor: pointer;
+        }
     }
 
     ul {
@@ -47,3 +51,40 @@
         overflow: scroll;
     }
 }
+
+// add chat form
+.add-chat, .user-info {
+    position: absolute;
+    height: 100vh;
+    width: $sidebar-size;
+    transition: transform .3s ease-out;
+    background-color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: column;
+    z-index: 5;
+  
+    &.hidden {
+        transform: translateX(-100%);
+    }
+  
+    &-header {
+        display: flex;
+        justify-content: flex-start;
+        padding: 1.5em 2em;
+        padding-top: 4em;
+        background-color: $color-primary-3;
+        color: #fff;
+  
+        .header {
+            font-size: 2rem;
+            display: flex;
+        }
+  
+        .close-btn {
+            background-color: transparent;
+            padding: 0 1rem 0 0;
+            cursor: pointer;
+        }
+    }
+  }

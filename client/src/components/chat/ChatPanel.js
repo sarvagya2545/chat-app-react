@@ -7,14 +7,14 @@ import EnterUsername from './EnterUsername';
 class ChatPanel extends Component {
     state = {  }
     render() { 
-        const { addChatToggle, username } = this.props;
+        const { addChatToggle, username, userInfoToggle } = this.props;
         return (
             <div className="chat-panel custom-scroll">
                 {username === 'not-set' ? (
                     <EnterUsername/>
                 ) : (
                     <>
-                        <ChatPanelHeader addChatToggle={addChatToggle}/>
+                        <ChatPanelHeader addChatToggle={addChatToggle} userInfoToggle={userInfoToggle}/>
                         <ChatRooms/>
                     </>
                 )}

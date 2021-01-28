@@ -8,6 +8,7 @@ import EmptyChat from '../components/chat/EmptyChat';
 import ChatPanel from '../components/chat/ChatPanel';
 import AddChat from '../components/chat/AddChat';
 import ChatInfo from '../components/chat/ChatInfo';
+import UserInfo from '../components/chat/UserInfo';
 
 class Chat extends Component {
     async componentDidMount() {
@@ -21,18 +22,23 @@ class Chat extends Component {
         this.props.disconnectFromSocket(userId);
     }
 
-    state = { addChat: false }
+    state = { addChat: false, userInfo: false }
 
-    toggleVisible = () => {
+    addChatToggle = () => {
         this.setState({ addChat: !this.state.addChat })
+    }
+
+    userInfoToggle = () => {
+        this.setState({ userInfo: !this.state.userInfo })
     }
 
     render() { 
         const { currentChatRoom } = this.props;
         return (
             <div className="chat-container-main custom-scroll">
-                <AddChat visible={this.state.addChat} addChatToggle={this.toggleVisible}/>
-                <ChatPanel addChatToggle={this.toggleVisible}/>
+                <AddChat visible={this.state.addChat} addChatToggle={this.addChatToggle}/>
+                <UserInfo visible={this.state.userInfo} userInfoToggle={this.userInfoToggle}/>
+                <ChatPanel addChatToggle={this.addChatToggle} userInfoToggle={this.userInfoToggle}/>
                 <div className="chat-main">
                     {currentChatRoom === null ? 
                         <EmptyChat/> : <>
