@@ -3,6 +3,7 @@ import LoginOrSignUp from '../components/home/LoginOrSignUp';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ErrBox from '../components/utils/ErrBox';
+import ForgotPassword from '../components/home/ForgotPassword';
 
 class Home extends Component {
     componentDidUpdate() {
@@ -20,6 +21,7 @@ class Home extends Component {
                 </div>
                 <LoginOrSignUp/>
                 <ErrBox/>
+                <ForgotPassword/>
             </div>
         );
     }

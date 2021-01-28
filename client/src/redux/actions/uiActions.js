@@ -1,4 +1,4 @@
-import { OPEN_INFO_PANEL, CLOSE_INFO_PANEL } from './types';
+import { OPEN_INFO_PANEL, CLOSE_INFO_PANEL, OPEN_MODAL, CLOSE_MODAL } from './types';
 
 export const openInfoPanel = () => dispatch => {
     dispatch({ type: OPEN_INFO_PANEL })
@@ -6,4 +6,12 @@ export const openInfoPanel = () => dispatch => {
 
 export const closeInfoPanel = () => dispatch => {
     dispatch({ type: CLOSE_INFO_PANEL })
+}
+
+export const openModal = () => dispatch => {
+    dispatch({ type: OPEN_MODAL })
+}
+
+export const closeModal = () => dispatch => {
+    dispatch({ type: CLOSE_MODAL })
 }

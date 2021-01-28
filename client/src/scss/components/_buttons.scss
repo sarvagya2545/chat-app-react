@@ -60,6 +60,10 @@
     &.btn-change-username:disabled:hover::before {
         content: "Enter a username";
     }
+
+    &.btn-forgot-password:disabled:hover::before {
+        content: "Enter the email field";
+    }
 }
 
 .btn-create-room {
@@ -68,6 +72,10 @@
 
 .btn-col-primary {
     background-color: $color-primary;
+}
+
+.btn-forgot-password {
+    width: auto;
 }
 
 .btn-close {
@@ -103,5 +111,17 @@
 
     &:hover {
         background-color: $color-grey-1;
+    }
+}
+
+.btn-text {
+    width: fit-content;
+    background-color: transparent;
+    color: $color-primary-3;
+    cursor: pointer;
+    margin: 1rem 0;
+
+    &:hover {
+        color: $color-primary;
     }
 }

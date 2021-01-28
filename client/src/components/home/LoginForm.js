@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { login } from '../../redux/actions/authActions';
+import { openModal } from '../../redux/actions/uiActions';
 
 class LoginForm extends Component {
     state = {
@@ -32,9 +33,10 @@ class LoginForm extends Component {
                     <label htmlFor="password">Password</label>
                 </div>
                 <button type="submit" className="btn btn-submit">Login</button>
+                <button type="button" className="btn btn-text" onClick={this.props.openModal}>Forgot Password?</button>
             </form>
         );
     }
 }
  
-export default withRouter(connect(null, { login })(LoginForm));
+export default withRouter(connect(null, { login, openModal })(LoginForm));
