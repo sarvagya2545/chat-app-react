@@ -8,6 +8,8 @@ class ForgotPassword extends Component {
 
   onSubmit = e => {
     e.preventDefault();
+
+    // call the api to send a reset link to the email
   }
 
   onChangeHandler = e => {

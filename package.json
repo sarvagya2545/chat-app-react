@@ -23,6 +23,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.9.0",
     "mongoose": "^5.11.8",
+    "nodemailer": "^6.4.17",
     "passport": "^0.4.1",
     "passport-google-token": "^0.1.2",
     "passport-jwt": "^4.0.0",

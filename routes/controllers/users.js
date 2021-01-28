@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const { jwtSecret } = require('../../config/keys');
 const User = require('../../models/User');
 const bcrypt = require('bcryptjs');
+const { createAndSendMail } = require('../../config/nodemailer');
 
 const signToken = (user) => {
     return jwt.sign({
@@ -163,13 +164,23 @@ module.exports = {
             console.log(err);
         }
     },
+    sendPasswordResetLink: async (req,res) => {
+        try {
+            createAndSendMail({
+                to: 'f20190037@hyderabad.bits-pilani.ac.in',
+                subject: 'Subject',
+                text: 'text',
+                html: '<h1>HTML</h1>'
+            })
+        } catch (err) {
+            console.log(err);
+        }
+    },
     changePassword: async (req,res) => {
-        
-        const { newPassword, userName } = req.body;
-        
-        const user = await User.findOne({ 'auth.username': userName })
-        user.auth.local.password = newPassword;
-
-        await user.save()
+        try {
+            
+        } catch (err) {
+            console.log(err);
+        }
     }
 }
