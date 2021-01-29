@@ -166,12 +166,8 @@ module.exports = {
     },
     sendPasswordResetLink: async (req,res) => {
         try {
-            createAndSendMail({
-                to: 'f20190037@hyderabad.bits-pilani.ac.in',
-                subject: 'Subject',
-                text: 'text',
-                html: '<h1>HTML</h1>'
-            })
+            createAndSendMail({ to: req.body.email })
+            return res.status(200).json({ msg: 'Link sent to your email' })
         } catch (err) {
             console.log(err);
         }

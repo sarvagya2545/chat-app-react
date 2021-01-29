@@ -18,7 +18,11 @@ module.exports.createAndSendMail = ({ to }) => {
   const subject = "Password change link of chat2545.herokuapp.com";
   const url = "https://google.com";
   const html = `
-    Here is your password change link: <a href=${url}>Change Password</a>
+    Here is your password change link: <a href=${url}>Click Here!</a>
+    <br/>
+    Or copy the following url into your browser: 
+    <br/>
+    ${url}
   `;
 
   let mailOptions = {
@@ -29,8 +33,10 @@ module.exports.createAndSendMail = ({ to }) => {
   }
   
   transporter.sendMail(mailOptions, (err, info) => {
-    if(err) 
-      return console.log(err);
+    if(err) {
+      throw err;
+      // return console.log(err);
+    }
   
     console.log('Message sent: ', info.messageId);
   })
