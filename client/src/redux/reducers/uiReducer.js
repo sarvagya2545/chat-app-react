@@ -1,8 +1,13 @@
-import { OPEN_INFO_PANEL, CLOSE_INFO_PANEL, OPEN_MODAL, CLOSE_MODAL } from "../actions/types";
+import { OPEN_INFO_PANEL, CLOSE_INFO_PANEL, OPEN_MODAL, CLOSE_MODAL, MODAL_LOADING, MODAL_LOADED, MODAL_SUCCESS, MODAL_ERROR } from "../actions/types";
 
 const initState = {
     infoPanelOpen: false,
-    modalOpen: false
+    modalOpen: false,
+    modalLoading: false,
+    modalMessage: {
+        status: null,
+        msg: ''
+    }
 }
 
 const uiReducer = (state = initState, action) => {
@@ -25,7 +30,38 @@ const uiReducer = (state = initState, action) => {
         case CLOSE_MODAL:
             return {
                 ...state,
-                modalOpen: false
+                modalOpen: false,
+                modalLoading: false,
+                modalMessage: {
+                    status: null,
+                    msg: ''
+                }
+            }
+        case MODAL_LOADING:
+            return {
+                ...state,
+                modalLoading: true
+            }
+        case MODAL_LOADED:
+            return {
+                ...state,
+                modalLoading: false
+            }
+        case MODAL_SUCCESS:
+            return {
+                ...state,
+                modalMessage: {
+                    status: 1,
+                    msg: action.payload
+                }
+            }
+        case MODAL_ERROR:
+            return {
+                ...state,
+                modalMessage: {
+                    status: 0,
+                    msg: action.payload
+                }
             }
         default:
             return state;

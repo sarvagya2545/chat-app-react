@@ -5,6 +5,7 @@ import Chat from './pages/Chat';
 import { loadUser } from './redux/actions/authActions';
 import store from './redux/store';
 import ProtectedRoute from './components/utils/ProtectedRoute';
+import PasswordChange from './components/home/PasswordChange';
 
 class App extends Component {
   componentDidMount() {
@@ -16,6 +17,7 @@ class App extends Component {
       <BrowserRouter>
         <Switch>
           <ProtectedRoute path="/chat" component={Chat}/>
+          <Route path="/password_change" component={PasswordChange}/>
           <Route path="/" component={Home}/>
         </Switch>
       </BrowserRouter>

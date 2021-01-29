@@ -10,7 +10,11 @@ import {
     REGISTER_SUCCESS,
     REGISTER_FAIL,
     NO_ERRORS,
-    SERVER_ERROR
+    SERVER_ERROR,
+    MODAL_LOADING,
+    MODAL_LOADED,
+    MODAL_SUCCESS,
+    MODAL_ERROR
 } from './types';
 
 import axios from 'axios';
@@ -162,6 +166,29 @@ export const googleLogin = resGoogle => dispatch => {
                 dispatch({ type: AUTH_ERROR, payload: errorData })
             }
         })
+}
+
+// Send email link to reset password
+export const sendResetPasswordLink = (email) => dispatch => {
+    const config = {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }
+
+    dispatch({ type: MODAL_LOADING })
+
+    axios.post(`/api/users/change/password`, { email }, config)
+        .then(res => {
+            console.log(res);
+            dispatch({ type: MODAL_LOADED })
+            dispatch({ type: MODAL_SUCCESS, payload: res.data.msg })
+        })
+        .catch(err => {
+            dispatch({ type: MODAL_LOADED })
+            console.log(err.response.data)
+            dispatch({ type: MODAL_ERROR, payload: err.response.data.message })
+        });
 }
 
 // Setup config/headers and token

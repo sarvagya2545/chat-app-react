@@ -17,7 +17,7 @@ const BASE_URL = process.env.NODE_ENV === 'production' ? `https://chat2545.herok
 
 module.exports.createAndSendMail = ({ to, token }) => {
   const subject = "Password change link of chat2545.herokuapp.com";
-  const url = `${BASE_URL}/pw_chng?token=${token}`;
+  const url = `${BASE_URL}/password_change?token=${token}`;
   const html = `
     Here is your password change link: <a href=${url}>Click Here!</a>
     <br/>
