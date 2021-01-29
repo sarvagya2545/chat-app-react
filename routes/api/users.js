@@ -51,9 +51,14 @@ router.route('/change/password')
     .post(checkIfUserEmailExists, checkIfSocialAccount, UserController.sendPasswordResetLink)
 ;
 
-// CHANGE PASSWORD OF USER
-router.route('/pw_chng')
-    .get(UserController.changePassword)
+// VERIFICATION OF PASSWORD LINK
+router.route('/pw_chng/:id')
+    .post(UserController.verifyPasswordChangeLink)
+;
+
+// CHANGE PASSWORD IN DB
+router.route('/chng_pwd')
+    .post(passportJWT, UserController.changePassword)
 ;
 
 module.exports = router;

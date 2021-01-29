@@ -4,7 +4,16 @@ const User = require('../../models/User');
 const bcrypt = require('bcryptjs');
 const { createAndSendMail } = require('../../config/nodemailer');
 
-const signToken = (user) => {
+const signToken = (user, expiresIn) => {
+
+    if(expiresIn) {
+        return jwt.sign({
+            iss: 'Sarvagya',
+            sub: user._id,
+            iat: new Date().getTime(),
+        }, jwtSecret, { expiresIn });
+    }
+
     return jwt.sign({
         iss: 'Sarvagya',
         sub: user._id,
@@ -20,6 +29,18 @@ const signTokenData = (jsonData, secret) => {
         iat: new Date().getTime(),
         exp: new Date().setHours(new Date().getHours() + 1)
     }, secret);
+}
+
+const verifyToken = (token, secret) => {
+    return jwt.verify(token, secret, function(err, decodedData) {
+        if(err)
+            return { isErr: true, err }
+        
+        return {
+            isErr: false,
+            ...decodedData.sub
+        };
+    });
 }
 
 module.exports = {
@@ -180,14 +201,46 @@ module.exports = {
             const obj = { userId: req.user._id, email: req.user.auth.email };
             
             // create unique token for one time use (password will change after 1 use)
-            const secret = req.user.password + '-' + req.user._id;
+            const secret = req.user.auth.local.password + '-' + req.user._id;
             const token = signTokenData(obj, secret);
 
             // send the link with the token to the mail of the user.
-            createAndSendMail({ to: req.body.email, token })
+            createAndSendMail({ to: req.body.email, token, userId: obj.userId })
             return res.status(200).json({ msg: 'Link sent to your email' })
         } catch (err) {
             console.log(err);
+        }
+    },
+    verifyPasswordChangeLink: async (req,res) => {
+        try {
+            console.log('reached the controller');
+            const { id } = req.params;
+            const { token } = req.query;
+
+            const foundUser = await User.findById(id)
+            console.log(foundUser);
+
+            if(!foundUser) 
+                return res.status(401).json({ msg: 'Not authorized.' })
+        
+            if(foundUser.config.method !== 'local')
+                return res.status(401).json({ msg: 'Unauthorized' })
+
+            const password = foundUser.auth.local.password;
+            const verificationSecret = password + '-' + id;
+
+            const data = verifyToken(token, verificationSecret);
+            if(data.isErr) {
+                return res.status(401).json({ msg: 'Unauthorized / Timeout' })
+            }
+
+            const newToken = signToken({ _id: id, expiresIn: 60 * 15 })
+
+            return res.status(200).json({ newToken });
+
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({ status: 'Server error', err })
         }
     },
     changePassword: async (req,res) => {

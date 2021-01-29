@@ -16,9 +16,9 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          <ProtectedRoute path="/chat" component={Chat}/>
-          <Route path="/password_change" component={PasswordChange}/>
-          <Route path="/" component={Home}/>
+          <ProtectedRoute exact path="/chat" component={Chat}/>
+          <Route exact path="/password_change/:id" component={PasswordChange}/>
+          <Route exact path="/" component={Home}/>
         </Switch>
       </BrowserRouter>
     );
