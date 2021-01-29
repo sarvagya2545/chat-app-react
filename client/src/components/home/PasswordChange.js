@@ -2,7 +2,9 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
 import { withRouter } from 'react-router-dom';
-import { tokenConfig } from '../../redux/actions/authActions';
+import ErrBox from '../utils/ErrBox';
+import { connect } from 'react-redux';
+import { resetPassword } from '../../redux/actions/authActions';
 
 class PasswordChange extends Component {
   state = {
@@ -54,17 +56,16 @@ class PasswordChange extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onSubmit = e => {
+  onSubmit = async e => {
     e.preventDefault();
-
-    const config = tokenConfig(this.state.token);
-
-    const { newPassword, confirmPassword } = this.state;
-
-    // SEND AXIOS REQUEST TO SERVER TO CHANGE PASSWORD. ALONG WITH THE TOKEN.
-    axios.post(`/api/users/chng_pwd`, { newPassword, confirmPassword }, config)
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+    const { newPassword, confirmPassword, token } = this.state;
+    const response = await this.props.resetPassword({ newPassword, confirmPassword, token });
+    
+    if(response.status === 'OK') {
+      this.setState({ token: null, msg: '' })
+      alert('Password changed! Now log back in to continue');
+      this.props.history.push('/');
+    }
   }
 
   render() { 
@@ -102,9 +103,10 @@ class PasswordChange extends Component {
           </div>
           <button type="submit" className="btn btn-submit">RESET PASSWORD</button>
         </form>
+        <ErrBox/>
       </div>
     );
   }
 }
  
-export default withRouter(PasswordChange);
+export default withRouter(connect(null, { resetPassword })(PasswordChange));

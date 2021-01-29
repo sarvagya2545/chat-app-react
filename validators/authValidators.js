@@ -78,8 +78,28 @@ const usernameUpdateValidationRules = () => {
     ]
 }
 
+const resetPasswordValidationRules = () => {
+    return [
+        body('newPassword')
+            .trim()
+            .notEmpty()
+            .withMessage('Please provide the new password')
+            .bail()
+            .isLength({ min: 6 })
+            .withMessage('New password length must be at least 6 characters long'),
+
+        body('confirmPassword')
+            .trim()
+            .exists()
+            .custom((val, { req }) => val === req.body.newPassword)
+            .withMessage('Confirm password field must match password field')
+        
+    ]
+}
+
 module.exports = {
     signupValidationRules,
     loginValidationRules,
-    usernameUpdateValidationRules
+    usernameUpdateValidationRules,
+    resetPasswordValidationRules
 }

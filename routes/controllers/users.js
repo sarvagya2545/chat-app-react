@@ -245,7 +245,23 @@ module.exports = {
     },
     changePassword: async (req,res) => {
         try {
-            
+            const  { newPassword } = req.body;
+
+            // hash the password before saving it
+            const salt = await bcrypt.genSalt(10);
+            const newHashedPassword = await bcrypt.hash(newPassword, salt);
+
+            User.findByIdAndUpdate(
+                req.user._id, 
+                { "auth.local.password": newHashedPassword }, 
+                function(err,doc) {
+                    if(err) 
+                        return res.status(500).json({ errType: 'server error', err });
+
+                    return res.sendStatus(200);
+                }
+            );
+
         } catch (err) {
             console.log(err);
         }

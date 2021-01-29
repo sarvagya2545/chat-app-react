@@ -3,7 +3,7 @@ const passport = require('passport');
 const router = express.Router();
 const UserController = require('../controllers/users');
 require('../../config/passport')
-const { signupValidationRules, loginValidationRules, usernameUpdateValidationRules } = require('../../validators/authValidators');
+const { signupValidationRules, loginValidationRules, usernameUpdateValidationRules, resetPasswordValidationRules } = require('../../validators/authValidators');
 const validate = require('../../validators/validate');
 const { debugMiddleware, checkIfRequiresUsernameUpdate, checkIfUserEmailExists, checkIfSocialAccount } = require('../../middleware/middleware');
 
@@ -58,7 +58,7 @@ router.route('/pw_chng/:id')
 
 // CHANGE PASSWORD IN DB
 router.route('/chng_pwd')
-    .post(passportJWT, UserController.changePassword)
+    .post(passportJWT, resetPasswordValidationRules(), validate, UserController.changePassword)
 ;
 
 module.exports = router;

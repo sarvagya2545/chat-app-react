@@ -14,7 +14,8 @@ import {
     MODAL_LOADING,
     MODAL_LOADED,
     MODAL_SUCCESS,
-    MODAL_ERROR
+    MODAL_ERROR,
+    CLEAR_ERRORS
 } from './types';
 
 import axios from 'axios';
@@ -188,6 +189,32 @@ export const sendResetPasswordLink = (email) => dispatch => {
             dispatch({ type: MODAL_LOADED })
             console.log(err.response.data)
             dispatch({ type: MODAL_ERROR, payload: err.response.data.message })
+        });
+}
+
+export const resetPassword = ({ newPassword, confirmPassword, token }) => dispatch => {
+    const config = tokenConfig(token);
+
+    // SEND AXIOS REQUEST TO SERVER TO CHANGE PASSWORD. ALONG WITH THE TOKEN.
+    return axios.post(`/api/users/chng_pwd`, { newPassword, confirmPassword }, config)
+        .then(res => {
+            console.log(res);
+            // Redirect to login page and remove the current page from history
+            dispatch({ type: CLEAR_ERRORS });
+            return { status: 'OK' }
+        })
+        .catch(err => {
+            console.log(err.response);
+            // Notify the user that an error has occurred
+            const errors = err.response.data.errors;
+            const errorData = { 
+                errors: errors,
+                status: err.response.status,
+                errType: 'Reset password error'
+            }
+
+            dispatch({ type: AUTH_ERROR, payload: errorData });
+            return { status: 'ERR' }
         });
 }
 
