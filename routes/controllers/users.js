@@ -13,6 +13,15 @@ const signToken = (user) => {
     }, jwtSecret);
 }
 
+const signTokenData = (jsonData, secret) => {
+    return jwt.sign({
+        iss: 'Sarvagya',
+        sub: jsonData,
+        iat: new Date().getTime(),
+        exp: new Date().setHours(new Date().getHours() + 1)
+    }, secret);
+}
+
 module.exports = {
     signup: async (req,res) => {
         try {
@@ -166,7 +175,16 @@ module.exports = {
     },
     sendPasswordResetLink: async (req,res) => {
         try {
-            createAndSendMail({ to: req.body.email })
+            console.log(req.user);
+            // create forgot password token
+            const obj = { userId: req.user._id, email: req.user.auth.email };
+            
+            // create unique token for one time use (password will change after 1 use)
+            const secret = req.user.password + '-' + req.user._id;
+            const token = signTokenData(obj, secret);
+
+            // send the link with the token to the mail of the user.
+            createAndSendMail({ to: req.body.email, token })
             return res.status(200).json({ msg: 'Link sent to your email' })
         } catch (err) {
             console.log(err);

@@ -13,16 +13,14 @@ let transporter = nodemailer.createTransport({
   }
 })
 
+const BASE_URL = process.env.NODE_ENV === 'production' ? `https://chat2545.herokuapp.com` : 'http://localhost:3000';
 
-module.exports.createAndSendMail = ({ to }) => {
+module.exports.createAndSendMail = ({ to, token }) => {
   const subject = "Password change link of chat2545.herokuapp.com";
-  const url = "https://google.com";
+  const url = `${BASE_URL}/pw_chng?token=${token}`;
   const html = `
     Here is your password change link: <a href=${url}>Click Here!</a>
     <br/>
-    Or copy the following url into your browser: 
-    <br/>
-    ${url}
   `;
 
   let mailOptions = {

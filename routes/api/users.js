@@ -5,7 +5,7 @@ const UserController = require('../controllers/users');
 require('../../config/passport')
 const { signupValidationRules, loginValidationRules, usernameUpdateValidationRules } = require('../../validators/authValidators');
 const validate = require('../../validators/validate');
-const { debugMiddleware, checkIfRequiresUsernameUpdate } = require('../../middleware/middleware');
+const { debugMiddleware, checkIfRequiresUsernameUpdate, checkIfUserEmailExists, checkIfSocialAccount } = require('../../middleware/middleware');
 
 const passportSignIn = passport.authenticate('local', { session: false })
 const passportJWT = passport.authenticate('jwt', { session: false })
@@ -48,7 +48,7 @@ router.route('/username/update')
 
 // THIS SENDS CHANGE PASSWORD LINK MAIL TO USER
 router.route('/change/password')
-    .post(UserController.sendPasswordResetLink)
+    .post(checkIfUserEmailExists, checkIfSocialAccount, UserController.sendPasswordResetLink)
 ;
 
 // CHANGE PASSWORD OF USER
