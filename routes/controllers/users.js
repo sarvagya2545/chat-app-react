@@ -236,7 +236,7 @@ module.exports = {
 
             const newToken = signToken({ _id: id, expiresIn: 60 * 15 })
 
-            return res.status(200).json({ newToken });
+            return res.status(200).json({ newToken, email: foundUser.auth.email });
 
         } catch (err) {
             console.log(err);
