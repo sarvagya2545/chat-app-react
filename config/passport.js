@@ -48,6 +48,11 @@ passport.use(new LocalStrategy({
         // user is either the one by email or the one by username
         const user = foundUserbyEmail || foundUserbyUsername;
 
+        // return error if the user is having social login
+        if(user.config.method !== 'local') {
+            return done(null, false);
+        }
+
         // Check if the password is correct
         const isMatch = await user.isValidPassword(password);
 
