@@ -78,9 +78,19 @@ passport.use('googleToken', new GoogleTokenStrategy({
         // console.log('refreshToken', refreshToken);
 
         const existingGoogleUser = await User.findOne({ "auth.google.id": profile.id });
+        const existingLocalUser = await User.findOne({ "auth.email": profile.emails[0].value });
 
         if(existingGoogleUser) {
             return done(null, existingGoogleUser);
+        }
+
+        if(existingLocalUser) {
+            existingLocalUser.auth.google = {
+                id: profile.id
+            }
+            existingLocalUser.save();
+
+            return done(null, existingLocalUser);
         }
 
         const newUser = new User({
