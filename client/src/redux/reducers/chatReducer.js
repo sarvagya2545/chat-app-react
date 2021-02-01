@@ -174,7 +174,14 @@ const chatReducer = (state = initState, action) => {
                             messages: action.payload.messages
                         }
                     }
-                }
+                },
+                chatRooms: state.chatRooms.map(room => ({
+                    ...room,
+                    messages: {
+                        messageLoad: false,
+                        messages: action.payload.messages
+                    }
+                }))
             }
         default:
             return {
