@@ -37,7 +37,7 @@ class ChatBox extends Component {
         const { messages: { messages, messageLoad } } = this.props;
         return (
             <div className="chat-box">
-                {!messageLoad && messages.map((message,index) => (
+                {!messageLoad && messages && messages.map((message,index) => (
                     <Message 
                         isMine={this.isMine(message.by)} 
                         text={message.text} 
