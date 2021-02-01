@@ -22,10 +22,11 @@ const roomSchema = mongoose.Schema({
     messages: {
         type: [
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'message'
+                type: String,
+                required: true
             }
-        ]
+        ],
+        default: []
     }
 })
 

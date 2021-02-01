@@ -1,3 +1,4 @@
+const Room = require('../models/Room');
 const User = require('../models/User');
 
 module.exports = {
@@ -28,6 +29,19 @@ module.exports = {
       }
     }
 
+    next();
+  },
+  checkIfUserInRoom: async (req,res,next) => {
+    // find the room 
+    const room = await Room.findOne({ roomId: req.params.roomId });
+
+    if(!room)
+      res.status(404).json({ err: 'Room corresponding to the room id not found' })
+
+    if(!room.people.includes(req.user.id)) {
+      res.status(401).json({ err: 'You are not allowed to view the chat history of this group because you are not present in the group' })
+    }
+    req.room = room;
     next();
   }
 }

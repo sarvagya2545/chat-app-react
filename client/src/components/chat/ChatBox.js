@@ -1,18 +1,32 @@
 import React, { Component } from 'react';
 import Message from './Message';
 import { connect } from 'react-redux';
+import Loader from 'react-loader-spinner';
+import { getMessagesOfRoom } from '../../redux/actions/chatActions';
 
 class ChatBox extends Component {
-    componentDidMount() {
+    async componentDidMount() {
         this.scrollToBottom();
+        await this.getMessagesOfRoom()
     }
 
     scrollToBottom = () => {
         this.messagesEnd.scrollIntoView({ behavior: "smooth" });
     }
 
-    componentDidUpdate() {
+    async componentDidUpdate() {
         this.scrollToBottom();
+        await this.getMessagesOfRoom();
+    }
+
+    async getMessagesOfRoom() {
+        const { token, roomId, messages: { messageLoad } } = this.props;
+
+        console.log('hello')
+
+        if(messageLoad){
+            await this.props.getMessagesOfRoom({ token, roomId });
+        }
     }
 
     isMine(by) {
@@ -20,10 +34,10 @@ class ChatBox extends Component {
     }
 
     render() { 
-        const { messages } = this.props;
+        const { messages: { messages, messageLoad } } = this.props;
         return (
             <div className="chat-box">
-                {messages.map((message,index) => (
+                {!messageLoad && messages.map((message,index) => (
                     <Message 
                         isMine={this.isMine(message.by)} 
                         text={message.text} 
@@ -32,6 +46,13 @@ class ChatBox extends Component {
                         key={index}
                     />
                 ))}
+                {messageLoad && (<>
+                    <div className="loader">
+                        <Loader
+                        type="TailSpin"
+                        />
+                    </div>
+                </>)}
                 <div style={{ float:"left", clear: "both" }}
                     ref={(el) => { this.messagesEnd = el; }}>
                 </div>
@@ -44,8 +65,10 @@ const mapStateToProps = state => {
     const currentChatRoom = state.chat.currentChatRoom
     return {
         messages: state.chat.chatRoomsObject[currentChatRoom].messages,
-        username: state.auth.user.auth.username
+        username: state.auth.user.auth.username,
+        token: state.auth.token,
+        roomId: state.chat.currentChatRoom
     }
 }
 
-export default connect(mapStateToProps)(ChatBox);
+export default connect(mapStateToProps, { getMessagesOfRoom })(ChatBox);

@@ -9,6 +9,10 @@
  */
 let onlineUsers = [];
 
+const Message = require('../models/Message');
+const Room = require('../models/Room');
+const { v4: uuidv4 } = require('uuid')
+
 module.exports = (server) => {
     // Initialize sockets
     const socketCORSConfig = {
@@ -76,11 +80,43 @@ module.exports = (server) => {
             socket.leave(room);
         })
 
-        socket.on("message", ({ room, messageObject }) => {
+        socket.on("message", async ({ room, messageObject }) => {
             console.log('room ', room)
             console.log('message ', messageObject)
 
             io.to(room).sockets.emit('message', messageObject)
+
+            const content = {
+                text: messageObject.text
+            }
+
+            const messageId = uuidv4();
+
+            console.log(messageId);
+
+
+            // Add the message to the database
+            const newMessage = new Message({
+                messageId: messageId,
+                senderId: messageObject.senderId,
+                roomId: messageObject.room,
+                userName: messageObject.by,
+                timeStamp: new Date(messageObject.time),
+                content: content 
+            })
+
+            console.log('new message', newMessage);
+            console.log(messageId);
+
+            try {
+                const roomObj = await Room.findOne({ roomId: room });
+                const prevMessages = roomObj.messages;
+                console.log(prevMessages);
+                await roomObj.update({ messages: [ ...prevMessages, newMessage.messageId ] });
+                await newMessage.save(); 
+            } catch (err) {
+                console.log(err);
+            }
         })
 
         socket.on("typing", ({ user, roomId }) => {

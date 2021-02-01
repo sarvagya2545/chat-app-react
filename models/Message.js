@@ -1,10 +1,18 @@
 const mongoose = require('mongoose');
 
 const messageSchema = mongoose.Schema({
-    messageText: String,
+    messageId: {
+        type: String,
+        required: true,
+        unique: true
+    },
     senderId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
+        required: true
+    },
+    userName: {
+        type: String,
         required: true
     },
     roomId: {
@@ -14,6 +22,9 @@ const messageSchema = mongoose.Schema({
     timeStamp: {
         type: Date,
         required: true
+    },
+    content: {
+        text: String,
     }
 })
 

@@ -1,4 +1,4 @@
-import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATED, EXIT_ROOM, RECIEVE_MESSAGE, TYPING_START, TYPING_END, GET_ALL_PEOPLE, USER_STATUS_CHANGED, USER_LEAVE, JOIN_ROOM, LOGOUT_SUCCESS } from '../actions/types';
+import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATED, EXIT_ROOM, RECIEVE_MESSAGE, TYPING_START, TYPING_END, GET_ALL_PEOPLE, USER_STATUS_CHANGED, USER_LEAVE, JOIN_ROOM, LOGOUT_SUCCESS, MESSAGES_LOADED } from '../actions/types';
 
 const initState = {
     connected: false,
@@ -59,20 +59,26 @@ const chatReducer = (state = initState, action) => {
                     ...state.chatRoomsObject,
                     [action.payload.room]: {
                         ...roomObject,
-                        messages: [
-                            ...messages,
-                            action.payload
-                        ]
+                        messages: {
+                            ...roomObject.messages,
+                            messages: [
+                                ...messages.messages,
+                                action.payload
+                            ]
+                        }
                     }
                 },
                 chatRooms: state.chatRooms.map(room => {
                     if(action.payload.room === room.roomId) {
                         return {
                             ...room,
-                            messages: [
-                                ...messages,
-                                action.payload
-                            ]
+                            messages: {
+                                ...roomObject.messages,
+                                messages: [
+                                    ...messages.messages,
+                                    action.payload
+                                ]
+                            }
                         }
                     }
                     return room;
@@ -155,6 +161,20 @@ const chatReducer = (state = initState, action) => {
         case LOGOUT_SUCCESS:
             return {
                 ...initState
+            }
+        case MESSAGES_LOADED:
+            return {
+                ...state,
+                chatRoomsObject: {
+                    ...state.chatRoomsObject,
+                    [action.payload.roomId]: {
+                        ...state.chatRoomsObject[action.payload.roomId],
+                        messages: {
+                            messageLoad: false,
+                            messages: action.payload.messages
+                        }
+                    }
+                }
             }
         default:
             return {

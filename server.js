@@ -33,6 +33,7 @@ mongoose
 // Routes
 app.use('/api/users', require('./routes/api/users'))
 app.use('/api/rooms', require('./routes/api/rooms'))
+app.use('/api/messages', require('./routes/api/messages'))
 
 // Serve static assets under production
 if(process.env.NODE_ENV === 'production') {

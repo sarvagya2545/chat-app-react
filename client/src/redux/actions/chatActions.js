@@ -15,7 +15,8 @@ import {
     TYPING_END,
     GET_ALL_PEOPLE,
     USER_STATUS_CHANGED,
-    CLOSE_INFO_PANEL
+    CLOSE_INFO_PANEL,
+    MESSAGES_LOADED
 } from './types';
 
 import io from 'socket.io-client';
@@ -148,7 +149,13 @@ export const changeChatRoomTo = (roomId) => dispatch => {
 const convertRoomsArrayToObject = (rooms) => {
     const roomsObject = {};
     rooms.forEach(room => {
-        roomsObject[room.roomId] = room
+        roomsObject[room.roomId] = {
+            ...room,
+            messages: {
+                messageLoad: true,
+                messages: room.messages
+            }
+        }
     })
     return roomsObject;
 }
@@ -160,4 +167,25 @@ export const getAllPeopleList = (listOfPeople) => dispatch => {
     })
 
     dispatch({ type: GET_ALL_PEOPLE, payload: obj })
+}
+
+export const getMessagesOfRoom = ({ roomId, token }) => dispatch => {
+    // set an axios request to the backend and get all the messages from the room
+    axios.get(`/api/messages/room/${roomId}`, tokenConfig(token))
+        .then(res => {
+            // console.log('messages of the current room', res)
+            let messages = res.data.messages;
+            // console.log(messages);
+            messages = messages.map(message => ({
+                by: message.userName,
+                room: message.roomId,
+                text: message.content.text,
+                time: new Date(message.timeStamp),
+                senderId: message.senderId                
+            }));
+            console.log(messages);
+
+            dispatch({ type: MESSAGES_LOADED, payload: { roomId, messages } })
+        })
+        .catch(err => console.log(err));
 }
