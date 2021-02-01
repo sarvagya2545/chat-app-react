@@ -12,7 +12,7 @@ class ChatForm extends Component {
         e.preventDefault();
         console.log(this.state.message)
         if(this.state.message.trim() !== "") {
-            this.props.sendMessage({ room: this.props.room, message: this.state.message, userName: this.props.username });
+            this.props.sendMessage({ room: this.props.room, message: this.state.message, userName: this.props.username, userId: this.props.userId });
         }
 
         this.setState({ message: '' })
@@ -57,7 +57,8 @@ class ChatForm extends Component {
 const mapStateToProps = state => {
     return {
         room: state.chat.currentChatRoom,
-        username: state.auth.user.auth.username
+        username: state.auth.user.auth.username,
+        userId: state.auth.user._id
     }
 }
 

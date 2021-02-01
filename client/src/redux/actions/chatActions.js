@@ -85,12 +85,13 @@ export const loadRooms = (token) => async dispatch => {
     }
 }
 
-export const sendMessage = ({ room, message, userName }) => dispatch => {
+export const sendMessage = ({ room, message, userName, userId }) => dispatch => {
     console.log({ room, message })
     const messageObject = {
         room,
         text: message,
         by: userName,
+        senderId: userId,
         time: new Date()
     };
     socket.emit('message', { room, messageObject });
