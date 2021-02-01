@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import sendImg from '../../images/send_img.svg';
 import { connect } from 'react-redux';
 import { sendMessage, emitTyping } from '../../redux/actions/chatActions';
+import clip from '../../images/clip.svg';
+import { toggleAttachmentPanel } from '../../redux/actions/uiActions';
 
 class ChatForm extends Component {
     state = { message: '' }
@@ -25,6 +27,13 @@ class ChatForm extends Component {
     render() { 
         return (
             <form className="chat-form" onSubmit={e => this.sendMessage(e)}>
+                <button
+                    type="button"
+                    className="btn-attach"
+                    onClick={e => this.props.toggleAttachmentPanel()}
+                >
+                    <img src={clip} alt="attachments"/>
+                </button>
                 <input 
                     type="text" 
                     className="input-send" 
@@ -34,6 +43,7 @@ class ChatForm extends Component {
                     onInput={this.emitTyping}
                 />
                 <button 
+                    type="submit"
                     className="btn-send"
                     disabled={this.state.message.trim() === ""}
                 >
@@ -51,4 +61,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { sendMessage, emitTyping })(ChatForm);
+export default connect(mapStateToProps, { sendMessage, emitTyping, toggleAttachmentPanel })(ChatForm);

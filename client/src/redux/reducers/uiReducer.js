@@ -1,4 +1,4 @@
-import { OPEN_INFO_PANEL, CLOSE_INFO_PANEL, OPEN_MODAL, CLOSE_MODAL, MODAL_LOADING, MODAL_LOADED, MODAL_SUCCESS, MODAL_ERROR } from "../actions/types";
+import { OPEN_INFO_PANEL, CLOSE_INFO_PANEL, OPEN_MODAL, CLOSE_MODAL, MODAL_LOADING, MODAL_LOADED, MODAL_SUCCESS, MODAL_ERROR, TOGGLE_ATTACHMENT_PANEL } from "../actions/types";
 
 const initState = {
     infoPanelOpen: false,
@@ -7,7 +7,8 @@ const initState = {
     modalMessage: {
         status: null,
         msg: ''
-    }
+    },
+    attachmentPanelOpen: false
 }
 
 const uiReducer = (state = initState, action) => {
@@ -62,6 +63,11 @@ const uiReducer = (state = initState, action) => {
                     status: 0,
                     msg: action.payload
                 }
+            }
+        case TOGGLE_ATTACHMENT_PANEL:
+            return {
+                ...state,
+                attachmentPanelOpen: !state.attachmentPanelOpen
             }
         default:
             return state;

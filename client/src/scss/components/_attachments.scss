@@ -1,0 +1,73 @@
+.attachments {
+  // background-color: orange;
+  position: absolute;
+  transition: all .2s ease-in;
+  bottom: 6.5rem;
+  opacity: 0;
+  transform: translateX(-1.5rem) scale(0.25);
+  transform-origin: 35% 90%;
+  
+  &.open {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+
+  ul {
+    list-style-type: none;
+
+    li {
+      padding: .8em 1em;
+      position: relative;
+      padding-right: 8em;
+    }
+  }
+
+  .attachment {
+    display: inline-block;
+    padding: 1.2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    
+    &:hover::before {
+      content: '';
+      position: absolute;
+      left: 6.5rem;
+
+      background-color: #000;
+      color: #fff;
+      font-size: 1.4rem;
+      padding: .8rem 1.2rem;
+      border-radius: 100px;
+      display: block;
+    }
+
+    &-file {
+      background-color: #5157AE;
+
+      &:hover::before {
+        content: 'Document';
+      }
+    }
+
+    &-img {
+      background-color: #AC45CF;
+
+      &:hover::before {
+        content: 'Image';
+      }
+    }
+  }
+
+  .file-icon {
+    width: 20px;
+    height: 20px;
+    filter: invert(1);
+  }
+
+  .file-input {
+    display: none;
+  }
+}
