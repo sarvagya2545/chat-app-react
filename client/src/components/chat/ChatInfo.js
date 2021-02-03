@@ -35,7 +35,7 @@ class ChatInfo extends Component {
                 </div>
 
                 <div className="group-main-details">
-                    <Pfp pfp={pfp} size="xl"/>                    
+                    <Pfp pfp={pfp} size="xl" input jsx={<> ADD GROUP <br/> PHOTO </>}/>                    
                     <h1>{this.props.currentRoomName}</h1>
                 </div>
 

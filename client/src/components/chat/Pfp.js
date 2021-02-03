@@ -6,7 +6,8 @@ class Pfp extends Component {
     input = React.createRef();
 
     pfClick = e => {
-        this.input.click();
+        if(this.props.input)
+            this.input.click();
     }
 
     fileChange = e => {
@@ -22,7 +23,7 @@ class Pfp extends Component {
                 <img src={this.props.pfp} alt="pfp" className="pfp-img" />
                 {this.props.input && <div className="take-photo-filter">
                     <img src={camera} alt="camera" className="camera"/>
-                    ADD PROFILE <br/> PHOTO
+                    {this.props.jsx}
                 </div>}
                 <input 
                     type="file" 
