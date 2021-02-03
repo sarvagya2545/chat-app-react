@@ -133,3 +133,62 @@
 .err-text {
     color: red;
 }
+
+.pfp {
+    background-color: $color-grey-1;
+    display: inline-block;
+    height: $pfp-size;
+    width: $pfp-size;
+    border-radius: 50%;
+    overflow: hidden;
+
+    &-img {
+        height: 100%;
+        width: 100%;
+    }
+
+    &.pfp-md {
+        height: $pfp-md;
+        width: $pfp-md;
+    }
+
+    &.pfp-xl {
+        height: $pfp-xl;
+        width: $pfp-xl;
+    }
+
+    &.pfp-input {
+        position: relative;
+        .take-photo-filter {
+            display: none;
+        }
+
+        cursor: pointer;
+
+        &:hover .take-photo-filter {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: block;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            color: #fff;
+        }
+
+        .camera {
+            height: 30px;
+            width: 30px;
+            margin-bottom: .5rem;
+
+            filter: invert(100%);
+        }
+    }
+}

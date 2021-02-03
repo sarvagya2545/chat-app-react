@@ -7,30 +7,6 @@
     border: 1px solid $color-grey-1;
 }
 
-.pfp {
-    background-color: $color-grey-1;
-    display: inline-block;
-    height: $pfp-size;
-    width: $pfp-size;
-    border-radius: 50%;
-    overflow: hidden;
-
-    &-img {
-        height: 100%;
-        width: 100%;
-    }
-
-    &.pfp-md {
-        height: $pfp-md;
-        width: $pfp-md;
-    }
-
-    &.pfp-xl {
-        height: $pfp-xl;
-        width: $pfp-xl;
-    }
-}
-
 .chat-person {
     margin-left: 1.3rem;
     cursor: pointer;

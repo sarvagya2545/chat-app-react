@@ -17,7 +17,7 @@ class UserInfo extends Component {
             <div className="header">User Info</div>
         </div>
         <div className="user-main-details">
-            <Pfp pfp={pfp} size="xl" input/>
+            <Pfp pfp={pfp} size="xl" input empty/>
             <h3>{username}</h3>
             <p>{email}</p>
             <div className="actions">
