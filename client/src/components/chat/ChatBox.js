@@ -40,7 +40,7 @@ class ChatBox extends Component {
                 {!messageLoad && messages && messages.map((message,index) => (
                     <Message 
                         isMine={this.isMine(message.by)} 
-                        text={message.text} 
+                        content={message.content}
                         time={message.time}
                         name={message.by}
                         key={index}

@@ -90,7 +90,9 @@ export const sendMessage = ({ room, message, userName, userId }) => dispatch => 
     console.log({ room, message })
     const messageObject = {
         room,
-        text: message,
+        content: {
+            text: message,
+        },
         by: userName,
         senderId: userId,
         time: new Date()
@@ -179,7 +181,9 @@ export const getMessagesOfRoom = ({ roomId, token }) => dispatch => {
             messages = messages.map(message => ({
                 by: message.userName,
                 room: message.roomId,
-                text: message.content.text,
+                content: {
+                    text: message.content.text,
+                },
                 time: new Date(message.timeStamp),
                 senderId: message.senderId                
             }));

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
+import img from '../../images/img.jpg';
+import img2 from '../../images/img2.jpg';
 
 class Message extends Component {
 
@@ -16,12 +18,13 @@ class Message extends Component {
     }
 
     render() {
-        const { isMine } = this.props;
+        const { isMine, name, content: { text } } = this.props;
         return (
             <li className="chat-list-item">
                 <div className={cx("chat-message", { "mine" : isMine }, { "others": !isMine })}>
-                    { !isMine ? (<span className="msg-owner-name">{this.props.name}</span>) : null }
-                    { this.props.text }
+                    { !isMine ? (<span className="msg-owner-name">{name}</span>) : null }
+                    {/* <img src={img2} alt="img" className="chat-msg-img"/> */}
+                    { text }
                     <span className="chat-message-time">
                         Sent: { this.formatTime(this.props.time) }
                     </span>
