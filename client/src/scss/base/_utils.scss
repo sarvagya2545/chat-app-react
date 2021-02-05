@@ -183,12 +183,25 @@
             color: #fff;
         }
 
-        .camera {
+        .images {
+            display: flex;
+            justify-content: space-evenly;
+            width: 8rem;
+        }
+
+        .camera, .bin {
             height: 30px;
             width: 30px;
             margin-bottom: .5rem;
-
             filter: invert(100%);
+        }
+
+        .bin {
+            filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(153deg) brightness(101%) contrast(104%);
+            
+            &:hover {
+                filter: invert(13%) sepia(87%) saturate(7205%) hue-rotate(7deg) brightness(112%) contrast(124%);
+            }
         }
     }
 }
