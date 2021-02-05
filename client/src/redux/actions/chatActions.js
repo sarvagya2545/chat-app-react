@@ -31,7 +31,7 @@ export const connectToSocket = (rooms, user) => dispatch => {
     dispatch({ type: CONNECT });
     rooms !== undefined && rooms.forEach(room => {
         socket.emit('connectToRoom', { room })
-        console.log(`Joined room: ${room.roomName}`)
+        // console.log(`Joined room: ${room.roomName}`)
     });
 
     socket.emit('online', ({ userId: user }))
@@ -42,7 +42,7 @@ export const connectToSocket = (rooms, user) => dispatch => {
     })
 
     socket.on('typing', ({ user, roomId }) => {
-        console.log('typing')
+        // console.log('typing')
         dispatch({ type: TYPING_START, payload: { user, roomId } })
         clearTimeout(timeout)
         timeout = setTimeout(() => {
@@ -55,12 +55,12 @@ export const connectToSocket = (rooms, user) => dispatch => {
     })
 
     socket.on('exitRoom', ({ user: { userId, userName }, room }) => {
-        console.log('user left')
+        // console.log('user left')
         dispatch({ type: USER_LEAVE, payload: { userId, userName, room } })
     })
 
     socket.on('userOnlineStatus', onlineUsers => {
-        console.log(onlineUsers)
+        // console.log(onlineUsers)
         const onlineUserIds = onlineUsers.map(onlineUser => onlineUser.id)
         dispatch({ type: USER_STATUS_CHANGED, payload: onlineUserIds })
     })
@@ -76,7 +76,7 @@ export const loadRooms = (token) => async dispatch => {
         const config = tokenConfig(token);
         let rooms;
         const res = await axios.get('/api/rooms/user', config)
-        console.log(res);
+        // console.log(res);
         rooms = res.data.rooms;
         const roomsObject = convertRoomsArrayToObject(res.data.rooms)
         dispatch({ type: LOAD_ROOMS, payload: { roomsObject, rooms: res.data.rooms } })
@@ -87,7 +87,7 @@ export const loadRooms = (token) => async dispatch => {
 }
 
 export const sendMessage = ({ room, message, userName, userId }) => dispatch => {
-    console.log({ room, message })
+    // console.log({ room, message })
     const messageObject = {
         room,
         content: {
@@ -113,12 +113,12 @@ export const createChatRoom = ({ selectedPeople, roomName }) => dispatch => {
 
     axios.post('/api/rooms/new', bodyData, config)
         .then(res => {
-            console.log(res);
+            // console.log(res);
             // implement in future
             // dispatch({ type: ROOM_CREATED, payload: res.data.newRoom })
             socket.emit('createdChatRoom', { room: res.data.newRoom })
             socket.emit('connectToRoom', { room: res.data.newRoom })
-            console.log(res.data.newRoom.roomName)
+            // console.log(res.data.newRoom.roomName)
         })
         .catch(err => console.log(err))
 }
@@ -135,7 +135,7 @@ export const exitChatRoom = (roomId, roomName) => dispatch => {
         .then(res => {
             dispatch({ type: EXIT_ROOM, payload: res.data.foundRoom.roomId })
 
-            console.log('exitRooms', { room: roomId, user: res.data.user })
+            // console.log('exitRooms', { room: roomId, user: res.data.user })
             socket.emit('exitRoom', { room: roomId, userId: res.data.user._id, userName: res.data.user.auth.username })
 
             // close group info panel if open
@@ -187,7 +187,7 @@ export const getMessagesOfRoom = ({ roomId, token }) => dispatch => {
                 time: new Date(message.timeStamp),
                 senderId: message.senderId                
             }));
-            console.log(messages);
+            // console.log(messages);
 
             dispatch({ type: MESSAGES_LOADED, payload: { roomId, messages } })
         })

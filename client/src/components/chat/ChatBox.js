@@ -22,8 +22,6 @@ class ChatBox extends Component {
     async getMessagesOfRoom() {
         const { token, roomId, messages: { messageLoad } } = this.props;
 
-        console.log('hello')
-
         if(messageLoad){
             await this.props.getMessagesOfRoom({ token, roomId });
         }

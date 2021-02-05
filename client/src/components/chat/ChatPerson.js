@@ -7,7 +7,7 @@ class ChatPerson extends Component {
     getAllPeopleString() {
         let str = '';
         const { peopleList, peopleInRoomIds } = this.props;
-        console.log(peopleList)
+        // console.log(peopleList)
         for(let person in peopleList) {
             if(peopleInRoomIds.includes(person))
                 str = str !== '' ? `${str}, ${peopleList[person].username}` : `${peopleList[person].username}`

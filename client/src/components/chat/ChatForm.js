@@ -10,7 +10,7 @@ class ChatForm extends Component {
 
     sendMessage = e => {
         e.preventDefault();
-        console.log(this.state.message)
+        // console.log(this.state.message)
         if(this.state.message.trim() !== "") {
             this.props.sendMessage({ room: this.props.room, message: this.state.message, userName: this.props.username, userId: this.props.userId });
         }
