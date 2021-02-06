@@ -5,6 +5,7 @@ const RoomController = require('../controllers/rooms');
 require('../../config/passport')
 const { createRoomValidationRules } = require('../../validators/roomValidators');
 const validate = require('../../validators/validate');
+const { checkIfUserInRoom } = require('../../middleware/middleware');
 
 const passportJWT = passport.authenticate('jwt', { session: false })
 
@@ -22,6 +23,11 @@ router.route('/:roomid/join')
 // exit from a room
 router.route('/:roomid/exit')
     .post(passportJWT, RoomController.exitRoom)
+;
+
+router.route('/profile/pic')
+    .post(passportJWT, checkIfUserInRoom, RoomController.setProfilePic)
+    .delete(passportJWT, checkIfUserInRoom, RoomController.deleteProfilePic)
 ;
 
 // permanently delete the room

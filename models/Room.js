@@ -19,6 +19,10 @@ const roomSchema = mongoose.Schema({
         ],
         default: []
     },
+    pfpUrl: {
+        type: String,
+        default: ''
+    },
     messages: {
         type: [
             {

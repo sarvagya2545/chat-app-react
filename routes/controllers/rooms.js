@@ -122,6 +122,40 @@ module.exports = {
             }
         }
     },
+    setProfilePic: async(req,res) => {
+        try {
+            const { url, roomId } = req.body;
+
+            console.log(req.body);
+            Room.findOneAndUpdate({ roomId }, { pfpUrl: url }, function(err, doc) {
+                if(err) {
+                    return res.status(500).json({ err });
+                }
+
+                return res.status(200).json({ status: 'OK' })
+            })
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({ err });
+        }
+    },
+    deleteProfilePic: async(req,res) => {
+        try {
+            const { roomId } = req.body;
+
+            console.log(req.body);
+            Room.findOneAndUpdate({ roomId }, { pfpUrl: '' }, function(err, doc) {
+                if(err) {
+                    return res.status(500).json({ err });
+                }
+
+                return res.status(200).json({ status: 'OK' })
+            })
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({ err });
+        }
+    },
     deleteRoom: async (req, res) => {
         res.send('permanently delete room')
     }
