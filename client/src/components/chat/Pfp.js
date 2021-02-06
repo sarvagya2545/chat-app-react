@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import cx from 'classnames';
 import camera from '../../images/photo-camera.svg';
 import { connect } from 'react-redux';
-import { app } from '../../firebase';
 import pfp from '../../images/pfp.svg';
 import bin from '../../images/delete.svg';
 import Loader from 'react-loader-spinner';
@@ -26,20 +25,6 @@ class Pfp extends Component {
             if(isDelete) {
                 this.setState({ fileLoading: true })
                 const { group, currentChatRoom, username } = this.props;
-
-                const storageRef = app.storage().ref();
-                const fileRef = 
-                storageRef.child(`${group ? 'group':'profile'}-pics/${group ? currentChatRoom : username}`);
-                console.log(fileRef)
-
-                fileRef.delete().then(() => {
-                    console.log('File deleted');
-                    this.setState({ fileUrl: null, filePresent: false })
-                })
-                .catch(err => {
-                    console.log('err', err);
-                })
-                this.setState({ fileLoading: false })
             }
             return;
         }
@@ -48,48 +33,8 @@ class Pfp extends Component {
             this.input.click();
     }
 
-    componentDidMount() {
-        
-    }
-
-    loadImage = ({ group, username, currentChatRoom }) => {
-        console.log('load image called');
-        console.log({ group, username, currentChatRoom });
-        const file = group ? currentChatRoom : username;
-        const folder = group ? 'group':'profile';
-        
-        console.log(file, folder);
-        
-        if(!file || !folder) {
-            this.setState({ fileLoading: false })
-            console.log(file)
-            console.log(folder)
-            return
-        }
-
-        this.setState({ fileLoading: true });
-        const storageRef = app.storage().ref();
-        storageRef.child(`${folder}-pics/${file}`)
-            .getDownloadURL()
-            .then(url => {
-                this.setState({ fileUrl: url, fileLoading: false, filePresent: true })
-            })
-            .catch(err => {
-                console.log('error');
-                console.log(err);
-                this.setState({ fileLoading: false })
-            });
-
-    }
-
-    componentDidUpdate() {
-
-    }
-
     fileChange = async e => {
         console.log(e.target.files);
-
-        this.setState({ fileLoading: true })
 
         const { username, currentChatRoom, group } = this.props;
 
@@ -97,13 +42,16 @@ class Pfp extends Component {
         if(files.length  !== 0) {
             const file = e.target.files[0]
             console.log(file);
-            const folder = group ? 'group-pics' : 'profile-pics';
-            const fileName = group ? currentChatRoom : username;
 
-            await this.props.uploadFile({ file, folder, fileName });
+            const fileName = group ? currentChatRoom : username;
+            const folder = group ? 'group-pics' : 'profile-pics';
+
+            console.log('fileName', fileName)
+            console.log('folder', folder)
+
+            await this.props.uploadFile({ file, fileName, folder });
         }
 
-        this.setState({ fileLoading: false })
     }
 
     render() { 
@@ -121,7 +69,7 @@ class Pfp extends Component {
                                 <Fragment>
                                 <div className="images">
                                     <img src={camera} alt="camera" className="camera"/>
-                                    {this.state.filePresent && <img 
+                                    {this.props.src && <img 
                                         src={bin} 
                                         alt="delete" 
                                         className="bin" 
@@ -130,7 +78,7 @@ class Pfp extends Component {
                                     />}
                                 </div>
                                 <Fragment>
-                                    { !this.state.filePresent ? "ADD" : (this.state.hoverDelete ? "REMOVE" : "CHANGE") } { this.props.group ? "GROUP" : "PROFILE" } <br/> PHOTO 
+                                    { !this.props.src ? "ADD" : (this.state.hoverDelete ? "REMOVE" : "CHANGE") } { this.props.group ? "GROUP" : "PROFILE" } <br/> PHOTO 
                                 </Fragment>
                             </Fragment>
                             )
@@ -152,7 +100,7 @@ class Pfp extends Component {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.isAuthenticated,
-        dynamicCurrentChatRoom: state.chat.currentChatRoom
+        currentChatRoom: state.chat.currentChatRoom
     }
 }
 
