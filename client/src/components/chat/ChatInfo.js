@@ -43,7 +43,14 @@ class ChatInfo extends Component {
                     <p>{this.peopleOnline()} people online except you</p>
                     <ul>
                         {this.props.peopleInChat
-                            .map((person,index) => <Participant status={this.getStatus(person.id)} name={person.username} key={index}/>)}
+                            .map((person,index) => (
+                                <Participant
+                                    status={this.getStatus(person.id)} 
+                                    name={person.username} 
+                                    key={index}
+                                    src={person.pfp}
+                                />
+                            ))}
                     </ul>
                 </div>
 
