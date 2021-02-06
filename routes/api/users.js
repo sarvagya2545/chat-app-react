@@ -61,4 +61,9 @@ router.route('/chng_pwd')
     .post(passportJWT, resetPasswordValidationRules(), validate, UserController.changePassword)
 ;
 
+router.route('/profile/pic')
+    .post(passportJWT, UserController.updateProfilePic)
+    .delete(passportJWT, UserController.removeProfilePic)
+;
+
 module.exports = router;

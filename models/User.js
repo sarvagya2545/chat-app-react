@@ -30,6 +30,10 @@ const userSchema = mongoose.Schema({
             }
         }
     },
+    pfpUrl: {
+        type: String,
+        default: ''
+    },
     rooms: {
         type: [
             {

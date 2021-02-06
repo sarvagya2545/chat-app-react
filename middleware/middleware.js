@@ -33,7 +33,7 @@ module.exports = {
   },
   checkIfUserInRoom: async (req,res,next) => {
     // find the room 
-    const room = await Room.findOne({ roomId: req.params.roomId });
+    const room = await Room.findOne({ roomId: req.params.roomId || req.body.roomId });
 
     if(!room)
       res.status(404).json({ err: 'Room corresponding to the room id not found' })

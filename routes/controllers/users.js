@@ -172,7 +172,8 @@ module.exports = {
             return {
                 username: user.auth.username,
                 email: user.auth.email,
-                id: user._id
+                id: user._id,
+                pfp: user.pfpUrl
             }
         })
 
@@ -264,6 +265,43 @@ module.exports = {
 
         } catch (err) {
             console.log(err);
+        }
+    },
+    updateProfilePic: async (req,res) => {
+        try {
+            const { url } = req.body;
+
+            console.log(req.body);
+            if(!url) {
+                return res.status(400).json({ err: 'No profile pic url found in request' });
+            }
+
+            User.findByIdAndUpdate(
+                req.user._id,
+                { pfpUrl: url },
+                function(err, doc) {
+                    if(err)
+                        return res.status(500).json({ errType: 'server error', err });
+
+                    return res.status(200).json({ url })
+                }
+            );
+
+        } catch (err) {
+            return res.status(500).json({ errType: 'server error', err });
+        }
+    },
+    removeProfilePic: async (req,res) => {
+        try {
+            User.findByIdAndUpdate(req.user._id, { pfpUrl: "" }, function(err,doc) {
+                if(err){
+                    return res.status(500).json({ errType: 'server error', err });
+                }
+
+                return res.status(200).json({ msg: 'Deleted profile pic url' });
+            })
+        } catch (err) {
+            return res.status(500).json({ errType: 'server error', err });
         }
     }
 }
