@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { app } from '../../firebase';
 import { tokenConfig } from './authActions';
-import { PROFILE_PIC_UPLOAD, GROUP_PIC_UPLOAD } from './types';
+import { PROFILE_PIC_UPLOAD, GROUP_PIC_UPLOAD, GROUP_PIC_DELETE, PROFILE_PIC_DELETE } from './types';
 
 export const uploadFile = ({ fileName, folder, file }) => async dispatch => {
     const storageRef = app.storage().ref();
@@ -14,8 +14,8 @@ export const uploadFile = ({ fileName, folder, file }) => async dispatch => {
     const fileUrl = await fileRef.getDownloadURL();
     // this.setState({ fileUrl });
 
-    console.log(`/api/${isGroupImg ? "rooms" : "users" }/profile/pic`)
-    console.log(fileUrl);
+    // console.log(`/api/${isGroupImg ? "rooms" : "users" }/profile/pic`)
+    // console.log(fileUrl);
 
     const body = isGroupImg ? { roomId: fileName } : {};
 
@@ -32,4 +32,34 @@ export const uploadFile = ({ fileName, folder, file }) => async dispatch => {
         .catch(err => {
             console.log(err.response);
         });
+}
+
+export const deleteFile = ({ folder, fileName }) => async dispatch => {
+    const storageRef = app.storage().ref();
+    const fileRef = storageRef.child(`${folder}/${fileName}`);
+    const isGroupImg = folder === 'group-pics';
+
+    console.log(tokenConfig());
+    // return;
+
+    await fileRef.delete().then(() => {
+
+    }).catch(err => {
+        console.log(err.response);
+    });
+
+    const body = isGroupImg ? { roomId: fileName } : {};
+
+    console.log(body);
+
+    axios
+        .delete(`/api/${isGroupImg ? "rooms" : "users"}/profile/pic`,
+            { ...tokenConfig(), data: body },
+        )
+        .then(res => {
+            const type = isGroupImg ? GROUP_PIC_DELETE : PROFILE_PIC_DELETE;
+            const payload = isGroupImg ? { roomId: fileName } : {};
+            dispatch({ type, payload });
+        })
+        .catch(err => console.log(err.response));
 }

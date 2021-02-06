@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGOUT_SUCCESS, NO_USER_LOADED, PROFILE_PIC_UPLOAD, REGISTER_SUCCESS, USERNAME_UPDATE, USER_LOADED, USER_LOADING, USER_LOAD_ERROR } from "../actions/types";
+import { LOGIN_SUCCESS, LOGOUT_SUCCESS, NO_USER_LOADED, PROFILE_PIC_DELETE, PROFILE_PIC_UPLOAD, REGISTER_SUCCESS, USERNAME_UPDATE, USER_LOADED, USER_LOADING, USER_LOAD_ERROR } from "../actions/types";
 
 const initState = {
     isAuthenticated: false,
@@ -58,6 +58,14 @@ const authReducer = (state = initState, action) => {
                 user: {
                     ...state.user,
                     pfpUrl: action.payload.url
+                }
+            }
+        case PROFILE_PIC_DELETE:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    pfpUrl: ''
                 }
             }
         default: 

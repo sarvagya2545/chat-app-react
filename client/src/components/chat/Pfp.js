@@ -5,26 +5,28 @@ import { connect } from 'react-redux';
 import pfp from '../../images/pfp.svg';
 import bin from '../../images/delete.svg';
 import Loader from 'react-loader-spinner';
-import { uploadFile } from '../../redux/actions/imageActions';
+import { uploadFile, deleteFile } from '../../redux/actions/imageActions';
 
 class Pfp extends Component {
 
     state = {
-        fileUrl: null,
         hoverDelete: false,
-        filePresent: false,
         fileLoading: false
     }
 
     input = React.createRef();
 
-    pfClick = e => {
+    pfClick = async e => {
         if(e.target.classList.contains('bin')) {
             let isDelete = window.confirm('DO YOU REALLY WANT TO REMOVE THE PICTURE?');
 
             if(isDelete) {
-                this.setState({ fileLoading: true })
                 const { group, currentChatRoom, username } = this.props;
+
+                const fileName = group ? currentChatRoom : username;
+                const folder = group ? 'group-pics' : 'profile-pics';
+
+                await this.props.deleteFile({ folder, fileName });
             }
             return;
         }
@@ -104,4 +106,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { uploadFile })(Pfp);
+export default connect(mapStateToProps, { uploadFile, deleteFile })(Pfp);
