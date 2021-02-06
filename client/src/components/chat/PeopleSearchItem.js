@@ -14,7 +14,7 @@ class PeopleSearchItem extends Component {
                 className={cx("people-search-item", { "selected": this.props.selected })}
                 onClick={this.onClickHandler}
             >
-                <Pfp pfp={pfp} size="md"/>
+                <Pfp pfp={pfp} size="md" src={this.props.pfp}/>
                 <div className="chat-room-item-details">
                     <div>
                         <p>{this.props.name || "Name"}</p>

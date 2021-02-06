@@ -20,6 +20,7 @@ class ChatRooms extends Component {
                             onClick={() => this.setCurrentChatRoom(room.roomId)}
                             name={room.roomName}
                             isTyping={room.typing}
+                            src={this.props.pfpUrl}
                         />
                     )
                 })}

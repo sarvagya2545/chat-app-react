@@ -22,6 +22,7 @@ class PeopleSearch extends Component {
                         personId={person.id}
                         name={person.username}
                         email={person.email}
+                        pfp={person.pfp}
                         select={(person) => this.props.toggleSelectedPeople(person)}
                         selected={this.props.personIsSelected(person)}
                     />

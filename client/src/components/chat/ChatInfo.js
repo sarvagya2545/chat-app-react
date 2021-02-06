@@ -35,7 +35,7 @@ class ChatInfo extends Component {
                 </div>
 
                 <div className="group-main-details">
-                    <Pfp pfp={pfp} size="xl" input group currentChatRoom={this.props.currentRoomId}/>                    
+                    <Pfp pfp={pfp} size="xl" input group src={this.props.src}/>                    
                     <h1>{this.props.currentRoomName}</h1>
                 </div>
 
@@ -59,7 +59,7 @@ class ChatInfo extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const currentRoomId = state.chat.currentChatRoom
+    const currentRoomId = state.chat.currentChatRoom;
     const peopleInRoomIds = state.chat.chatRoomsObject[currentRoomId] ? 
                             state.chat.chatRoomsObject[currentRoomId].people : null;
     const peopleList = state.chat.peopleList;
@@ -76,11 +76,12 @@ const mapStateToProps = (state) => {
 
     return {
         infoPanelOpen: state.ui.infoPanelOpen,
-        currentRoomId: currentRoomId,
+        currentRoomId: state.chat.currentChatRoom,
         peopleInChat,
         onlinePeopleInChatIds,
         currentRoomName: state.chat.chatRoomsObject[currentRoomId] ? 
-                    state.chat.chatRoomsObject[currentRoomId].roomName : null
+                    state.chat.chatRoomsObject[currentRoomId].roomName : null,
+        src: state.chat.chatRoomsObject[currentRoomId]?.pfpUrl
     }
 }
  

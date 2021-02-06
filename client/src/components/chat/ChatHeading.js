@@ -25,7 +25,7 @@ class ChatHeading extends Component {
         return (
             <div className="chat-heading">
                 <div className="pfp">
-                    <img src={pfp} alt="pfp" className="pfp-img"/>
+                    <img src={this.props.src || pfp} alt="pfp" className="pfp-img"/>
                 </div>
                 <ChatPerson/>
                 <DropDown
@@ -40,8 +40,8 @@ const mapStateToProps = (state) => {
     const currentRoomId = state.chat.currentChatRoom
     return {
         currentRoomId: currentRoomId,
-        currentRoomName: state.chat.chatRoomsObject[currentRoomId] ? 
-                    state.chat.chatRoomsObject[currentRoomId].roomName : null
+        currentRoomName: state.chat.chatRoomsObject[currentRoomId]?.roomName,
+        src: state.chat.chatRoomsObject[currentRoomId]?.pfpUrl
     }
 }
  

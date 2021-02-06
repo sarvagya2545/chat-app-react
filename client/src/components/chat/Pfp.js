@@ -6,6 +6,7 @@ import { app } from '../../firebase';
 import pfp from '../../images/pfp.svg';
 import bin from '../../images/delete.svg';
 import Loader from 'react-loader-spinner';
+import { uploadFile } from '../../redux/actions/imageActions';
 
 class Pfp extends Component {
 
@@ -48,17 +49,7 @@ class Pfp extends Component {
     }
 
     componentDidMount() {
-        if(this.props.group && this.props.currentChatRoom) {
-            const { group, currentChatRoom } = this.props;
-            console.log('get the group image');
-            this.loadImage({ group, currentChatRoom });
-        }
         
-        if(!this.props.group && this.props.username) {
-            const { group, username } = this.props;
-            console.log('get the user image');
-            this.loadImage({ group, username });
-        }
     }
 
     loadImage = ({ group, username, currentChatRoom }) => {
@@ -92,20 +83,7 @@ class Pfp extends Component {
     }
 
     componentDidUpdate() {
-        if(this.state.filePresent || !this.state.fileUrl)
-            return;
 
-        if(this.props.group && this.props.currentChatRoom) {
-            const { group, currentChatRoom } = this.props;
-            console.log('get the group image');
-            this.loadImage({ group, currentChatRoom });
-        }
-        
-        if(!this.props.group && this.props.username) {
-            const { group, username } = this.props;
-            console.log('get the user image');
-            this.loadImage({ group, username });
-        }
     }
 
     fileChange = async e => {
@@ -119,18 +97,13 @@ class Pfp extends Component {
         if(files.length  !== 0) {
             const file = e.target.files[0]
             console.log(file);
-            
-            const storageRef = app.storage().ref();
-            const fileRef = 
-                storageRef.child(`${group ? 'group':'profile'}-pics/${group ? currentChatRoom : username}`)
-            
-            await fileRef.put(file).then(() => {
-                this.setState({ filePresent: true, fileLoading: false })
-            });
-            const fileUrl = await fileRef.getDownloadURL();
-            this.setState({ fileUrl });
+            const folder = group ? 'group-pics' : 'profile-pics';
+            const fileName = group ? currentChatRoom : username;
+
+            await this.props.uploadFile({ file, folder, fileName });
         }
 
+        this.setState({ fileLoading: false })
     }
 
     render() { 
@@ -139,7 +112,7 @@ class Pfp extends Component {
                 className={cx('pfp', {'pfp-md' : this.props.size === "md"}, { 'pfp-xl': this.props.size === "xl" }, { 'pfp-input': this.props.input })}
                 onClick={this.pfClick}
             >
-                <img src={this.state.fileUrl || pfp} alt="pfp" className="pfp-img" />
+                <img src={this.props.src || pfp} alt="pfp" className="pfp-img" />
                 {this.props.input && (
                     <div className="take-photo-filter">
                         { this.state.fileLoading ? (
@@ -178,8 +151,9 @@ class Pfp extends Component {
  
 const mapStateToProps = state => {
     return {
-        isAuthenticated: state.auth.isAuthenticated
+        isAuthenticated: state.auth.isAuthenticated,
+        dynamicCurrentChatRoom: state.chat.currentChatRoom
     }
 }
 
-export default connect(mapStateToProps)(Pfp);
+export default connect(mapStateToProps, { uploadFile })(Pfp);

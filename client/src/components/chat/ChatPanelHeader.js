@@ -25,7 +25,7 @@ class ChatPanelHeader extends Component {
         return (
             <div className="chat-panel-header">
                 <div className="pfp" onClick={this.props.userInfoToggle}>
-                    <img src={pfp} alt="pfp" className="pfp-img" />
+                    <img src={this.props.src || pfp} alt="pfp" className="pfp-img" />
                 </div>
                 <div className="person-info" onClick={this.props.userInfoToggle}>
                     <p className="username">{username}</p>
@@ -45,7 +45,8 @@ class ChatPanelHeader extends Component {
 const mapStateToProps = state => {
     return {
         username: state.auth.user.auth.username,
-        email: state.auth.user.auth.email
+        email: state.auth.user.auth.email,
+        src: state.auth.user.pfpUrl
     }
 }
 

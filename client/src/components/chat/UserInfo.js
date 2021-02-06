@@ -17,7 +17,7 @@ class UserInfo extends Component {
             <div className="header">User Info</div>
         </div>
         <div className="user-main-details">
-            <Pfp pfp={pfp} size="xl" input username={username}/>
+            <Pfp pfp={pfp} size="xl" input username={username} src={this.props.src}/>
             <h3>{username}</h3>
             <p>{email}</p>
             <div className="actions">
@@ -33,7 +33,8 @@ class UserInfo extends Component {
 const mapStateToProps = state => {
   return {
     username: state.auth.user.auth.username,
-    email: state.auth.user.auth.email
+    email: state.auth.user.auth.email,
+    src: state.auth.user.pfpUrl
   }
 }
  
