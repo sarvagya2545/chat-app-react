@@ -1,4 +1,4 @@
-import { OPEN_INFO_PANEL, CLOSE_INFO_PANEL, OPEN_MODAL, CLOSE_MODAL, MODAL_LOADING, MODAL_LOADED, MODAL_SUCCESS, MODAL_ERROR, TOGGLE_ATTACHMENT_PANEL, EXIT_ROOM } from "../actions/types";
+import { OPEN_INFO_PANEL, CLOSE_INFO_PANEL, OPEN_MODAL, CLOSE_MODAL, MODAL_LOADING, MODAL_LOADED, MODAL_SUCCESS, MODAL_ERROR, TOGGLE_ATTACHMENT_PANEL, EXIT_ROOM, LOGOUT_SUCCESS } from "../actions/types";
 
 const initState = {
     infoPanelOpen: false,
@@ -70,6 +70,7 @@ const uiReducer = (state = initState, action) => {
                 attachmentPanelOpen: !state.attachmentPanelOpen
             }
         case EXIT_ROOM:
+        case LOGOUT_SUCCESS:
             return {
                 ...initState
             }
