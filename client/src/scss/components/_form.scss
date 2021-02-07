@@ -14,6 +14,14 @@
             margin-bottom: 20px;
         }
     }
+
+    // removes autofill color
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus, 
+    input:-webkit-autofill:active  {
+        transition-delay: 5000s;
+    }
     
     .input {
         font-size: 1.6rem;
