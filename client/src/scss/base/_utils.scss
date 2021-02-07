@@ -165,7 +165,8 @@
 
         cursor: pointer;
 
-        &:hover .take-photo-filter {
+        &:hover .take-photo-filter,
+        .take-photo-filter.visible {
             position: absolute;
             background-color: rgba(0, 0, 0, 0.5);
             display: block;

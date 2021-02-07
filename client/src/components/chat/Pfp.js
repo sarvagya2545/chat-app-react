@@ -26,7 +26,9 @@ class Pfp extends Component {
                 const fileName = group ? currentChatRoom : username;
                 const folder = group ? 'group-pics' : 'profile-pics';
 
+                this.setState({ fileLoading: true })
                 await this.props.deleteFile({ folder, fileName });
+                this.setState({ fileLoading: false })
             }
             return;
         }
@@ -51,7 +53,9 @@ class Pfp extends Component {
             console.log('fileName', fileName)
             console.log('folder', folder)
 
+            this.setState({ fileLoading: true })
             await this.props.uploadFile({ file, fileName, folder });
+            this.setState({ fileLoading: false })
         }
 
     }
@@ -64,7 +68,7 @@ class Pfp extends Component {
             >
                 <img src={this.props.src || pfp} alt="pfp" className="pfp-img" />
                 {this.props.input && (
-                    <div className="take-photo-filter">
+                    <div className={cx("take-photo-filter", { "visible": this.state.fileLoading })}>
                         { this.state.fileLoading ? (
                             <Loader type="ThreeDots" color="#ffffff"/>
                             ): (
