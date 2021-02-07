@@ -4,7 +4,7 @@ import Loader from 'react-loader-spinner';
 import { withRouter } from 'react-router-dom';
 import ErrBox from '../utils/ErrBox';
 import { connect } from 'react-redux';
-import { resetPassword } from '../../redux/actions/authActions';
+import { resetPassword, logout } from '../../redux/actions/authActions';
 
 class PasswordChange extends Component {
   state = {
@@ -18,6 +18,8 @@ class PasswordChange extends Component {
   }
 
   componentDidMount() {
+    this.props.logout();
+
     const token = new URLSearchParams(this.props.location.search).get("token");
     const userId = this.props.match.params.id;
 
@@ -109,4 +111,4 @@ class PasswordChange extends Component {
   }
 }
  
-export default withRouter(connect(null, { resetPassword })(PasswordChange));
+export default withRouter(connect(null, { resetPassword, logout })(PasswordChange));

@@ -170,7 +170,7 @@ export const googleLogin = resGoogle => dispatch => {
 }
 
 // Send email link to reset password
-export const sendResetPasswordLink = (email) => dispatch => {
+export const sendResetPasswordLink = (email, changeMessage) => dispatch => {
     const config = {
         headers: {
             "Content-Type": "application/json"
@@ -184,11 +184,13 @@ export const sendResetPasswordLink = (email) => dispatch => {
             console.log(res);
             dispatch({ type: MODAL_LOADED })
             dispatch({ type: MODAL_SUCCESS, payload: res.data.msg })
+            changeMessage('Password Reset Link Sent To Email', false);
         })
         .catch(err => {
             dispatch({ type: MODAL_LOADED })
             console.log(err.response.data)
             dispatch({ type: MODAL_ERROR, payload: err.response.data.message })
+            changeMessage('Server error while sending password link', true);
         });
 }
 
