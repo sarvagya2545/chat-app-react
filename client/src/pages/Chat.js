@@ -10,6 +10,7 @@ import AddChat from '../components/chat/AddChat';
 import ChatInfo from '../components/chat/ChatInfo';
 import UserInfo from '../components/chat/UserInfo';
 import AttachmentMenu from '../components/chat/AttachmentMenu';
+import SharePanel from '../components/chat/SharePanel';
 
 class Chat extends Component {
     async componentDidMount() {
@@ -49,6 +50,7 @@ class Chat extends Component {
                           </>
                     }
                     <AttachmentMenu/>
+                    {/* <SharePanel/> */}
                 </div>
                 <ChatInfo/>
             </div>

@@ -1,0 +1,37 @@
+.share-panel {
+  position: absolute;
+  width: 100%;
+  top: 6.5rem;
+  bottom: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  &-header {
+    background-color: $color-primary-3;
+    color: #fff;
+    padding: 1.4rem;
+    display: flex;
+    font-size: 1.8rem;
+
+    .btn-close-preview {
+      background-color: inherit;
+      margin: 0 2rem 0 1.4rem;
+      color: rgba($color: #fff, $alpha: 0.6);
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &-middle {
+    flex: 1;
+    background-color: $color-grey-2;
+  }
+
+  &-footer {
+    background-color: $color-grey-1;
+    height: 10rem;
+  }
+}
