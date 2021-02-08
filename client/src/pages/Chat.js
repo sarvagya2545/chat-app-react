@@ -35,7 +35,7 @@ class Chat extends Component {
     }
 
     render() { 
-        const { currentChatRoom } = this.props;
+        const { currentChatRoom, files } = this.props;
         return (
             <div className="chat-container-main custom-scroll">
                 <AddChat visible={this.state.addChat} addChatToggle={this.addChatToggle}/>
@@ -47,7 +47,7 @@ class Chat extends Component {
                                 <ChatHeading/>              
                                 <ChatBox/>
                                 <ChatForm/>
-                                {/* <SharePanel/> */}
+                                {files.length !== 0 && <SharePanel/>} 
                           </>
                     }
                     <AttachmentMenu/>
@@ -63,7 +63,8 @@ const mapStateToProps = state => {
         isAuthenticated: state.auth.isAuthenticated,
         user: state.auth.user,
         currentChatRoom: state.chat.currentChatRoom,
-        token: state.auth.token
+        token: state.auth.token,
+        files: state.files.filesObject[state.chat.currentChatRoom]
     }
 }
 
