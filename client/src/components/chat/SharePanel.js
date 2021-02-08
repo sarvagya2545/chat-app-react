@@ -1,18 +1,15 @@
 import React, { Component, createRef } from 'react';
 import img from '../../images/img.jpg';
-import img2 from '../../images/img2.jpg';
 import sendIcon from '../../images/send_img.svg';
+import { connect } from 'react-redux';
+import ImgBox from './img-box';
 
 class SharePanel extends Component {
   state = {
-    caption: ''
+    selectedFileIndex: 0
   }
 
   btnRef = createRef();
-
-  onChangeHandler = e => {
-    this.setState({ [e.target.name]: e.target.value })
-  }
 
   onSubmit = e => {
     e.preventDefault();
@@ -20,6 +17,10 @@ class SharePanel extends Component {
 
   click = () => {
     this.btnRef.click();
+  }
+
+  changeSlide = (index) => {
+    this.setState({ selectedFileIndex: index })
   }
 
   render() { 
@@ -32,12 +33,8 @@ class SharePanel extends Component {
         </div>
 
         <div className="share-panel-middle">
-          <img src={img} alt="panel" className="chat-panel-img"/>
+          <img src={this.props.files[this.state.selectedFileIndex].fileUrl} alt="panel" className="chat-panel-img"/>
           <form className="form" style={{ width: '70%', minWidth: '30rem' }} onSubmit={this.onSubmit}>
-            <div className="form-group">
-                <input type="text" name="caption" className="input" placeholder="Add a caption..." value={this.state.caption} onChange={this.onChangeHandler}/> 
-                <label htmlFor="caption">Add a caption...</label>
-            </div>
             <button type="submit" style={{ display: 'none' }} ref={btnRef => this.btnRef = btnRef}/>
           </form>
         </div>
@@ -47,14 +44,14 @@ class SharePanel extends Component {
         </button>
 
         <div className="share-panel-footer">
-          <div className="img-box">
-            <span className="close">&#10005;</span>
-            <img src={img} alt="img"/>
-          </div>
-          <div className="img-box selected">
-            <span className="close">&#10005;</span>
-            <img src={img2} alt="img"/>
-          </div>
+          {this.props.files.map((file,index) => (
+            <ImgBox 
+              imgSrc={file.fileType === 'image' ? file.fileUrl : null} 
+              selected={index === this.state.selectedFileIndex}
+              key={index}
+              onClick={() => this.changeSlide(index)}
+            />
+          ))}
           <div className="img-box add">
             <span className="plus">&#x2B;</span>
             <span className="name">ADD FILE</span>
@@ -65,4 +62,10 @@ class SharePanel extends Component {
   }
 }
  
-export default SharePanel;
+const mapStateToProps = state => {
+  return {
+    files: state.files.filesObject[state.chat.currentChatRoom]
+  }
+}
+
+export default connect(mapStateToProps)(SharePanel);

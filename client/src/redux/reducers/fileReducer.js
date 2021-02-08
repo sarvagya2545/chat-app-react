@@ -9,7 +9,6 @@ const initState = {
     //   }
     // ]
   },
-  currentCarousel: 0
 }
 
 const fileReducer = (state = initState, action) => {
