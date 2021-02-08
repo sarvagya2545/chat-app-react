@@ -3,6 +3,7 @@ import sendIcon from '../../images/send_img.svg';
 import { connect } from 'react-redux';
 import ImgBox from './img-box';
 import { removeFile } from '../../redux/actions/fileActions';
+import fileIcon from '../../images/files.svg';
 
 class SharePanel extends Component {
   state = {
@@ -41,7 +42,22 @@ class SharePanel extends Component {
         </div>
 
         <div className="share-panel-middle">
-          <img src={this.props.files[this.state.selectedFileIndex].fileUrl} alt="panel" className="chat-panel-img"/>
+          {this.props.files[this.state.selectedFileIndex].fileType === 'image' ? (
+            <img 
+              src={this.props.files[this.state.selectedFileIndex].fileUrl} 
+              alt="panel" 
+              className="chat-panel-img"
+            />
+          ) : (
+            <div className="file-preview">
+              <img
+                src={fileIcon}
+                alt="FILE"
+                className="chat-panel-img smol"
+              />
+              <p>{this.props.files[this.state.selectedFileIndex].file.name}</p>
+            </div>
+          )}
           <form className="form" style={{ width: '70%', minWidth: '30rem' }} onSubmit={this.onSubmit}>
             <button type="submit" style={{ display: 'none' }} ref={btnRef => this.btnRef = btnRef}/>
           </form>
