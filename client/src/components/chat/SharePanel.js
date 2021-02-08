@@ -1,8 +1,8 @@
 import React, { Component, createRef } from 'react';
-import img from '../../images/img.jpg';
 import sendIcon from '../../images/send_img.svg';
 import { connect } from 'react-redux';
 import ImgBox from './img-box';
+import { removeFile } from '../../redux/actions/fileActions';
 
 class SharePanel extends Component {
   state = {
@@ -19,7 +19,15 @@ class SharePanel extends Component {
     this.btnRef.click();
   }
 
-  changeSlide = (index) => {
+  changeSlide = (index,e) => {
+    console.log(e.target.dataset);
+
+    if(e.target.dataset.val === 'close') {
+      this.props.removeFile(this.state.selectedFileIndex, this.props.currentChatRoom);
+
+      return;
+    }
+
     this.setState({ selectedFileIndex: index })
   }
 
@@ -49,7 +57,8 @@ class SharePanel extends Component {
               imgSrc={file.fileType === 'image' ? file.fileUrl : null} 
               selected={index === this.state.selectedFileIndex}
               key={index}
-              onClick={() => this.changeSlide(index)}
+              index={index}
+              onClick={e => this.changeSlide(index,e)}
             />
           ))}
           <div className="img-box add">
@@ -64,8 +73,9 @@ class SharePanel extends Component {
  
 const mapStateToProps = state => {
   return {
-    files: state.files.filesObject[state.chat.currentChatRoom]
+    files: state.files.filesObject[state.chat.currentChatRoom],
+    currentChatRoom: state.chat.currentChatRoom
   }
 }
 
-export default connect(mapStateToProps)(SharePanel);
+export default connect(mapStateToProps, { removeFile })(SharePanel);

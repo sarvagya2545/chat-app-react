@@ -1,4 +1,4 @@
-import { ADD_FILES, INIT_FILE_REDUCER } from "../actions/types";
+import { ADD_FILES, INIT_FILE_REDUCER, REMOVE_FILE } from "../actions/types";
 
 const initState = {
   filesObject: {
@@ -24,6 +24,15 @@ const fileReducer = (state = initState, action) => {
         filesObject: {
           ...state.filesObject,
           [action.payload.currentChatRoom]: action.payload.filesObjList
+        }
+      }
+    case REMOVE_FILE: 
+      const currentChatRoom = action.payload.currentChatRoom;
+      return {
+        ...state,
+        filesObject: {
+          ...state.filesObject,
+          [currentChatRoom]: state.filesObject[currentChatRoom].filter((item, index) => index !== action.payload.currentIndex),
         }
       }
     default:
