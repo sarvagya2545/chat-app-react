@@ -47,10 +47,10 @@ class Chat extends Component {
                                 <ChatHeading/>              
                                 <ChatBox/>
                                 <ChatForm/>
+                                {/* <SharePanel/> */}
                           </>
                     }
                     <AttachmentMenu/>
-                    {/* <SharePanel/> */}
                 </div>
                 <ChatInfo/>
             </div>

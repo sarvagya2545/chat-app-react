@@ -125,3 +125,27 @@
         color: $color-primary;
     }
 }
+
+.btn-send-share {
+    width: fit-content;
+    height: fit-content;
+    padding: 1.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $color-secondary;
+
+    position: absolute;
+    right: 5%;
+    bottom: 10%;
+
+    &:hover {
+        cursor: pointer;
+        box-shadow: 5px 10px 10px solid black;
+    }
+
+    img {
+        filter: invert(100%);
+    }
+}

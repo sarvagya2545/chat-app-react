@@ -3,6 +3,7 @@
   width: 100%;
   top: 6.5rem;
   bottom: 0;
+  z-index: 5;
 
   display: flex;
   flex-direction: column;
@@ -28,10 +29,89 @@
   &-middle {
     flex: 1;
     background-color: $color-grey-2;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .chat-panel-img {
+      width: auto;
+      height: auto;
+      max-width: 38rem;
+      max-height: 38rem;
+    }
   }
 
   &-footer {
     background-color: $color-grey-1;
     height: 10rem;
+
+    display: flex;
+    justify-content: center;
+
+    .img-box {
+      width: 7rem;
+      height: 7rem;
+      overflow: hidden;
+
+      position: relative;
+      margin: 1rem;
+      cursor: pointer;
+
+      & > .close {
+        display: none;
+        position: absolute;
+        color: #fff;
+        top: .1rem;
+        right: .4rem;
+      }
+
+      &:hover {
+        .close {
+          display: block;
+        }
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          bottom: 60%;
+          left: 0; 
+          right: 0;
+          background-image: linear-gradient(rgba($color: #000, $alpha: 0.4), transparent);
+        }
+      }
+      
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      &.selected {
+        border: 3px solid #fff;
+      }
+      
+      &.add {
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        color: $color-blue;
+        
+        .plus {
+          font-size: 4rem;
+          margin: -.5rem;
+        }
+        
+        .name {
+          font-size: 1rem;
+        }
+      }
+      
+      img {
+        display: block;
+        min-width: 100%;
+        min-height: 100%;
+      }
+    }
   }
 }
