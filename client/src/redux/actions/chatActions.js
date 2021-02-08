@@ -16,7 +16,8 @@ import {
     GET_ALL_PEOPLE,
     USER_STATUS_CHANGED,
     CLOSE_INFO_PANEL,
-    MESSAGES_LOADED
+    MESSAGES_LOADED,
+    INIT_FILE_REDUCER
 } from './types';
 
 import io from 'socket.io-client';
@@ -79,7 +80,9 @@ export const loadRooms = (token) => async dispatch => {
         // console.log(res);
         rooms = res.data.rooms;
         const roomsObject = convertRoomsArrayToObject(res.data.rooms)
+        const filesObject = createFilesObjectFromRooms(res.data.rooms)
         dispatch({ type: LOAD_ROOMS, payload: { roomsObject, rooms: res.data.rooms } })
+        dispatch({ type: INIT_FILE_REDUCER, payload: filesObject })
         return rooms;
     } catch (error) {
         console.log(error)
@@ -192,4 +195,15 @@ export const getMessagesOfRoom = ({ roomId, token }) => dispatch => {
             dispatch({ type: MESSAGES_LOADED, payload: { roomId, messages } })
         })
         .catch(err => console.log(err));
+}
+
+const createFilesObjectFromRooms = (rooms) => {
+    const obj = {};
+    // console.log('rooms', rooms);
+
+    rooms.forEach(room => {
+        obj[room.roomId] = [];
+    })
+
+    return obj;
 }
