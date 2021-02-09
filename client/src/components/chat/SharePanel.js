@@ -2,7 +2,7 @@ import React, { Component, createRef } from 'react';
 import sendIcon from '../../images/send_img.svg';
 import { connect } from 'react-redux';
 import ImgBox from './img-box';
-import { removeFile, addFiles } from '../../redux/actions/fileActions';
+import { removeFile, addFiles, clearFiles } from '../../redux/actions/fileActions';
 import fileIcon from '../../images/files.svg';
 
 class SharePanel extends Component {
@@ -26,6 +26,7 @@ class SharePanel extends Component {
 
     if(e.target.dataset.val === 'close') {
       this.props.removeFile(e.target.dataset.index, this.props.currentChatRoom);
+      this.setState({ selectedFileIndex: 0 });
 
       return;
     }
@@ -42,12 +43,16 @@ class SharePanel extends Component {
     this.props.addFiles(e.target.files, this.props.currentChatRoom);
   }
 
+  clickClose = e => {
+    this.props.clearFiles(this.props.currentChatRoom);
+  }
+
   render() { 
 
     return (
       <div className="share-panel">
         <div className="share-panel-header">
-          <button className="btn btn-close-preview">&#x2715;</button>
+          <button className="btn btn-close-preview" onClick={this.clickClose}>&#x2715;</button>
           Preview
         </div>
 
@@ -110,4 +115,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { removeFile, addFiles })(SharePanel);
+export default connect(mapStateToProps, { removeFile, addFiles, clearFiles })(SharePanel);

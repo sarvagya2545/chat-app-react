@@ -60,3 +60,4 @@ export const GROUP_PIC_DELETE = "GROUP_PIC_DELETE";
 export const INIT_FILE_REDUCER = 'INIT_FILE_REDUCER';
 export const ADD_FILES = "ADD_FILES";
 export const REMOVE_FILE = "REMOVE_FILE";
+export const CLEAR_GROUP_FILES = "CLEAR_GROUP_FILES";
