@@ -16,7 +16,7 @@ class AttachmentMenu extends Component {
           </li>
           <li>
             <AttachmentInput
-              accept=".txt, .pdf, .doc, .docx, .xls, .xlsx"
+              // accept=".txt, .pdf, .doc, .docx, .xls, .xlsx"
               ui="file"
             />
           </li>

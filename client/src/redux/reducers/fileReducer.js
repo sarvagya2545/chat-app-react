@@ -23,7 +23,7 @@ const fileReducer = (state = initState, action) => {
         ...state,
         filesObject: {
           ...state.filesObject,
-          [action.payload.currentChatRoom]: action.payload.filesObjList
+          [action.payload.currentChatRoom]: [ ...state.filesObject[action.payload.currentChatRoom], ...action.payload.filesObjList ]
         }
       }
     case REMOVE_FILE: 
@@ -32,7 +32,7 @@ const fileReducer = (state = initState, action) => {
         ...state,
         filesObject: {
           ...state.filesObject,
-          [currentChatRoom]: state.filesObject[currentChatRoom].filter((item, index) => index !== action.payload.currentIndex),
+          [currentChatRoom]: state.filesObject[currentChatRoom].filter((item, index) => index != action.payload.currentIndex),
         }
       }
     default:

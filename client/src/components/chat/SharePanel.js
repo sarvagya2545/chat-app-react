@@ -2,7 +2,7 @@ import React, { Component, createRef } from 'react';
 import sendIcon from '../../images/send_img.svg';
 import { connect } from 'react-redux';
 import ImgBox from './img-box';
-import { removeFile } from '../../redux/actions/fileActions';
+import { removeFile, addFiles } from '../../redux/actions/fileActions';
 import fileIcon from '../../images/files.svg';
 
 class SharePanel extends Component {
@@ -11,6 +11,7 @@ class SharePanel extends Component {
   }
 
   btnRef = createRef();
+  inputRef = createRef();
 
   onSubmit = e => {
     e.preventDefault();
@@ -24,12 +25,21 @@ class SharePanel extends Component {
     console.log(e.target.dataset);
 
     if(e.target.dataset.val === 'close') {
-      this.props.removeFile(this.state.selectedFileIndex, this.props.currentChatRoom);
+      this.props.removeFile(e.target.dataset.index, this.props.currentChatRoom);
 
       return;
     }
 
     this.setState({ selectedFileIndex: index })
+  }
+
+  fileAdd = () => {
+    this.inputRef.click();
+  }
+
+  onFileAddition = e => {
+    console.log(e.target.files);
+    this.props.addFiles(e.target.files, this.props.currentChatRoom);
   }
 
   render() { 
@@ -42,7 +52,7 @@ class SharePanel extends Component {
         </div>
 
         <div className="share-panel-middle">
-          {this.props.files[this.state.selectedFileIndex].fileType === 'image' ? (
+          {this.props.files[this.state.selectedFileIndex] && this.props.files[this.state.selectedFileIndex].fileType === 'image' ? (
             <img 
               src={this.props.files[this.state.selectedFileIndex].fileUrl} 
               alt="panel" 
@@ -55,7 +65,7 @@ class SharePanel extends Component {
                 alt="FILE"
                 className="chat-panel-img smol"
               />
-              <p>{this.props.files[this.state.selectedFileIndex].file.name}</p>
+              <p>{this.props.files[this.state.selectedFileIndex] && this.props.files[this.state.selectedFileIndex].file.name}</p>
             </div>
           )}
           <form className="form" style={{ width: '70%', minWidth: '30rem' }} onSubmit={this.onSubmit}>
@@ -77,9 +87,15 @@ class SharePanel extends Component {
               onClick={e => this.changeSlide(index,e)}
             />
           ))}
-          <div className="img-box add">
+          <div className="img-box add" onClick={this.fileAdd}>
             <span className="plus">&#x2B;</span>
             <span className="name">ADD FILE</span>
+            <input 
+              type="file" 
+              style={{ display: 'none' }} 
+              ref={inputRef => this.inputRef = inputRef}
+              onChange={this.onFileAddition}
+            />
           </div>
         </div>
       </div>
@@ -94,4 +110,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { removeFile })(SharePanel);
+export default connect(mapStateToProps, { removeFile, addFiles })(SharePanel);
