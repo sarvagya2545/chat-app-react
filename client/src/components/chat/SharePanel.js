@@ -3,6 +3,7 @@ import sendIcon from '../../images/send_img.svg';
 import { connect } from 'react-redux';
 import ImgBox from './img-box';
 import { removeFile, addFiles, clearFiles } from '../../redux/actions/fileActions';
+import { sendFiles } from '../../redux/actions/chatActions';
 import fileIcon from '../../images/files.svg';
 
 class SharePanel extends Component {
@@ -15,6 +16,9 @@ class SharePanel extends Component {
 
   onSubmit = e => {
     e.preventDefault();
+    const { currentChatRoom, userId, userName, files } = this.props;
+    this.props.sendFiles({ room: currentChatRoom, userId, userName, files });
+    this.props.clearFiles(this.props.currentChatRoom);
   }
 
   click = () => {
@@ -111,8 +115,10 @@ class SharePanel extends Component {
 const mapStateToProps = state => {
   return {
     files: state.files.filesObject[state.chat.currentChatRoom],
-    currentChatRoom: state.chat.currentChatRoom
+    currentChatRoom: state.chat.currentChatRoom,
+    userName: state.auth.user.auth.username,
+    userId: state.auth.user._id
   }
 }
 
-export default connect(mapStateToProps, { removeFile, addFiles, clearFiles })(SharePanel);
+export default connect(mapStateToProps, { removeFile, addFiles, clearFiles, sendFiles })(SharePanel);

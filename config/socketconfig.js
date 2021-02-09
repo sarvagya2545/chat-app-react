@@ -87,12 +87,14 @@ module.exports = (server) => {
             io.to(room).sockets.emit('message', messageObject)
 
             const content = {
-                text: messageObject.text
+                text: messageObject.content.text || '',
+                fileURL: messageObject.content.fileURL || null
             }
 
             const messageId = uuidv4();
 
             console.log(messageId);
+            console.log(content);
 
 
             // Add the message to the database
@@ -111,7 +113,7 @@ module.exports = (server) => {
             try {
                 const roomObj = await Room.findOne({ roomId: room });
                 const prevMessages = roomObj.messages;
-                console.log(prevMessages);
+                // console.log(prevMessages);
                 await roomObj.update({ messages: [ ...prevMessages, newMessage.messageId ] });
                 await newMessage.save(); 
             } catch (err) {

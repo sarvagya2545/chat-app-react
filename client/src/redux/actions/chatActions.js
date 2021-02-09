@@ -23,6 +23,7 @@ import {
 import io from 'socket.io-client';
 import axios from 'axios';
 import { tokenConfig } from './authActions';
+import { app } from '../../firebase';
 let socket;
 let timeout;
 
@@ -101,6 +102,50 @@ export const sendMessage = ({ room, message, userName, userId }) => dispatch => 
         time: new Date()
     };
     socket.emit('message', { room, messageObject });
+}
+
+
+export const sendFiles = ({ room, files, userName, userId }) => async dispatch => {
+
+    console.log(files);
+    // const fileUrls = [];
+
+    const fileUrls = await Promise.all(files.map(file => {
+        return new Promise((resolve, reject) => {
+            const timeStamp = new Date().getTime();
+            const fileName = `${file.file.name.split('.')[0]}-${timeStamp}.${file.file.name.split('.')[1]}`;
+            const storageRef = app.storage().ref().child(`images-in-chats/${room}/${fileName}`);
+            
+            storageRef
+                .put(file.file)
+                .on('state_changed', (snapshot) => {
+
+                }, reject, () => {
+                    storageRef.getDownloadURL()
+                        .then(url => {
+                            resolve(url);
+                        })
+                })
+        })
+    }))
+
+    console.log(fileUrls);
+
+    await Promise.all(fileUrls.map(fileURL => {
+        return new Promise((resolve,reject) => {
+            const messageObject = {
+                room,
+                content: {
+                    fileURL
+                },
+                by: userName,
+                senderId: userId,
+                time: new Date()
+            }
+        
+            socket.emit('message', { room, messageObject })
+        })
+    }))
 }
 
 export const emitTyping = ({ user, roomId }) => dispatch => {
@@ -184,9 +229,7 @@ export const getMessagesOfRoom = ({ roomId, token }) => dispatch => {
             messages = messages.map(message => ({
                 by: message.userName,
                 room: message.roomId,
-                content: {
-                    text: message.content.text,
-                },
+                content: message.content,
                 time: new Date(message.timeStamp),
                 senderId: message.senderId                
             }));
