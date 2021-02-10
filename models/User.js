@@ -25,8 +25,7 @@ const userSchema = mongoose.Schema({
         },
         google: {
             id: {
-                type: String,
-                unique: true
+                type: String
             }
         }
     },
