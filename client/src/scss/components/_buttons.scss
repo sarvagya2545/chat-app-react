@@ -149,3 +149,11 @@
         filter: invert(100%);
     }
 }
+
+.btn-dl {
+    background-color: transparent;
+    img {
+        height: 3rem;
+        width: 3rem;
+    }
+}

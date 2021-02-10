@@ -123,7 +123,7 @@ export const sendFiles = ({ room, files, userName, userId }) => async dispatch =
                 }, reject, () => {
                     storageRef.getDownloadURL()
                         .then(url => {
-                            resolve(url);
+                            resolve({ url, isImage: file.fileType === 'image', fileName });
                         })
                 })
         })
@@ -131,12 +131,14 @@ export const sendFiles = ({ room, files, userName, userId }) => async dispatch =
 
     console.log(fileUrls);
 
-    await Promise.all(fileUrls.map(fileURL => {
+    await Promise.all(fileUrls.map(({ url, isImage, fileName }) => {
         return new Promise((resolve,reject) => {
             const messageObject = {
                 room,
                 content: {
-                    fileURL
+                    fileURL: url,
+                    isImage,
+                    fileName
                 },
                 by: userName,
                 senderId: userId,

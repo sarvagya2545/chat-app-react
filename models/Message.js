@@ -25,7 +25,9 @@ const messageSchema = mongoose.Schema({
     },
     content: {
         text: String,
-        fileURL: String
+        fileURL: String,
+        isImage: Boolean,
+        fileName: String
     }
 })
 

@@ -45,3 +45,21 @@
 
     margin-bottom: .5rem;
 }
+
+.file-dl {
+    display: flex;
+    align-items: center;
+    background-color: darken($color: #8DF7B6, $amount: 30%);
+    padding: 1.2rem;
+    border-radius: 1.2rem;
+
+    .btn-dl {
+        margin-left: 1rem;
+        cursor: pointer;
+    }
+
+    &:hover {
+        background-color: darken($color: #8DF7B6, $amount: 32%);
+        cursor: pointer;
+    }
+}

@@ -88,7 +88,9 @@ module.exports = (server) => {
 
             const content = {
                 text: messageObject.content.text || '',
-                fileURL: messageObject.content.fileURL || null
+                fileURL: messageObject.content.fileURL || null,
+                isImage: messageObject.content.isImage,
+                fileName: messageObject.content.fileName
             }
 
             const messageId = uuidv4();

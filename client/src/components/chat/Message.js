@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
+import FileDownload from './FileDownload';
 
 class Message extends Component {
 
@@ -16,12 +17,13 @@ class Message extends Component {
     }
 
     render() {
-        const { isMine, name, content: { text, fileURL } } = this.props;
+        const { isMine, name, content: { text, fileURL, isImage, fileName } } = this.props;
         return (
             <li className="chat-list-item">
                 <div className={cx("chat-message", { "mine" : isMine }, { "others": !isMine })}>
                     { !isMine ? (<span className="msg-owner-name">{name}</span>) : null }
-                    {fileURL && <img src={fileURL} alt="img" className="chat-msg-img"/>}
+                    { isImage && fileURL && <img src={fileURL} alt="img" className="chat-msg-img"/>}
+                    { !isImage && fileURL && <FileDownload src={fileURL} name={fileName}/> }
                     { text }
                     <span className="chat-message-time">
                         Sent: { this.formatTime(this.props.time) }
