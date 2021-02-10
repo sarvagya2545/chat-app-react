@@ -45,7 +45,9 @@ class UserInfo extends Component {
             <div className="actions">
               <h2>User Actions</h2>
               <p style={{ color: this.colors[this.state.msgStatus], fontSize: '14px' }}>{this.state.msg}</p>
-              <button className="btn btn-submit" onClick={this.changePasswordClick}>Change Password</button>
+              {this.props.method === 'local' && (
+                <button className="btn btn-submit" onClick={this.changePasswordClick}>Change Password</button>
+              )}
             </div>
         </div>
       </div>
@@ -57,7 +59,8 @@ const mapStateToProps = state => {
   return {
     username: state.auth.user.auth.username,
     email: state.auth.user.auth.email,
-    src: state.auth.user.pfpUrl
+    src: state.auth.user.pfpUrl,
+    method: state.auth.user.config.method
   }
 }
  
