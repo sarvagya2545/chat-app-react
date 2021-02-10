@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
 import FileDownload from './FileDownload';
+import ImageDownload from './ImageDownload';
 
 class Message extends Component {
 
@@ -22,7 +23,7 @@ class Message extends Component {
             <li className="chat-list-item">
                 <div className={cx("chat-message", { "mine" : isMine }, { "others": !isMine })}>
                     { !isMine ? (<span className="msg-owner-name">{name}</span>) : null }
-                    { isImage && fileURL && <img src={fileURL} alt="img" className="chat-msg-img"/>}
+                    { isImage && fileURL && <ImageDownload src={fileURL} name={fileName}/>}
                     { !isImage && fileURL && <FileDownload src={fileURL} name={fileName}/> }
                     { text }
                     <span className="chat-message-time">
