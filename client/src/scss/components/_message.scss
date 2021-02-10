@@ -42,8 +42,6 @@
     max-width: 20rem;
     min-height: 20rem;
     min-height: 20rem;
-
-    margin-bottom: .5rem;
 }
 
 .file-dl {
@@ -76,5 +74,39 @@
 
     &:hover {
         background-color: darken($color: #8DF7B6, $amount: 32%);
+    }
+}
+
+.img-download {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: .5rem;
+
+    .filter {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0; right: 0;
+        background-color: rgba($color: #000000, $alpha: 0.2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(5px);
+        opacity: 0;
+
+        transition: opacity .2s ease-in;
+    }
+
+    &:hover {
+        .filter {
+            opacity: 1;
+        }
+
+        .btn-dl {
+            cursor: pointer;
+        }
     }
 }
