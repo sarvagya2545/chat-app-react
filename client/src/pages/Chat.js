@@ -47,7 +47,7 @@ class Chat extends Component {
                                 <ChatHeading/>              
                                 <ChatBox/>
                                 <ChatForm/>
-                                {files.length !== 0 && <SharePanel/>} 
+                                {files && files.length !== 0 && <SharePanel/>} 
                           </>
                     }
                     <AttachmentMenu/>

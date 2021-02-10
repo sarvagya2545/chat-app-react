@@ -1,4 +1,4 @@
-import { ADD_FILES, CLEAR_GROUP_FILES, INIT_FILE_REDUCER, REMOVE_FILE } from "../actions/types";
+import { ADD_FILES, CLEAR_GROUP_FILES, EXIT_ROOM, INIT_FILE_REDUCER, JOIN_ROOM, REMOVE_FILE, ROOM_CREATED } from "../actions/types";
 
 const initState = {
   filesObject: {
@@ -17,6 +17,21 @@ const fileReducer = (state = initState, action) => {
       return {
         ...state,
         filesObject: action.payload
+      }
+    case JOIN_ROOM:
+    case ROOM_CREATED:
+      return {
+        ...state,
+        filesObject: {
+          ...state.filesObject,
+          [action.payload.roomId]: []
+        }
+      }
+    case EXIT_ROOM:
+      const { [action.payload]: roomId, ...newFilesObject } = state.filesObject;
+      return {
+        ...state,
+        filesObject: newFilesObject
       }
     case ADD_FILES:
       return {
