@@ -54,6 +54,7 @@ export const connectToSocket = (rooms, user) => dispatch => {
 
     socket.on('addToRoom', ({ room }) => {
         dispatch({ type: JOIN_ROOM, payload: room })
+        dispatch({ type: MESSAGES_LOADED, payload: { roomId: room.roomId, messages: [] } })
     })
 
     socket.on('exitRoom', ({ user: { userId, userName }, room }) => {
