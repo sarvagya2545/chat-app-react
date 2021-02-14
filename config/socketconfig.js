@@ -113,10 +113,7 @@ module.exports = (server) => {
             console.log(messageId);
 
             try {
-                const roomObj = await Room.findOne({ roomId: room });
-                const prevMessages = roomObj.messages;
-                // console.log(prevMessages);
-                await roomObj.update({ messages: [ ...prevMessages, newMessage.messageId ] });
+                await Room.update({ roomId: room },{ $push: { messages: messageId } });
                 await newMessage.save(); 
             } catch (err) {
                 console.log(err);
