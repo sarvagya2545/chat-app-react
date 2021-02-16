@@ -87,7 +87,7 @@ export const connectToSocket = (rooms, user) => dispatch => {
     
     socket.on('pfpRemove', (obj) => {
         console.log('obj', obj);
-        const { isGroupImg, user, payload, currentUserId } = obj;
+        const { isGroupImg, payload, currentUserId } = obj;
 
         if(isGroupImg) {
             dispatch({ type: GROUP_PIC_DELETE, payload })

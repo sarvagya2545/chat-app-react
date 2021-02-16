@@ -9,9 +9,21 @@ class ChatRooms extends Component {
         this.props.changeChatRoomTo(roomId)
     }
 
-    getRoomLastMessage = (roomId) => {
-        const content = this.props.rooms.filter(room => room.roomId === roomId)[0].messages.messages;
-        console.log('content', content)
+    getRoomLastMessage = (room) => {
+        if(room.messages.messageLoad) return 'Loading...';
+
+        if(room.messages.messages[room.messages.messages.length - 1]) {
+            const message = room.messages.messages[room.messages.messages.length - 1];
+            const content = message.content
+
+            if(content.fileURL) {
+                return `${message.by}: ${content.isImage ? 'Image' : 'File'}`;
+            }
+
+            return `${message.by}: ${content.text}`;
+        }
+    
+        return 'T';
     }
 
     render() {
@@ -26,6 +38,7 @@ class ChatRooms extends Component {
                             name={room.roomName}
                             isTyping={room.typing}
                             src={room.pfpUrl}
+                            message={(() => this.getRoomLastMessage(room))()}
                         />
                     )
                 })}
