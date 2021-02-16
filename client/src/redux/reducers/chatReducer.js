@@ -3,7 +3,6 @@ import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATED, EXI
 const initState = {
     connected: false,
     chatRoomsObject: {},
-    chatRooms: [],
     currentChatRoom: null,
     peopleList: {},
     onlineUserIds: []
@@ -24,7 +23,6 @@ const chatReducer = (state = initState, action) => {
         case LOAD_ROOMS:
             return {
                 ...state,
-                chatRooms: action.payload.rooms,
                 chatRoomsObject: action.payload.roomsObject
             }
         case CHANGE_CURRENT_ROOM: 
@@ -36,7 +34,6 @@ const chatReducer = (state = initState, action) => {
         case ROOM_CREATED:
             return {
                 ...state,
-                chatRooms: [ ...state.chatRooms, action.payload ],
                 chatRoomsObject: {
                     ...state.chatRoomsObject,
                     [action.payload.roomId]: action.payload
@@ -46,7 +43,6 @@ const chatReducer = (state = initState, action) => {
             const { [action.payload]: roomId , ...newChatRooms } = state.chatRoomsObject
             return {
                 ...state,
-                chatRooms: state.chatRooms.filter(room => room.roomId !== roomId.roomId),
                 chatRoomsObject: newChatRooms,
                 currentChatRoom: null
             }   
@@ -67,22 +63,7 @@ const chatReducer = (state = initState, action) => {
                             ]
                         }
                     }
-                },
-                chatRooms: state.chatRooms.map(room => {
-                    if(action.payload.room === room.roomId) {
-                        return {
-                            ...room,
-                            messages: {
-                                ...roomObject.messages,
-                                messages: [
-                                    ...messages.messages,
-                                    action.payload
-                                ]
-                            }
-                        }
-                    }
-                    return room;
-                })
+                }
             }
         case TYPING_START: 
             return {
@@ -95,19 +76,7 @@ const chatReducer = (state = initState, action) => {
                             user: action.payload.user
                         }
                     }
-                },
-                chatRooms: state.chatRooms.map(room => {
-                    if (room.roomId === action.payload.roomId) {
-                        return {
-                            ...room,
-                            typing: {
-                                user: action.payload.user
-                            }
-                        }
-                    }
-
-                    return room;
-                })
+                }
             }
         case TYPING_END:
             return {
@@ -118,17 +87,7 @@ const chatReducer = (state = initState, action) => {
                         ...state.chatRoomsObject[action.payload.roomId],
                         typing: null
                     }
-                },
-                chatRooms: state.chatRooms.map(room => {
-                    if (room.roomId === action.payload.roomId) {
-                        return {
-                            ...room,
-                            typing: undefined
-                        }
-                    }
-
-                    return room;
-                })
+                }
             }
         case GET_ALL_PEOPLE: 
             return {
@@ -150,13 +109,7 @@ const chatReducer = (state = initState, action) => {
                         ...chatRoom,
                         people: chatRoom.people.filter(person => person !== action.payload.userId)
                     }
-                },
-                chatRooms: state.chatRooms.map(room => {
-                    return {
-                        ...room,
-                        people: room.people.filter(person => person !== action.payload.userId)
-                    }
-                })
+                }
             }
         case LOGOUT_SUCCESS:
             return {
@@ -174,14 +127,7 @@ const chatReducer = (state = initState, action) => {
                             messages: action.payload.messages
                         }
                     }
-                },
-                chatRooms: state.chatRooms.map(room => ({
-                    ...room,
-                    messages: {
-                        messageLoad: false,
-                        messages: action.payload.messages
-                    }
-                }))
+                }
             }
         case GROUP_PIC_UPLOAD:
             return {
@@ -192,16 +138,7 @@ const chatReducer = (state = initState, action) => {
                         ...state.chatRoomsObject[action.payload.roomId],
                         pfpUrl: action.payload.url
                     }
-                },
-                chatRooms: state.chatRooms.map(room => {
-                    if(room.roomId !== action.payload.roomId)
-                        return room;
-
-                    return {
-                        ...room,
-                        pfpUrl: action.payload.url
-                    }
-                })
+                }
             }
         case GROUP_PIC_DELETE:
             return {
@@ -212,16 +149,7 @@ const chatReducer = (state = initState, action) => {
                         ...state.chatRoomsObject[action.payload.roomId],
                         pfpUrl: ''
                     }
-                },
-                chatRooms: state.chatRooms.map(room => {
-                    if(room.roomId !== action.payload.roomId)
-                        return room;
-
-                    return {
-                        ...room,
-                        pfpUrl: ''
-                    }
-                })
+                }
             }
         case OTHER_PROFILE_PIC_UPLOAD:
             return {

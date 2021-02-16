@@ -9,10 +9,15 @@ class ChatRooms extends Component {
         this.props.changeChatRoomTo(roomId)
     }
 
+    getRoomLastMessage = (roomId) => {
+        const content = this.props.rooms.filter(room => room.roomId === roomId)[0].messages.messages;
+        console.log('content', content)
+    }
+
     render() {
         return (
             <ul>
-                {this.props.rooms.map(room => {
+                {Object.values(this.props.chatRoomsObject).map(room => {
                     return (
                         <ChatRoomListItem
                             selected={room.roomId === this.props.currentChatRoom}
@@ -31,8 +36,8 @@ class ChatRooms extends Component {
  
 const mapStateToProps = state => {
     return  {
-        rooms: state.chat.chatRooms,
-        currentChatRoom: state.chat.currentChatRoom
+        currentChatRoom: state.chat.currentChatRoom,
+        chatRoomsObject: state.chat.chatRoomsObject
     }
 }
 

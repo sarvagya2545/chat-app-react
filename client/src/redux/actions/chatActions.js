@@ -111,7 +111,7 @@ export const loadRooms = (token) => async dispatch => {
         rooms = res.data.rooms;
         const roomsObject = convertRoomsArrayToObject(res.data.rooms)
         const filesObject = createFilesObjectFromRooms(res.data.rooms)
-        dispatch({ type: LOAD_ROOMS, payload: { roomsObject, rooms: res.data.rooms } })
+        dispatch({ type: LOAD_ROOMS, payload: { roomsObject } })
         dispatch({ type: INIT_FILE_REDUCER, payload: filesObject })
         return rooms;
     } catch (error) {
