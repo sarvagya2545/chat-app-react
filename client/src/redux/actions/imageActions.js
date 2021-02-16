@@ -2,8 +2,9 @@ import axios from 'axios';
 import { app } from '../../firebase';
 import { tokenConfig } from './authActions';
 import { PROFILE_PIC_UPLOAD, GROUP_PIC_UPLOAD, GROUP_PIC_DELETE, PROFILE_PIC_DELETE } from './types';
+import { changePfp, deletePfp } from './chatActions';
 
-export const uploadFile = ({ fileName, folder, file }) => async dispatch => {
+export const uploadFile = ({ fileName, folder, file, currentUserId }) => async dispatch => {
     const storageRef = app.storage().ref();
     const fileRef = storageRef.child(`${folder}/${fileName}`);
     const isGroupImg = folder === 'group-pics';
@@ -24,17 +25,19 @@ export const uploadFile = ({ fileName, folder, file }) => async dispatch => {
             { url: fileUrl, ...body }, 
             tokenConfig()
         )
-        .then(res => {
+        .then(async res => {
             const type = isGroupImg ? GROUP_PIC_UPLOAD : PROFILE_PIC_UPLOAD;
             const payload =  isGroupImg ? { url: fileUrl, roomId: fileName } : { url: fileUrl };
             dispatch({ type , payload })
+            console.log('run', currentUserId);
+            await changePfp({ isGroupImg, payload, user: fileName, currentUserId });
         })
         .catch(err => {
             console.log(err.response);
         });
 }
 
-export const deleteFile = ({ folder, fileName }) => async dispatch => {
+export const deleteFile = ({ folder, fileName, currentUserId }) => async dispatch => {
     const storageRef = app.storage().ref();
     const fileRef = storageRef.child(`${folder}/${fileName}`);
     const isGroupImg = folder === 'group-pics';
@@ -56,10 +59,11 @@ export const deleteFile = ({ folder, fileName }) => async dispatch => {
         .delete(`/api/${isGroupImg ? "rooms" : "users"}/profile/pic`,
             { ...tokenConfig(), data: body },
         )
-        .then(res => {
+        .then(async res => {
             const type = isGroupImg ? GROUP_PIC_DELETE : PROFILE_PIC_DELETE;
             const payload = isGroupImg ? { roomId: fileName } : {};
             dispatch({ type, payload });
+            await deletePfp({ isGroupImg, payload, user: fileName, currentUserId })
         })
         .catch(err => console.log(err.response));
 }

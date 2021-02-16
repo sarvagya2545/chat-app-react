@@ -120,6 +120,24 @@ module.exports = (server) => {
             }
         })
 
+        socket.on('pfpChange', (data) => {
+            console.log('pfp CHANGED')
+            if(data.isGroupImg) {
+                io.to(data.payload.roomId).sockets.emit('pfpChange', data);
+            } else {
+                socket.broadcast.emit('pfpChange', data);
+            }
+        })
+
+        socket.on('pfpRemove', (data) => {
+            console.log('pfp REMOVED')
+            if(data.isGroupImg) {
+                io.to(data.payload.roomId).sockets.emit('pfpRemove', data);
+            } else {
+                io.sockets.emit('pfpRemove', data);
+            }
+        })
+
         socket.on("typing", ({ user, roomId }) => {
             // console.log(user)
             // console.log(roomId)

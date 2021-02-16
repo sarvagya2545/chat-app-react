@@ -21,13 +21,13 @@ class Pfp extends Component {
             let isDelete = window.confirm('DO YOU REALLY WANT TO REMOVE THE PICTURE?');
 
             if(isDelete) {
-                const { group, currentChatRoom, username } = this.props;
+                const { group, currentChatRoom, username, currentUserId } = this.props;
 
                 const fileName = group ? currentChatRoom : username;
                 const folder = group ? 'group-pics' : 'profile-pics';
 
                 this.setState({ fileLoading: true })
-                await this.props.deleteFile({ folder, fileName });
+                await this.props.deleteFile({ folder, fileName, currentUserId });
                 this.setState({ fileLoading: false })
             }
             return;
@@ -40,7 +40,7 @@ class Pfp extends Component {
     fileChange = async e => {
         console.log(e.target.files);
 
-        const { username, currentChatRoom, group } = this.props;
+        const { username, currentChatRoom, group, currentUserId } = this.props;
 
         const files = e.target.files;
         if(files.length  !== 0) {
@@ -54,7 +54,7 @@ class Pfp extends Component {
             console.log('folder', folder)
 
             this.setState({ fileLoading: true })
-            await this.props.uploadFile({ file, fileName, folder });
+            await this.props.uploadFile({ file, fileName, folder, currentUserId });
             this.setState({ fileLoading: false })
         }
 
@@ -106,7 +106,8 @@ class Pfp extends Component {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.isAuthenticated,
-        currentChatRoom: state.chat.currentChatRoom
+        currentChatRoom: state.chat.currentChatRoom,
+        currentUserId: state.auth.user._id
     }
 }
 

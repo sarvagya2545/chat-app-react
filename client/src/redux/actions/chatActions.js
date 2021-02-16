@@ -17,7 +17,12 @@ import {
     USER_STATUS_CHANGED,
     CLOSE_INFO_PANEL,
     MESSAGES_LOADED,
-    INIT_FILE_REDUCER
+    INIT_FILE_REDUCER,
+    GROUP_PIC_UPLOAD,
+    GROUP_PIC_DELETE,
+    PROFILE_PIC_UPLOAD,
+    OTHER_PROFILE_PIC_UPLOAD,
+    OTHER_PROFILE_PIC_DELETE
 } from './types';
 
 import io from 'socket.io-client';
@@ -66,6 +71,29 @@ export const connectToSocket = (rooms, user) => dispatch => {
         // console.log(onlineUsers)
         const onlineUserIds = onlineUsers.map(onlineUser => onlineUser.id)
         dispatch({ type: USER_STATUS_CHANGED, payload: onlineUserIds })
+    })
+
+    socket.on("pfpChange", (obj) => {
+        // handle profile pic changed
+        console.log('obj',obj);
+        const { isGroupImg, user, payload, currentUserId } = obj;
+        
+        if(isGroupImg) {
+            dispatch({ type: GROUP_PIC_UPLOAD, payload })
+        } else {
+            dispatch({ type: OTHER_PROFILE_PIC_UPLOAD, payload: { url: payload.url, user, id: currentUserId } })
+        }
+    })
+    
+    socket.on('pfpRemove', (obj) => {
+        console.log('obj', obj);
+        const { isGroupImg, user, payload, currentUserId } = obj;
+
+        if(isGroupImg) {
+            dispatch({ type: GROUP_PIC_DELETE, payload })
+        } else {
+            dispatch({ type: OTHER_PROFILE_PIC_DELETE, payload: { id: currentUserId } })
+        }
     })
 }
 
@@ -241,6 +269,16 @@ export const getMessagesOfRoom = ({ roomId, token }) => dispatch => {
             dispatch({ type: MESSAGES_LOADED, payload: { roomId, messages } })
         })
         .catch(err => console.log(err));
+}
+
+export const changePfp = ({ isGroupImg, payload, user, currentUserId }) => {
+    console.log('change pfp')
+    socket.emit('pfpChange', { isGroupImg, payload, user, currentUserId })
+}
+
+export const deletePfp = ({ isGroupImg, payload, user, currentUserId }) => {
+    console.log('remove pfp');
+    socket.emit('pfpRemove', { isGroupImg, payload, user, currentUserId });
 }
 
 const createFilesObjectFromRooms = (rooms) => {
