@@ -18,7 +18,7 @@ class ImageDownload extends Component {
       <div className="img-download">
         <img src={this.props.src} alt="img" className="chat-msg-img"/>
         <div className="filter">
-          <button className="btn btn-dl" onClick={e => this.downloadFile(this.props.src, this.props.name)}>
+          <button className="btn btn-dl btn-dl-img" onClick={e => this.downloadFile(this.props.src, this.props.name)}>
             <img src={download} alt="download"/>
           </button>
         </div>
