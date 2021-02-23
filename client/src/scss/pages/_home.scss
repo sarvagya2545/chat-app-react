@@ -1,6 +1,10 @@
 .home {
     display: flex;
     height: 100vh;
+
+    @include respond(tab-port) {
+        flex-direction: column;
+    }
 }
 
 .hero-section {
@@ -8,6 +12,16 @@
     background-size: cover;
     padding: 5em 5.37em;
     flex: 1;
+
+    @include respond(tab-port) {
+        padding: 4em;
+        padding-bottom: 2em;
+    }
+
+    @include respond(phone) {
+        padding: 3em 2em;
+        height: 100%;
+    }
 }
 
 .login-or-signup {
@@ -16,6 +30,11 @@
     position: relative;
     display: flex;
     flex-direction: column;
+
+    @include respond(tab-port) {
+        width: 100%;
+        height: 70vh;
+    }
 }
 
 .tab-group {

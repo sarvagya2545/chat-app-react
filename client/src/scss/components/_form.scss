@@ -3,6 +3,19 @@
     display: flex;
     flex-direction: column;
     padding: 3rem 2rem;
+
+    @include respond(tab-port) {
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        
+        @supports((grid-column-gap: 1rem)) {
+            grid-column-gap: 2rem;
+        }
+    }
+
+    @include respond(phone) {
+        display: flex;
+    }
     
     .form-group {
         display: flex;
@@ -12,6 +25,12 @@
         
         &:last-of-type {
             margin-bottom: 20px;
+        }
+        
+        @include respond(tab-port) {
+            &:last-of-type {
+                margin-bottom: 10px;
+            }
         }
     }
 
