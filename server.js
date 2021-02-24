@@ -16,7 +16,8 @@ const cors = require('cors')
 // Middleware
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-app.use(cors())
+if(process.env.NODE_ENV !== 'production')
+    app.use(cors())
 
 // Mongoose connect
 const db = require('./config/keys').mongoURI;

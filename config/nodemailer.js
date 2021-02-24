@@ -33,7 +33,6 @@ module.exports.createAndSendMail = ({ to, token, userId }) => {
   transporter.sendMail(mailOptions, (err, info) => {
     if(err) {
       throw err;
-      // return console.log(err);
     }
   
     console.log('Message sent: ', info.messageId);
