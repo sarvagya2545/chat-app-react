@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ChatBox from '../components/chat/ChatBox';
 import ChatForm from '../components/chat/ChatForm';
 import ChatHeading from '../components/chat/ChatHeading';
-import { connectToSocket, disconnectFromSocket, loadRooms } from '../redux/actions/chatActions';
+import { connectToSocket, disconnectFromSocket, loadRooms, getMessagesOfRoom } from '../redux/actions/chatActions';
 import { connect } from 'react-redux';
 import EmptyChat from '../components/chat/EmptyChat';
 import ChatPanel from '../components/chat/ChatPanel';
@@ -17,6 +17,14 @@ class Chat extends Component {
         const rooms = await this.props.loadRooms(this.props.token);
         const userId = this.props.user._id;
         this.props.connectToSocket(rooms, userId);
+        await this.loadMessagesOfRooms();
+    }
+
+    loadMessagesOfRooms = () => {
+        const { chatRoomsObject } = this.props;
+        Object.values(chatRoomsObject).forEach(async room => {
+            await this.props.getMessagesOfRoom({ roomId: room.roomId, token: this.props.token })
+        })
     }
 
     componentWillUnmount() {
@@ -64,8 +72,9 @@ const mapStateToProps = state => {
         user: state.auth.user,
         currentChatRoom: state.chat.currentChatRoom,
         token: state.auth.token,
-        files: state.files.filesObject[state.chat.currentChatRoom]
+        files: state.files.filesObject[state.chat.currentChatRoom],
+        chatRoomsObject: state.chat.chatRoomsObject
     }
 }
 
-export default connect(mapStateToProps, { connectToSocket, disconnectFromSocket, loadRooms })(Chat);
+export default connect(mapStateToProps, { connectToSocket, disconnectFromSocket, loadRooms, getMessagesOfRoom })(Chat);

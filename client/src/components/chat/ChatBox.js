@@ -7,7 +7,6 @@ import { getMessagesOfRoom } from '../../redux/actions/chatActions';
 class ChatBox extends Component {
     async componentDidMount() {
         this.scrollToBottom();
-        await this.getMessagesOfRoom()
     }
 
     scrollToBottom = () => {
@@ -16,15 +15,6 @@ class ChatBox extends Component {
 
     async componentDidUpdate() {
         this.scrollToBottom();
-        await this.getMessagesOfRoom();
-    }
-
-    async getMessagesOfRoom() {
-        const { token, roomId, messages: { messageLoad } } = this.props;
-
-        if(messageLoad){
-            await this.props.getMessagesOfRoom({ token, roomId });
-        }
     }
 
     isMine(by) {
