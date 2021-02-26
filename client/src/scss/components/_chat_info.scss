@@ -3,6 +3,10 @@
     background-color: #f5f5f5;
     overflow: scroll;
     height: 100vh;
+
+    @include respond(tab-land) {
+        width: $sidebar-size-tab-land;
+    }
 }
 
 .group-info-header {

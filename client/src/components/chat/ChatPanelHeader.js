@@ -27,7 +27,7 @@ class ChatPanelHeader extends Component {
                 <div className="pfp" onClick={this.props.userInfoToggle}>
                     <img src={this.props.src || pfp} alt="pfp" className="pfp-img" />
                 </div>
-                <div className="person-info" onClick={this.props.userInfoToggle}>
+                <div className="person-info person-info-responsive" onClick={this.props.userInfoToggle}>
                     <p className="username">{username}</p>
                     <p className="email">{email}</p>
                 </div>

@@ -4,6 +4,11 @@
     display: flex;
     flex-direction: column;
     font-family: 'Montserrat', sans-serif;
+    position: relative;
+
+    @include respond(tab-land) {
+        width: $sidebar-size-tab-land;
+    }
 
     &-header {
         background-color: $color-grey-light;
@@ -38,6 +43,10 @@
             cursor: pointer;
             display: flex;
             align-items: center;
+
+            @include respond(tab-port) {
+                display: none;
+            }
         }
 
         .pfp-img, .person-info {
@@ -57,6 +66,11 @@
     position: absolute;
     height: 100vh;
     width: $sidebar-size;
+    
+    @include respond(tab-land) {
+        width: $sidebar-size-tab-land;
+    }
+
     transition: transform .3s ease-out;
     background-color: #fff;
     font-family: 'Montserrat', sans-serif;

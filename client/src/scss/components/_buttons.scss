@@ -167,3 +167,31 @@
         background-color: rgba($color: $color-light-primary, $alpha: 0.3);
     }
 }
+
+.btn-add-chat-fab {
+    display: none;
+
+    @include respond(tab-port) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: absolute;
+        bottom: 2rem;
+        right: 2rem;
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        background-color: darken($color-secondary, 7%);
+        box-shadow: 0 5px 10px rgba($color: #000000, $alpha: 0.3);
+
+        &:hover {
+            box-shadow: 0 8px 10px rgba($color: #000000, $alpha: 0.3);
+            cursor: pointer;
+        }
+        
+        img {
+            filter: invert(1);
+        }
+    }
+}

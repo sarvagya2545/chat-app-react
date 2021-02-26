@@ -3,6 +3,7 @@ import ChatPanelHeader from './ChatPanelHeader';
 import ChatRooms from './ChatRooms';
 import { connect } from 'react-redux';
 import EnterUsername from './EnterUsername';
+import AddChatFAB from './AddChatFAB';
 
 class ChatPanel extends Component {
     state = {  }
@@ -16,6 +17,7 @@ class ChatPanel extends Component {
                     <>
                         <ChatPanelHeader addChatToggle={addChatToggle} userInfoToggle={userInfoToggle}/>
                         <ChatRooms/>
+                        <AddChatFAB addChatToggle={addChatToggle}/>
                     </>
                 )}
             </div>

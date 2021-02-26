@@ -6,7 +6,7 @@ import Truncate from 'react-truncate';
 
 class ChatRoomListItem extends Component {
     getMessage() {
-        let finalMsg = this.props.message !== 'T' ? this.props.message : 'Empty...'
+        let finalMsg = this.props.message !== 'T' ? this.props.message : null
         return finalMsg;
     }
 
@@ -24,7 +24,7 @@ class ChatRoomListItem extends Component {
                         <p>{name || "Name"}</p>
                         <span className={cx({ 'typing': isTyping })}>
                             <Truncate lines={1}>
-                                {isTyping ? `${isTyping.user} is typing...` : this.getMessage()}
+                                {isTyping ? `${isTyping.user} is typing...` : (this.getMessage())}
                             </Truncate>
                         </span>
                     </div>
