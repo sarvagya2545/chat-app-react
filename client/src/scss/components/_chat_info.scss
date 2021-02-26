@@ -7,6 +7,14 @@
     @include respond(tab-land) {
         width: $sidebar-size-tab-land;
     }
+
+
+    @include respond(tab-port) {
+        position: absolute;
+        right: 0;
+        left: $sidebar-size-tab-land;
+        width: 70%;
+    }
 }
 
 .group-info-header {
