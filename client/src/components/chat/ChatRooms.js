@@ -12,7 +12,7 @@ class ChatRooms extends Component {
     getRoomLastMessage = (room) => {
         if(room.messages.messageLoad) return 'Loading...';
 
-        if(room.messages.messages[room.messages.messages.length - 1]) {
+        if(room.messages.messages && room.messages.messages[room.messages.messages.length - 1]) {
             const message = room.messages.messages[room.messages.messages.length - 1];
             const content = message.content
 
