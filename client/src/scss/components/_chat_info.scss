@@ -15,6 +15,13 @@
         left: $sidebar-size-tab-land;
         width: 70%;
     }
+
+    @include respond(tab-port) {
+        position: absolute;
+        right: 0;
+        left: $sidebar-size-tab-port;
+        width: 60%;
+    }
 }
 
 .group-info-header {

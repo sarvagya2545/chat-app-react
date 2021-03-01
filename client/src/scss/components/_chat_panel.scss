@@ -10,6 +10,10 @@
         width: $sidebar-size-tab-land;
     }
 
+    @include respond(tab-port) {
+        width: $sidebar-size-tab-port;
+    }
+
     &-header {
         background-color: $color-grey-light;
         padding: 1rem 1.6rem;
@@ -69,6 +73,10 @@
     
     @include respond(tab-land) {
         width: $sidebar-size-tab-land;
+    }
+
+    @include respond(tab-port) {
+        width: $sidebar-size-tab-port;
     }
 
     transition: transform .3s ease-out;
