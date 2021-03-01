@@ -9,5 +9,10 @@
 
     &-img {
         height: 80vh;
+        width: 80%;
+    }
+
+    @include respond(phone) {
+        display: none;
     }
 }

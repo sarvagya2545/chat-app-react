@@ -11,6 +11,7 @@ import ChatInfo from '../components/chat/ChatInfo';
 import UserInfo from '../components/chat/UserInfo';
 import AttachmentMenu from '../components/chat/AttachmentMenu';
 import SharePanel from '../components/chat/SharePanel';
+import cx from 'classnames';
 
 class Chat extends Component {
     async componentDidMount() {
@@ -49,14 +50,14 @@ class Chat extends Component {
                 <AddChat visible={this.state.addChat} addChatToggle={this.addChatToggle}/>
                 <UserInfo visible={this.state.userInfo} userInfoToggle={this.userInfoToggle}/>
                 <ChatPanel addChatToggle={this.addChatToggle} userInfoToggle={this.userInfoToggle}/>
-                <div className="chat-main">
+                <div className={cx("chat-main", { "visible" : currentChatRoom !== null })}>
                     {currentChatRoom === null ? 
                         <EmptyChat/> : <>
                                 <ChatHeading/>              
                                 <ChatBox/>
                                 <ChatForm/>
                                 {files && files.length !== 0 && <SharePanel/>} 
-                          </>
+                        </>
                     }
                     <AttachmentMenu/>
                 </div>
