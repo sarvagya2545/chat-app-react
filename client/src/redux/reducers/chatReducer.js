@@ -1,4 +1,4 @@
-import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATED, EXIT_ROOM, RECIEVE_MESSAGE, TYPING_START, TYPING_END, GET_ALL_PEOPLE, USER_STATUS_CHANGED, USER_LEAVE, JOIN_ROOM, LOGOUT_SUCCESS, MESSAGES_LOADED, GROUP_PIC_UPLOAD, GROUP_PIC_DELETE, OTHER_PROFILE_PIC_UPLOAD, OTHER_PROFILE_PIC_DELETE } from '../actions/types';
+import { LOAD_ROOMS, CONNECT, DISCONNECT, CHANGE_CURRENT_ROOM, ROOM_CREATED, EXIT_ROOM, RECIEVE_MESSAGE, TYPING_START, TYPING_END, GET_ALL_PEOPLE, USER_STATUS_CHANGED, USER_LEAVE, JOIN_ROOM, LOGOUT_SUCCESS, MESSAGES_LOADED, GROUP_PIC_UPLOAD, GROUP_PIC_DELETE, OTHER_PROFILE_PIC_UPLOAD, OTHER_PROFILE_PIC_DELETE, CLOSE_ROOM } from '../actions/types';
 
 const initState = {
     connected: false,
@@ -29,6 +29,11 @@ const chatReducer = (state = initState, action) => {
             return {
                 ...state,
                 currentChatRoom: action.payload
+            }
+        case CLOSE_ROOM:
+            return {
+                ...state,
+                currentChatRoom: null
             }
         case JOIN_ROOM:
         case ROOM_CREATED:

@@ -22,7 +22,8 @@ import {
     GROUP_PIC_DELETE,
     PROFILE_PIC_UPLOAD,
     OTHER_PROFILE_PIC_UPLOAD,
-    OTHER_PROFILE_PIC_DELETE
+    OTHER_PROFILE_PIC_DELETE,
+    CLOSE_ROOM
 } from './types';
 
 import io from 'socket.io-client';
@@ -279,6 +280,11 @@ export const changePfp = ({ isGroupImg, payload, user, currentUserId }) => {
 export const deletePfp = ({ isGroupImg, payload, user, currentUserId }) => {
     console.log('remove pfp');
     socket.emit('pfpRemove', { isGroupImg, payload, user, currentUserId });
+}
+
+export const closeCurrentRoom = () => dispatch => {
+    console.log('close-current-room')
+    dispatch({ type: CLOSE_ROOM });
 }
 
 const createFilesObjectFromRooms = (rooms) => {

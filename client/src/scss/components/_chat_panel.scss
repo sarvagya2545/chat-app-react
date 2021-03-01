@@ -14,6 +14,10 @@
         width: $sidebar-size-tab-port;
     }
 
+    @include respond(phone) {
+        width: 100vw;
+    }
+
     &-header {
         background-color: $color-grey-light;
         padding: 1rem 1.6rem;
@@ -77,6 +81,10 @@
 
     @include respond(tab-port) {
         width: $sidebar-size-tab-port;
+    }
+
+    @include respond(phone) {
+        width: 100vw;
     }
 
     transition: transform .3s ease-out;

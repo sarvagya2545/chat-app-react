@@ -4,8 +4,9 @@ import pfp from '../../images/pfp.svg';
 import ChatPerson from '../chat/ChatPerson';
 import { connect } from 'react-redux';
 import { openInfoPanel } from '../../redux/actions/uiActions';
-import { exitChatRoom } from '../../redux/actions/chatActions';
+import { exitChatRoom, closeCurrentRoom } from '../../redux/actions/chatActions';
 import DropDown from '../utils/DropDown';
+import goBack from '../../images/go_back.svg';
 
 class ChatHeading extends Component {
     listOfItems = [
@@ -21,9 +22,16 @@ class ChatHeading extends Component {
         }
     ];
 
+    goBack = e => {
+        this.props.closeCurrentRoom();
+    }
+
     render() { 
         return (
             <div className="chat-heading">
+                <button className="btn back-btn" onClick={this.goBack}>
+                    <img src={goBack} alt="go back"/>
+                </button>
                 <div className="pfp">
                     <img src={this.props.src || pfp} alt="pfp" className="pfp-img"/>
                 </div>
@@ -45,4 +53,4 @@ const mapStateToProps = (state) => {
     }
 }
  
-export default connect(mapStateToProps, { openInfoPanel, exitChatRoom })(ChatHeading);
+export default connect(mapStateToProps, { openInfoPanel, exitChatRoom, closeCurrentRoom })(ChatHeading);

@@ -17,10 +17,14 @@
     }
 
     @include respond(tab-port) {
-        position: absolute;
         right: 0;
         left: $sidebar-size-tab-port;
         width: 60%;
+    }
+
+    @include respond(phone) {
+        left: 0;
+        width: 100%;
     }
 }
 

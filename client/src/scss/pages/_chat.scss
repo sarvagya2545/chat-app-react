@@ -9,6 +9,32 @@
     height: 100vh;
     font-family: 'Montserrat', sans-serif;
     position: relative;
+
+    @include respond(phone) {
+        position: absolute;
+        // control display none from react
+        // display: none;
+        width: 100vw;
+    }
+}
+
+.back-btn {
+    display: none;
+    
+    img {
+        filter: invert(1);
+    }
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: .7rem;
+
+    margin-left: -.2rem;
+
+    @include respond(phone) {
+        display: flex;
+    }
 }
 
 .chat-box {
