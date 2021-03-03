@@ -1,6 +1,14 @@
 {
     "short_name": "Chat App",
     "name": "Chat App - React",
+    "icons": [
+        {
+            "src": "./images/iconpng512.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "any maskable"
+        }
+    ],
     "start_url": "./index.html",
     "display": "standalone",
     "theme_color": "#000000",
