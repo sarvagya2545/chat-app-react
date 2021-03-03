@@ -14,6 +14,15 @@ const { redirectToHttps } = require('./middleware/middleware');
 
 const cors = require('cors')
 
+if(process.env.NODE_ENV === 'production') {
+    app.use((req, res, next) => {
+        if (req.header('x-forwarded-proto') !== 'https')
+        res.redirect(`https://${req.header('host')}${req.url}`)
+        else
+        next()
+    })
+}
+
 // Middleware
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
@@ -40,7 +49,7 @@ app.use('/api/messages', require('./routes/api/messages'))
 // Serve static assets under production
 if(process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
-    app.get('*', redirectToHttps, (req,res) => {
+    app.get('*', (req,res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     })
 }
