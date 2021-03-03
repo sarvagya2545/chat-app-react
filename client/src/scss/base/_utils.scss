@@ -80,12 +80,20 @@
     background-color: #fff;
     border: 4px solid $color-grey-1;
     padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+
+    // hide the box
+    transform: translateY(4rem);
+    opacity: 0;
+    transition: .2s all ease-in-out;
 
     @include respond(tab-port) {
         left: 0;
         right: 0;
         bottom: 0;
         width: 100vw;
+        transform: none;
 
         &-filter {
             display: none;
@@ -102,13 +110,6 @@
         }
     }
 
-    display: flex;
-    flex-direction: column;
-
-    // hide the box
-    transform: translateY(4rem);
-    opacity: 0;
-    transition: .2s all ease-in-out;
 
     &.visible {
         transform: none;
