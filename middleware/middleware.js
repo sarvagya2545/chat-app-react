@@ -43,5 +43,11 @@ module.exports = {
     }
     req.room = room;
     next();
+  },
+  redirectToHttps: (req,res,next) => {
+    // if(req.headers['x-forwarded-proto'] !== 'https')
+      res.redirect(status, "https://" + req.hostname + req.originalUrl);
+
+    next();
   }
 }

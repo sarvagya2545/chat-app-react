@@ -10,9 +10,9 @@ const mongoose = require('mongoose')
 const passport = require('passport')
 const path = require('path')
 require('./config/passport')
+const { redirectToHttps } = require('./middleware/middleware');
 
 const cors = require('cors')
-
 
 // Middleware
 app.use(express.urlencoded({ extended: true }))
@@ -40,7 +40,7 @@ app.use('/api/messages', require('./routes/api/messages'))
 // Serve static assets under production
 if(process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
-    app.get('*', (req,res) => {
+    app.get('*', redirectToHttps, (req,res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     })
 }
