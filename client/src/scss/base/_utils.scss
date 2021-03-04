@@ -115,6 +115,7 @@
     &.visible {
         transform: none;
         opacity: 1;
+        display: flex;
     }
 
     .head {
