@@ -56,7 +56,7 @@ module.exports = (server) => {
         })
 
         socket.on('connectToRoom', ({ room }) => {
-            console.log(room.roomId, room.roomName);
+            // console.log(room.roomId, room.roomName);
             socket.join(room.roomId)
         })
 

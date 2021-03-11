@@ -166,7 +166,7 @@ module.exports = {
     getAllUsersExceptSelf: async (req,res) => {
         const usersFromDB = await User.find()
 
-        console.log( 'Filtered Users', usersFromDB.filter(user => user._id != req.user.id))
+        // console.log( 'Filtered Users', usersFromDB.filter(user => user._id != req.user.id))
 
         const users = usersFromDB.filter(user => user.auth.username !== 'not-set').filter(user => user._id != req.user.id).map(user => {
             return {

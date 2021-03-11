@@ -11,7 +11,7 @@ passport.use(new JwtStrategy({
     secretOrKey: jwtSecret
 }, async (payload, done) => {
     try {
-        console.log(payload)
+        // console.log(payload)
 
         // Find the user specified in token
         const user = await User.findById(payload.sub).select('-auth.local.password');
@@ -42,8 +42,8 @@ passport.use(new LocalStrategy({
             return done(null, false);
         }
 
-        console.log(foundUserbyUsername)
-        console.log(foundUserbyEmail)
+        // console.log(foundUserbyUsername)
+        // console.log(foundUserbyEmail)
 
         // user is either the one by email or the one by username
         const user = foundUserbyEmail || foundUserbyUsername;
@@ -56,7 +56,7 @@ passport.use(new LocalStrategy({
         // Check if the password is correct
         const isMatch = await user.isValidPassword(password);
 
-        console.log(isMatch)
+        // console.log(isMatch)
 
         // If not, handle it
         if (!isMatch) {
@@ -111,7 +111,7 @@ passport.use('googleToken', new GoogleTokenStrategy({
             }
         })
 
-        console.log('newUser', newUser); 
+        // console.log('newUser', newUser); 
         newUser.save();
         done(null, newUser); 
     } catch (err) {

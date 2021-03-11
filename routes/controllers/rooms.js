@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require('uuid')
 module.exports = {
     getRoomsOfUser: async (req, res) => {
         try {
-            console.log(req.user.rooms)
+            // console.log(req.user.rooms)
             let allRooms = [];
             for (let roomId of req.user.rooms) {
                 const room = await Room.findOne({ roomId: roomId })
@@ -126,7 +126,7 @@ module.exports = {
         try {
             const { url, roomId } = req.body;
 
-            console.log(req.body);
+            // console.log(req.body);
             Room.findOneAndUpdate({ roomId }, { pfpUrl: url }, function(err, doc) {
                 if(err) {
                     return res.status(500).json({ err });
@@ -143,7 +143,7 @@ module.exports = {
         try {
             const { roomId } = req.body;
 
-            console.log(req.body);
+            // console.log(req.body);
             Room.findOneAndUpdate({ roomId }, { pfpUrl: '' }, function(err, doc) {
                 if(err) {
                     return res.status(500).json({ err });
