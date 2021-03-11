@@ -2,7 +2,7 @@ import axios from 'axios';
 import { app } from '../../firebase';
 import { tokenConfig } from './authActions';
 import { PROFILE_PIC_UPLOAD, GROUP_PIC_UPLOAD, GROUP_PIC_DELETE, PROFILE_PIC_DELETE } from './types';
-import { changePfp, deletePfp } from './chatActions';
+import { changePfp, deletePfp } from './fileActions';
 
 export const uploadFile = ({ fileName, folder, file, currentUserId }) => async dispatch => {
     const storageRef = app.storage().ref();

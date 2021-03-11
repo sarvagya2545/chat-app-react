@@ -26,30 +26,33 @@ import {
     CLOSE_ROOM
 } from './types';
 
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
+import socket from '../../socket';
 import axios from 'axios';
 import { tokenConfig } from './authActions';
 import { app } from '../../firebase';
-let socket;
 let timeout;
 
 export const connectToSocket = (rooms, user) => dispatch => {
     // connect to socket
-    socket = io(window.location.origin)
-    dispatch({ type: CONNECT });
-    rooms !== undefined && rooms.forEach(room => {
-        socket.emit('connectToRoom', { room })
-        // console.log(`Joined room: ${room.roomName}`)
+    // socket = io(window.location.origin)
+    socket.connect(() => {
+        dispatch({ type: CONNECT });
+        rooms !== undefined && rooms.forEach(room => {
+            socket.sendSocketEvent('connectToRoom', { room });
+            console.log(`Joined room: ${room.roomName}`)
+        });
     });
+    console.log(socket);
 
-    socket.emit('online', ({ userId: user }))
+    socket.sendSocketEvent('online', ({ userId: user }));
 
-    socket.on('message', (res) => {
+    socket.defineSocketEvent('message', (res) => {
         console.log('message: ', res)
         dispatch({ type: RECIEVE_MESSAGE, payload: res })
     })
 
-    socket.on('typing', ({ user, roomId }) => {
+    socket.defineSocketEvent('typing', ({ user, roomId }) => {
         // console.log('typing')
         dispatch({ type: TYPING_START, payload: { user, roomId } })
         clearTimeout(timeout)
@@ -58,23 +61,23 @@ export const connectToSocket = (rooms, user) => dispatch => {
         }, 500)
     })
 
-    socket.on('addToRoom', ({ room }) => {
+    socket.defineSocketEvent('addToRoom', ({ room }) => {
         dispatch({ type: JOIN_ROOM, payload: room })
         dispatch({ type: MESSAGES_LOADED, payload: { roomId: room.roomId, messages: [] } })
     })
 
-    socket.on('exitRoom', ({ user: { userId, userName }, room }) => {
+    socket.defineSocketEvent('exitRoom', ({ user: { userId, userName }, room }) => {
         // console.log('user left')
         dispatch({ type: USER_LEAVE, payload: { userId, userName, room } })
     })
 
-    socket.on('userOnlineStatus', onlineUsers => {
+    socket.defineSocketEvent('userOnlineStatus', onlineUsers => {
         // console.log(onlineUsers)
         const onlineUserIds = onlineUsers.map(onlineUser => onlineUser.id)
         dispatch({ type: USER_STATUS_CHANGED, payload: onlineUserIds })
     })
 
-    socket.on("pfpChange", (obj) => {
+    socket.defineSocketEvent("pfpChange", (obj) => {
         // handle profile pic changed
         console.log('obj',obj);
         const { isGroupImg, user, payload, currentUserId } = obj;
@@ -86,7 +89,7 @@ export const connectToSocket = (rooms, user) => dispatch => {
         }
     })
     
-    socket.on('pfpRemove', (obj) => {
+    socket.defineSocketEvent('pfpRemove', (obj) => {
         console.log('obj', obj);
         const { isGroupImg, payload, currentUserId } = obj;
 
@@ -131,57 +134,11 @@ export const sendMessage = ({ room, message, userName, userId }) => dispatch => 
         senderId: userId,
         time: new Date()
     };
-    socket.emit('message', { room, messageObject });
-}
-
-
-export const sendFiles = ({ room, files, userName, userId }) => async dispatch => {
-
-    console.log(files);
-    // const fileUrls = [];
-
-    const fileUrls = await Promise.all(files.map(file => {
-        return new Promise((resolve, reject) => {
-            const timeStamp = new Date().getTime();
-            const fileName = `${file.file.name.split('.')[0]}-${timeStamp}.${file.file.name.split('.')[1]}`;
-            const storageRef = app.storage().ref().child(`images-in-chats/${room}/${fileName}`);
-            
-            storageRef
-                .put(file.file)
-                .on('state_changed', (snapshot) => {
-
-                }, reject, () => {
-                    storageRef.getDownloadURL()
-                        .then(url => {
-                            resolve({ url, isImage: file.fileType === 'image', fileName });
-                        })
-                })
-        })
-    }))
-
-    console.log(fileUrls);
-
-    await Promise.all(fileUrls.map(({ url, isImage, fileName }) => {
-        return new Promise((resolve,reject) => {
-            const messageObject = {
-                room,
-                content: {
-                    fileURL: url,
-                    isImage,
-                    fileName
-                },
-                by: userName,
-                senderId: userId,
-                time: new Date()
-            }
-        
-            socket.emit('message', { room, messageObject })
-        })
-    }))
+    socket.sendSocketEvent('message', { room, messageObject });
 }
 
 export const emitTyping = ({ user, roomId }) => dispatch => {
-    socket.emit('typing', { user, roomId })
+    socket.sendSocketEvent('typing', { user, roomId })
 }
 
 export const createChatRoom = ({ selectedPeople, roomName }) => dispatch => {
@@ -196,8 +153,8 @@ export const createChatRoom = ({ selectedPeople, roomName }) => dispatch => {
             // console.log(res);
             // implement in future
             // dispatch({ type: ROOM_CREATED, payload: res.data.newRoom })
-            socket.emit('createdChatRoom', { room: res.data.newRoom })
-            socket.emit('connectToRoom', { room: res.data.newRoom })
+            socket.sendSocketEvent('createdChatRoom', { room: res.data.newRoom })
+            socket.sendSocketEvent('connectToRoom', { room: res.data.newRoom })
             // console.log(res.data.newRoom.roomName)
         })
         .catch(err => console.log(err))
@@ -216,7 +173,7 @@ export const exitChatRoom = (roomId, roomName) => dispatch => {
             dispatch({ type: EXIT_ROOM, payload: res.data.foundRoom.roomId })
 
             // console.log('exitRooms', { room: roomId, user: res.data.user })
-            socket.emit('exitRoom', { room: roomId, userId: res.data.user._id, userName: res.data.user.auth.username })
+            socket.sendSocketEvent('exitRoom', { room: roomId, userId: res.data.user._id, userName: res.data.user.auth.username })
 
             // close group info panel if open
             dispatch({ type: CLOSE_INFO_PANEL })
@@ -274,12 +231,12 @@ export const getMessagesOfRoom = ({ roomId, token }) => dispatch => {
 
 export const changePfp = ({ isGroupImg, payload, user, currentUserId }) => {
     console.log('change pfp')
-    socket.emit('pfpChange', { isGroupImg, payload, user, currentUserId })
+    // socket.emit('pfpChange', { isGroupImg, payload, user, currentUserId })
 }
 
 export const deletePfp = ({ isGroupImg, payload, user, currentUserId }) => {
     console.log('remove pfp');
-    socket.emit('pfpRemove', { isGroupImg, payload, user, currentUserId });
+    // socket.emit('pfpRemove', { isGroupImg, payload, user, currentUserId });
 }
 
 export const closeCurrentRoom = () => dispatch => {
