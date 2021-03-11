@@ -1,11 +1,8 @@
 import React, { Component, Suspense, lazy } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-// import Home from './pages/Home';
-// import Chat from './pages/Chat';
 import { loadUser } from './redux/actions/authActions';
 import store from './redux/store';
 import ProtectedRoute from './components/utils/ProtectedRoute';
-// import PasswordChange from './components/home/PasswordChange';
 
 const Home = lazy(() => import('./pages/Home'));
 const Chat = lazy(() => import('./pages/Chat'));
