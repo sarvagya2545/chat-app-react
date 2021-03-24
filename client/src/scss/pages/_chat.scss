@@ -44,7 +44,7 @@
 .chat-box {
     flex-grow: 1;
     background-image: url('../../images/whatsapp-web-background.png');
-    overflow: scroll;
+    overflow-y: scroll;
     padding-bottom: 0;
 }
 
