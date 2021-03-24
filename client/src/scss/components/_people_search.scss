@@ -1,7 +1,6 @@
 .people-search {
-    margin-right: $space-scroll;
     flex: 1;
-    overflow: scroll;
+    overflow-y: scroll;
 
     &-item {
         padding: 0 0 0 1.5rem;
