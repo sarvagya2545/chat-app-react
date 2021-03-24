@@ -26,11 +26,9 @@ import {
     CLOSE_ROOM
 } from './types';
 
-// import io from 'socket.io-client';
 import socket from '../../socket';
 import axios from 'axios';
 import { tokenConfig } from './authActions';
-import { app } from '../../firebase';
 let timeout;
 
 export const connectToSocket = (rooms, user) => dispatch => {
