@@ -6,6 +6,12 @@ import ErrBox from '../components/utils/ErrBox';
 import ForgotPassword from '../components/home/ForgotPassword';
 
 class Home extends Component {
+    componentDidMount() {
+        if(this.props.isAuthenticated) {
+            this.props.history.push('/chat')
+        } 
+    }
+
     componentDidUpdate() {
         if(this.props.isAuthenticated) {
             this.props.history.push('/chat')

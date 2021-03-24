@@ -11,6 +11,7 @@
     
     &.visible {
         height: 100vh;
+        overflow-y: hidden;
     }
     
     @include respond(phone) {
