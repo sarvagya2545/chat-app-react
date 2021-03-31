@@ -5,12 +5,15 @@ import Loader from 'react-loader-spinner';
 import { getMessagesOfRoom } from '../../redux/actions/chatActions';
 
 class ChatBox extends Component {
+
+    messagesEnd = React.createRef();
+
     async componentDidMount() {
         this.scrollToBottom();
     }
 
     scrollToBottom = () => {
-        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+        this.messagesEnd.current.scroll({ top: this.messagesEnd.current.scrollHeight, behavior: 'smooth' });
     }
 
     async componentDidUpdate() {
@@ -24,7 +27,7 @@ class ChatBox extends Component {
     render() { 
         const { messages: { messages, messageLoad } } = this.props;
         return (
-            <div className="chat-box">
+            <div className="chat-box" ref={this.messagesEnd}>
                 {!messageLoad && messages && messages.map((message,index) => (
                     <Message 
                         isMine={this.isMine(message.by)} 
@@ -41,8 +44,7 @@ class ChatBox extends Component {
                         />
                     </div>
                 </>)}
-                <div style={{ float:"left", clear: "both" }}
-                    ref={(el) => { this.messagesEnd = el; }}>
+                <div style={{ float:"left", clear: "both" }}>
                 </div>
             </div>
         );
