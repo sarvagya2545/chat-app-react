@@ -3,7 +3,7 @@ import socket from '../../socket';
 import { app } from '../../firebase';
 
 export const addFiles = (files, currentChatRoom) => dispatch => {
-	console.log('files', files);
+	// console.log('files', files);
 	const filesObjList = Array.from(files).map(file => {
 		return {
 			file,
@@ -15,24 +15,24 @@ export const addFiles = (files, currentChatRoom) => dispatch => {
 
 	dispatch({ type: CLOSE_ATTACHMENT_PANEL })
 
-	console.log('filesObjList', filesObjList);
+	// console.log('filesObjList', filesObjList);
 
 	dispatch({ type: ADD_FILES, payload: { filesObjList, currentChatRoom } })
 }
 
 export const removeFile = (currentIndex, currentChatRoom) => dispatch => {
-	console.log(currentIndex, currentChatRoom);
+	// console.log(currentIndex, currentChatRoom);
 	dispatch({ type: REMOVE_FILE, payload: { currentIndex, currentChatRoom } })
 }
 
 export const clearFiles = (currentChatRoom) => dispatch => {
-	console.log(currentChatRoom);
+	// console.log(currentChatRoom);
 	dispatch({ type: CLEAR_GROUP_FILES, payload: currentChatRoom })
 }
 
 export const sendFiles = ({ room, files, userName, userId }) => async dispatch => {
 
-    console.log(files);
+    // console.log(files);
     // const fileUrls = [];
 
     const fileUrls = await Promise.all(files.map(file => {
@@ -54,7 +54,7 @@ export const sendFiles = ({ room, files, userName, userId }) => async dispatch =
         })
     }))
 
-    console.log(fileUrls);
+    // console.log(fileUrls);
 
     await Promise.all(fileUrls.map(({ url, isImage, fileName }) => {
         return new Promise((resolve,reject) => {
@@ -76,11 +76,11 @@ export const sendFiles = ({ room, files, userName, userId }) => async dispatch =
 }
 
 export const changePfp = ({ isGroupImg, payload, user, currentUserId }) => {
-    console.log('change pfp')
+    // console.log('change pfp')
     socket.sendSocketEvent('pfpChange', { isGroupImg, payload, user, currentUserId })
 }
 
 export const deletePfp = ({ isGroupImg, payload, user, currentUserId }) => {
-    console.log('remove pfp');
+    // console.log('remove pfp');
     socket.sendSocketEvent('pfpRemove', { isGroupImg, payload, user, currentUserId });
 }

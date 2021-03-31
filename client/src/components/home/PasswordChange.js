@@ -33,14 +33,14 @@ class PasswordChange extends Component {
 
     axios.post(`/api/users/pw_chng/${userId}?token=${token}`, {}, config)
       .then(res => {
-        console.log(res);
+        // console.log(res);
         if(res.status === 200) {
           this.setState({ valid: true, token: res.data.newToken, email: res.data.email });
           this.setState({ loading: false });
         }
       })
       .catch(err => {
-        console.log(err.response);
+        // console.log(err.response);
         if(err.response?.status === 401) {
           this.setState({ msg: err.response.data.msg })
           this.setState({ loading: false });

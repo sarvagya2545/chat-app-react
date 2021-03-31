@@ -28,7 +28,7 @@ class EnterUsername extends Component {
       .then(res => {
         if(res.status === 200) {
           store.dispatch({ type: USERNAME_UPDATE, payload: res.data.username })
-          console.log(res.data);
+          // console.log(res.data);
         }
       })
       .catch(err => {

@@ -25,7 +25,7 @@ class SharePanel extends Component {
   }
 
   changeSlide = (index,e) => {
-    console.log(e.target.dataset);
+    // console.log(e.target.dataset);
 
     if(e.target.dataset.val === 'close') {
       this.props.removeFile(e.target.dataset.index, this.props.currentChatRoom);
@@ -42,7 +42,7 @@ class SharePanel extends Component {
   }
 
   onFileAddition = e => {
-    console.log(e.target.files);
+    // console.log(e.target.files);
     this.props.addFiles(e.target.files, this.props.currentChatRoom);
   }
 

@@ -13,7 +13,7 @@ class AttachmentInput extends Component {
   }
   
   onFileChange = e => {
-    console.log(e.target.files);
+    // console.log(e.target.files);
     this.props.addFiles(e.target.files, this.props.currentChatRoom);
   }
 

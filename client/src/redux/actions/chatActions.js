@@ -38,15 +38,15 @@ export const connectToSocket = (rooms, user) => dispatch => {
         dispatch({ type: CONNECT });
         rooms !== undefined && rooms.forEach(room => {
             socket.sendSocketEvent('connectToRoom', { room });
-            console.log(`Joined room: ${room.roomName}`)
+            // console.log(`Joined room: ${room.roomName}`)
         });
     });
-    console.log(socket);
+    // console.log(socket);
 
     socket.sendSocketEvent('online', ({ userId: user }));
 
     socket.defineSocketEvent('message', (res) => {
-        console.log('message: ', res)
+        // console.log('message: ', res)
         dispatch({ type: RECIEVE_MESSAGE, payload: res })
     })
 
@@ -77,7 +77,7 @@ export const connectToSocket = (rooms, user) => dispatch => {
 
     socket.defineSocketEvent("pfpChange", (obj) => {
         // handle profile pic changed
-        console.log('obj',obj);
+        // console.log('obj',obj);
         const { isGroupImg, user, payload, currentUserId } = obj;
         
         if(isGroupImg) {
@@ -88,7 +88,7 @@ export const connectToSocket = (rooms, user) => dispatch => {
     })
     
     socket.defineSocketEvent('pfpRemove', (obj) => {
-        console.log('obj', obj);
+        // console.log('obj', obj);
         const { isGroupImg, payload, currentUserId } = obj;
 
         if(isGroupImg) {
@@ -238,7 +238,7 @@ export const deletePfp = ({ isGroupImg, payload, user, currentUserId }) => {
 }
 
 export const closeCurrentRoom = () => dispatch => {
-    console.log('close-current-room')
+    // console.log('close-current-room')
     dispatch({ type: CLOSE_ROOM });
 }
 

@@ -38,20 +38,20 @@ class Pfp extends Component {
     }
 
     fileChange = async e => {
-        console.log(e.target.files);
+        // console.log(e.target.files);
 
         const { username, currentChatRoom, group, currentUserId } = this.props;
 
         const files = e.target.files;
         if(files.length  !== 0) {
             const file = e.target.files[0]
-            console.log(file);
+            // console.log(file);
 
             const fileName = group ? currentChatRoom : username;
             const folder = group ? 'group-pics' : 'profile-pics';
 
-            console.log('fileName', fileName)
-            console.log('folder', folder)
+            // console.log('fileName', fileName)
+            // console.log('folder', folder)
 
             this.setState({ fileLoading: true })
             await this.props.uploadFile({ file, fileName, folder, currentUserId });

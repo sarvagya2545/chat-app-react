@@ -14,7 +14,6 @@ const errorReducer = (state = initState, action) => {
                 ...initState
             }
         case AUTH_ERROR:
-            console.log(action.payload)
             return {
                 errors: action.payload.errors,
                 statusCode: action.payload.status,

@@ -44,7 +44,7 @@ export const loadUser = () => (dispatch, getState) => {
         .catch(err => {
             dispatch({ type: USER_LOAD_ERROR })
             // localStorage.removeItem('x-chat-token')
-            console.log(err);
+            // console.log(err);
         })
 }
 
@@ -69,7 +69,7 @@ export const register = (formData) => (dispatch) => {
         })
         .catch(err => {
             const errors = err.response.data.errors
-            console.log(err.response)
+            // console.log(err.response)
 
             const errorData = { 
                 errors: errors,
@@ -102,7 +102,7 @@ export const login = (formData) => (dispatch) => {
         })
         .catch(err => {
             dispatch({ type: LOGIN_FAIL })
-            console.log(err.response);
+            // console.log(err.response);
 
             if(err.response.status === 401) {
                 // unauthorized 
@@ -138,7 +138,7 @@ export const logout = () => dispatch => {
 
 // Google login action
 export const googleLogin = resGoogle => dispatch => {
-    console.log('reached google login', resGoogle.accessToken);
+    // console.log('reached google login', resGoogle.accessToken);
 
     const config = {
         "Content-type": "application/json"
@@ -151,7 +151,7 @@ export const googleLogin = resGoogle => dispatch => {
             localStorage.setItem('x-chat-token', res.data.token)
         })
         .catch(err => {
-            console.log(err);
+            // console.log(err);
             if(err.response) {
                 // some server error
                 dispatch({ type: SERVER_ERROR });
@@ -181,14 +181,14 @@ export const sendResetPasswordLink = (email, changeMessage) => dispatch => {
 
     axios.post(`/api/users/change/password`, { email }, config)
         .then(res => {
-            console.log(res);
+            // console.log(res);
             dispatch({ type: MODAL_LOADED })
             dispatch({ type: MODAL_SUCCESS, payload: res.data.msg })
             changeMessage('Password Reset Link Sent To Email', false);
         })
         .catch(err => {
             dispatch({ type: MODAL_LOADED })
-            console.log(err.response.data)
+            // console.log(err.response.data)
             dispatch({ type: MODAL_ERROR, payload: err.response.data.message })
             changeMessage('Server error while sending password link', true);
         });
@@ -200,13 +200,13 @@ export const resetPassword = ({ newPassword, confirmPassword, token }) => dispat
     // SEND AXIOS REQUEST TO SERVER TO CHANGE PASSWORD. ALONG WITH THE TOKEN.
     return axios.post(`/api/users/chng_pwd`, { newPassword, confirmPassword }, config)
         .then(res => {
-            console.log(res);
+            // console.log(res);
             // Redirect to login page and remove the current page from history
             dispatch({ type: CLEAR_ERRORS });
             return { status: 'OK' }
         })
         .catch(err => {
-            console.log(err.response);
+            // console.log(err.response);
             // Notify the user that an error has occurred
             const errors = err.response.data.errors;
             const errorData = { 

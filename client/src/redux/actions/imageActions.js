@@ -29,11 +29,11 @@ export const uploadFile = ({ fileName, folder, file, currentUserId }) => async d
             const type = isGroupImg ? GROUP_PIC_UPLOAD : PROFILE_PIC_UPLOAD;
             const payload =  isGroupImg ? { url: fileUrl, roomId: fileName } : { url: fileUrl };
             dispatch({ type , payload })
-            console.log('run', currentUserId);
+            // console.log('run', currentUserId);
             await changePfp({ isGroupImg, payload, user: fileName, currentUserId });
         })
         .catch(err => {
-            console.log(err.response);
+            // console.log(err.response);
         });
 }
 
@@ -42,18 +42,18 @@ export const deleteFile = ({ folder, fileName, currentUserId }) => async dispatc
     const fileRef = storageRef.child(`${folder}/${fileName}`);
     const isGroupImg = folder === 'group-pics';
 
-    console.log(tokenConfig());
+    // console.log(tokenConfig());
     // return;
 
     await fileRef.delete().then(() => {
 
     }).catch(err => {
-        console.log(err.response);
+        // console.log(err.response);
     });
 
     const body = isGroupImg ? { roomId: fileName } : {};
 
-    console.log(body);
+    // console.log(body);
 
     axios
         .delete(`/api/${isGroupImg ? "rooms" : "users"}/profile/pic`,
