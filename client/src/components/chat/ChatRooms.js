@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ChatRoomListItem from '../chat/ChatRoomListItem';
 import { connect } from 'react-redux';
 import { loadRooms, changeChatRoomTo } from '../../redux/actions/chatActions';
+import { addFiles } from '../../redux/actions/fileActions';
 
 class ChatRooms extends Component {
 
@@ -26,6 +27,24 @@ class ChatRooms extends Component {
         return 'T';
     }
 
+    onDragOver = (e, roomId) => {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+    
+    onDrop = (e, roomId) => {
+        e.stopPropagation();
+        e.preventDefault();
+        this.props.changeChatRoomTo(roomId);
+        // console.log(e.dataTransfer.files);
+        this.props.addFiles(e.dataTransfer.files, roomId);
+    }
+    
+    onDragLeave = (e, roomId) => {
+        e.stopPropagation();
+        
+    }
+
     render() {
         return (
             <ul>
@@ -39,6 +58,10 @@ class ChatRooms extends Component {
                             isTyping={room.typing}
                             src={room.pfpUrl}
                             message={(() => this.getRoomLastMessage(room))()}
+                            droppable
+                            onDragOver={e => this.onDragOver(e, room.roomId)}
+                            onDrop={e => this.onDrop(e,room.roomId)}
+                            onDragLeave={e => this.onDragLeave(e, room.roomId)}
                         />
                     )
                 })}
@@ -54,4 +77,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { loadRooms, changeChatRoomTo })(ChatRooms);
+export default connect(mapStateToProps, { loadRooms, changeChatRoomTo, addFiles })(ChatRooms);

@@ -12,11 +12,14 @@ class ChatRoomListItem extends Component {
 
     render() { 
 
-        const { selected, isTyping, onClick, name, src } = this.props;
+        const { selected, isTyping, onClick, name, src, droppable, onDragOver, onDrop, onDragLeave } = this.props;
         return (
             <li 
                 className={cx('chat-room-list-item', { 'selected': selected })}
                 onClick={onClick}
+                onDragOver={droppable && onDragOver}
+                onDrop={droppable && onDrop}
+                onDragLeave={droppable && onDragLeave}
             >
                 <Pfp pfp={pfp} size="md" src={src}/>
                 <div className="chat-room-item-details">
