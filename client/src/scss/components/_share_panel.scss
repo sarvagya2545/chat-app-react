@@ -1,4 +1,4 @@
-.share-panel {
+.share-panel, .dragover {
   position: absolute;
   width: 100%;
   top: 6.5rem;
@@ -139,4 +139,22 @@
       }
     }
   }
+}
+
+.dragover-body {
+  background-color: $opaqueWhite;
+  background-image: linear-gradient(to bottom, $opaqueWhite, $opaqueWhite);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  outline: 4px dashed $color-form-placeholders;
+  outline-offset: -30px;
+}
+
+.upload-img {
+  height: 100px;
+  margin-bottom: 2rem;
 }

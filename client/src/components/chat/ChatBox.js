@@ -25,9 +25,13 @@ class ChatBox extends Component {
     }
 
     render() { 
-        const { messages: { messages, messageLoad } } = this.props;
+        const { messages: { messages, messageLoad }, onDragOver } = this.props;
         return (
-            <div className="chat-box" ref={this.messagesEnd}>
+            <div 
+                className="chat-box" 
+                ref={this.messagesEnd} 
+                onDragOver={onDragOver}
+            >
                 {!messageLoad && messages && messages.map((message,index) => (
                     <Message 
                         isMine={this.isMine(message.by)} 

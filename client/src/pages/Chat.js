@@ -3,6 +3,7 @@ import ChatBox from '../components/chat/ChatBox';
 import ChatForm from '../components/chat/ChatForm';
 import ChatHeading from '../components/chat/ChatHeading';
 import { connectToSocket, disconnectFromSocket, loadRooms, getMessagesOfRoom } from '../redux/actions/chatActions';
+import { addFiles } from '../redux/actions/fileActions';
 import { connect } from 'react-redux';
 import EmptyChat from '../components/chat/EmptyChat';
 import ChatPanel from '../components/chat/ChatPanel';
@@ -12,6 +13,7 @@ import UserInfo from '../components/chat/UserInfo';
 import AttachmentMenu from '../components/chat/AttachmentMenu';
 import SharePanel from '../components/chat/SharePanel';
 import cx from 'classnames';
+import DragOver from '../components/chat/DragOver';
 
 class Chat extends Component {
     async componentDidMount() {
@@ -33,7 +35,7 @@ class Chat extends Component {
         this.props.disconnectFromSocket(userId);
     }
 
-    state = { addChat: false, userInfo: false }
+    state = { addChat: false, userInfo: false, draggingOver: false }
 
     addChatToggle = () => {
         this.setState({ addChat: !this.state.addChat })
@@ -41,6 +43,30 @@ class Chat extends Component {
 
     userInfoToggle = () => {
         this.setState({ userInfo: !this.state.userInfo })
+    }
+
+    onDragOver = e => {
+        e.preventDefault();
+        e.stopPropagation();
+        if(!this.state.draggingOver) {
+            // console.log('Dragging over');
+            this.setState({ draggingOver: true });
+        }
+    }
+
+    onDragLeave = e => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // console.log('Leaving');
+        this.setState({ draggingOver: false });
+    }
+
+    onDrop = e => {
+        e.preventDefault();
+        this.setState({ draggingOver: false });
+        // console.log('Dropped', e.dataTransfer.files);
+        this.props.addFiles(e.dataTransfer.files, this.props.currentChatRoom);
     }
 
     render() { 
@@ -54,9 +80,10 @@ class Chat extends Component {
                     {currentChatRoom === null ? 
                         <EmptyChat/> : <>
                                 <ChatHeading/>              
-                                <ChatBox/>
+                                <ChatBox onDragOver={this.onDragOver} onDragEnter={this.onDragEnter} />
                                 <ChatForm/>
-                                {files && files.length !== 0 && <SharePanel/>} 
+                                {files && files.length !== 0 && <SharePanel/>}
+                                {this.state.draggingOver && <DragOver onDragLeave={this.onDragLeave} onDrop={this.onDrop}/>}
                         </>
                     }
                     <AttachmentMenu/>
@@ -78,4 +105,6 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { connectToSocket, disconnectFromSocket, loadRooms, getMessagesOfRoom })(Chat);
+export default connect(mapStateToProps, { 
+    connectToSocket, disconnectFromSocket, loadRooms, getMessagesOfRoom, addFiles
+})(Chat);
