@@ -94,7 +94,8 @@ export const connectToSocket = (rooms, user) => dispatch => {
         if(isGroupImg) {
             dispatch({ type: GROUP_PIC_DELETE, payload })
         } else {
-            dispatch({ type: OTHER_PROFILE_PIC_DELETE, payload: { id: currentUserId } })
+            if(user !== currentUserId)
+                dispatch({ type: OTHER_PROFILE_PIC_DELETE, payload: { id: currentUserId } })
         }
     })
 }
