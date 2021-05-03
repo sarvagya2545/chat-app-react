@@ -7,13 +7,14 @@ class Message extends Component {
 
     formatTime(time) {
         const timeObj = new Date(time);
-        var hrs = timeObj.getHours();
-        var minutes = timeObj.getMinutes();
-        var ampm = hrs >= 12 ? 'PM' : 'AM';
+        let date = timeObj.toLocaleDateString();
+        let hrs = timeObj.getHours();
+        let minutes = timeObj.getMinutes();
+        let ampm = hrs >= 12 ? 'PM' : 'AM';
         hrs = hrs % 12;
         hrs = hrs ? hrs : 12; // the hour '0' should be '12'
         minutes = minutes < 10 ? '0' + minutes : minutes;
-        var strTime = `${hrs}:${minutes} ${ampm}`;
+        const strTime = `${date} ${hrs}:${minutes} ${ampm}`;
         return strTime;
     }
 

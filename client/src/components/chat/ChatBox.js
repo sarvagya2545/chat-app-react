@@ -24,17 +24,17 @@ class ChatBox extends Component {
         return by === this.props.username
     }
 
-    render() { 
+    render() {
         const { messages: { messages, messageLoad }, onDragOver } = this.props;
         return (
-            <div 
-                className="chat-box" 
-                ref={this.messagesEnd} 
+            <div
+                className="chat-box"
+                ref={this.messagesEnd}
                 onDragOver={onDragOver}
             >
-                {!messageLoad && messages && messages.map((message,index) => (
-                    <Message 
-                        isMine={this.isMine(message.by)} 
+                {!messageLoad && messages && messages.map((message, index) => (
+                    <Message
+                        isMine={this.isMine(message.by)}
                         content={message.content}
                         time={message.time}
                         name={message.by}
@@ -44,11 +44,11 @@ class ChatBox extends Component {
                 {messageLoad && (<>
                     <div className="loader">
                         <Loader
-                        type="TailSpin"
+                            type="TailSpin"
                         />
                     </div>
                 </>)}
-                <div style={{ float:"left", clear: "both" }}>
+                <div style={{ float: "left", clear: "both" }}>
                 </div>
             </div>
         );
