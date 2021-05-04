@@ -15,7 +15,9 @@ import {
     MODAL_LOADED,
     MODAL_SUCCESS,
     MODAL_ERROR,
-    CLEAR_ERRORS
+    CLEAR_ERRORS,
+    LOAD_ROOMS,
+    INIT_FILE_REDUCER
 } from './types';
 
 import axios from 'axios';
@@ -37,14 +39,27 @@ export const loadUser = () => (dispatch, getState) => {
     // perform an axios request to get the user's data from token
     axios.get('/api/users/current', config)
         .then(res => {
+            let { user: { rooms, ...userData } } = res.data;
+            const payload = { ...res.data, user: { ...userData } }
+
+            // add a roomId property 
+            rooms = rooms.map(r => ({ ...r, roomId: r._id }))
+
+            // load rooms of the user
+            const roomsObject = convertRoomsArrayToObject(rooms)
+            const filesObject = createFilesObjectFromRooms(rooms)
+            dispatch({ type: LOAD_ROOMS, payload: { roomsObject } })
+            dispatch({ type: INIT_FILE_REDUCER, payload: filesObject })
+
+            // console.log('loadUser', payload);
             // set the status of user as loaded
-            // console.log(res.data);
-            dispatch({ type: USER_LOADED, payload: res.data })
+            // only send the room ids in the user object
+            dispatch({ type: USER_LOADED, payload })
         })
         .catch(err => {
             dispatch({ type: USER_LOAD_ERROR })
             // localStorage.removeItem('x-chat-token')
-            // console.log(err);
+            console.log(err);
         })
 }
 
@@ -59,10 +74,24 @@ export const register = (formData) => (dispatch) => {
     // signup request axios
     axios.post(`/api/users/signup`, formData, config)
         .then(res => {
-            // console.log('res.data', res.data)
+            console.log(res.data);
+
+            let { user: { rooms, ...userData } } = res.data;
+            const payload = { ...res.data, user: { ...userData } }
+
+            // add a roomId property 
+            rooms = rooms.map(r => ({ ...r, roomId: r._id }))
+
+            // load rooms of the user
+            const roomsObject = convertRoomsArrayToObject(rooms)
+            const filesObject = createFilesObjectFromRooms(rooms)
+
+            // dispatch actions to initialize rooms and the user
+            dispatch({ type: LOAD_ROOMS, payload: { roomsObject } })
+            dispatch({ type: INIT_FILE_REDUCER, payload: filesObject })
             dispatch({
                 type: REGISTER_SUCCESS,
-                payload: res.data
+                payload: payload
             })
             dispatch({ type: NO_ERRORS })
             localStorage.setItem('x-chat-token', res.data.token)
@@ -71,7 +100,7 @@ export const register = (formData) => (dispatch) => {
             const errors = err.response.data.errors
             // console.log(err.response)
 
-            const errorData = { 
+            const errorData = {
                 errors: errors,
                 status: err.response.status,
                 errType: 'Registration error'
@@ -80,7 +109,7 @@ export const register = (formData) => (dispatch) => {
             dispatch({ type: REGISTER_FAIL })
             dispatch({ type: AUTH_ERROR, payload: errorData })
         })
-} 
+}
 
 // login function
 export const login = (formData) => (dispatch) => {
@@ -92,19 +121,32 @@ export const login = (formData) => (dispatch) => {
 
     axios.post(`/api/users/login`, formData, config)
         .then(res => {
-            // console.log('res.data', res.data)
+            let { user: { rooms, ...userData } } = res.data;
+            const payload = { ...res.data, user: { ...userData } }
+
+            // add a roomId property 
+            rooms = rooms.map(r => ({ ...r, roomId: r._id }))
+
+            // load rooms of the user
+            const roomsObject = convertRoomsArrayToObject(rooms)
+            const filesObject = createFilesObjectFromRooms(rooms)
+
+            // dispatch actions to initialize rooms and the user
+            dispatch({ type: LOAD_ROOMS, payload: { roomsObject } })
+            dispatch({ type: INIT_FILE_REDUCER, payload: filesObject })
             dispatch({
                 type: LOGIN_SUCCESS,
-                payload: res.data
+                payload
             })
             dispatch({ type: NO_ERRORS })
             localStorage.setItem('x-chat-token', res.data.token)
+            console.log('runs');
         })
         .catch(err => {
             dispatch({ type: LOGIN_FAIL })
             // console.log(err.response);
 
-            if(err.response.status === 401) {
+            if (err.response.status === 401) {
                 // unauthorized 
                 const errorData = {
                     errors: {
@@ -116,18 +158,18 @@ export const login = (formData) => (dispatch) => {
                 dispatch({ type: AUTH_ERROR, payload: errorData })
             }
 
-            if(err.response.status === 400) {
+            if (err.response.status === 400) {
                 const errors = err.response.data.errors;
-                const errorData = { 
+                const errorData = {
                     errors: errors,
                     status: err.response.status,
                     errType: 'Login error'
                 }
-    
+
                 dispatch({ type: AUTH_ERROR, payload: errorData })
             }
         })
-} 
+}
 
 // logout function
 export const logout = () => dispatch => {
@@ -146,13 +188,26 @@ export const googleLogin = resGoogle => dispatch => {
 
     axios.get(`/api/users/google/token?access_token=${resGoogle.accessToken}`, config)
         .then(res => {
-            dispatch({ type: LOGIN_SUCCESS, payload: res.data })
+            let { user: { rooms, ...userData } } = res.data;
+            const payload = { ...res.data, user: { ...userData } }
+
+            // add a roomId property 
+            rooms = rooms.map(r => ({ ...r, roomId: r._id }))
+
+            // load rooms of the user
+            const roomsObject = convertRoomsArrayToObject(rooms)
+            const filesObject = createFilesObjectFromRooms(rooms)
+
+            // dispatch actions to initialize rooms and the user
+            dispatch({ type: LOAD_ROOMS, payload: { roomsObject } })
+            dispatch({ type: INIT_FILE_REDUCER, payload: filesObject })
+            dispatch({ type: LOGIN_SUCCESS, payload })
             dispatch({ type: NO_ERRORS })
             localStorage.setItem('x-chat-token', res.data.token)
         })
         .catch(err => {
             // console.log(err);
-            if(err.response) {
+            if (err.response) {
                 // some server error
                 dispatch({ type: SERVER_ERROR });
             } else {
@@ -209,7 +264,7 @@ export const resetPassword = ({ newPassword, confirmPassword, token }) => dispat
             // console.log(err.response);
             // Notify the user that an error has occurred
             const errors = err.response.data.errors;
-            const errorData = { 
+            const errorData = {
                 errors: errors,
                 status: err.response.status,
                 errType: 'Reset password error'
@@ -239,3 +294,28 @@ export const tokenConfig = (defaultToken) => {
 
     return config;
 };
+
+const convertRoomsArrayToObject = (rooms) => {
+    const roomsObject = {};
+    rooms.forEach(room => {
+        roomsObject[room.roomId] = {
+            ...room,
+            messages: {
+                messageLoad: true,
+                messages: room.messages
+            }
+        }
+    })
+    return roomsObject;
+}
+
+const createFilesObjectFromRooms = (rooms) => {
+    const obj = {};
+    // console.log('rooms', rooms);
+
+    rooms.forEach(room => {
+        obj[room.roomId] = [];
+    })
+
+    return obj;
+}

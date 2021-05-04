@@ -61,7 +61,6 @@ const mapStateToProps = state => {
         messages: state.chat.chatRoomsObject[currentChatRoom].messages,
         username: state.auth.user.auth.username,
         token: state.auth.token,
-        roomId: state.chat.currentChatRoom
     }
 }
 

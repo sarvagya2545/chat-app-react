@@ -18,17 +18,19 @@ export const uploadFile = ({ fileName, folder, file, currentUserId }) => async d
     // console.log(`/api/${isGroupImg ? "rooms" : "users" }/profile/pic`)
     // console.log(fileUrl);
 
+    console.log(fileName, folder);
+
     const body = isGroupImg ? { roomId: fileName } : {};
 
     axios
-        .post(`/api/${ isGroupImg ? "rooms" : "users" }/profile/pic`, 
-            { url: fileUrl, ...body }, 
+        .post(`/api/${isGroupImg ? "rooms" : "users"}/profile/pic`,
+            { url: fileUrl, ...body },
             tokenConfig()
         )
         .then(async res => {
             const type = isGroupImg ? GROUP_PIC_UPLOAD : PROFILE_PIC_UPLOAD;
-            const payload =  isGroupImg ? { url: fileUrl, roomId: fileName } : { url: fileUrl };
-            dispatch({ type , payload })
+            const payload = isGroupImg ? { url: fileUrl, roomId: fileName } : { url: fileUrl };
+            dispatch({ type, payload })
             // console.log('run', currentUserId);
             await changePfp({ isGroupImg, payload, user: fileName, currentUserId });
         })

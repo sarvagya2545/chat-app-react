@@ -5,11 +5,6 @@ const roomSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    roomId: {
-        type: String,
-        required: true,
-        unique: true
-    },
     people: {
         type: [
             {
@@ -26,15 +21,20 @@ const roomSchema = mongoose.Schema({
     messages: {
         type: [
             {
-                type: String,
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'message',
                 required: true
             }
         ],
         default: []
+    },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
     }
 })
 
-roomSchema.query.byRoomId = function(roomid) {
+roomSchema.query.byRoomId = function (roomid) {
     return this.where({ roomId: roomid })
 }
 

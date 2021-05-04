@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 
 const messageSchema = mongoose.Schema({
-    messageId: {
-        type: String,
-        required: true,
-        unique: true
-    },
     senderId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
@@ -16,12 +11,14 @@ const messageSchema = mongoose.Schema({
         required: true
     },
     roomId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'room',
         required: true
     },
     timeStamp: {
         type: Date,
-        required: true
+        required: true,
+        default: Date.now
     },
     content: {
         text: String,

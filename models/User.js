@@ -36,7 +36,7 @@ const userSchema = mongoose.Schema({
     rooms: {
         type: [
             {
-                type: String,
+                type: mongoose.Schema.Types.ObjectId,
                 ref: 'room'
             }
         ],
@@ -48,7 +48,7 @@ userSchema.methods.isValidPassword = async function (password) {
     // this points to User model
     try {
         return await bcrypt.compare(password, this.auth.local.password);
-    } catch(err) {
+    } catch (err) {
         throw new Error(err);
     }
 }

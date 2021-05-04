@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ChatRoomListItem from '../chat/ChatRoomListItem';
 import { connect } from 'react-redux';
-import { loadRooms, changeChatRoomTo } from '../../redux/actions/chatActions';
+import { changeChatRoomTo } from '../../redux/actions/chatActions';
 import { addFiles } from '../../redux/actions/fileActions';
 
 class ChatRooms extends Component {
@@ -11,19 +11,19 @@ class ChatRooms extends Component {
     }
 
     getRoomLastMessage = (room) => {
-        if(room.messages.messageLoad) return 'Loading...';
+        if (room.messages.messageLoad) return 'Loading...';
 
-        if(room.messages.messages && room.messages.messages[room.messages.messages.length - 1]) {
+        if (room.messages.messages && room.messages.messages[room.messages.messages.length - 1]) {
             const message = room.messages.messages[room.messages.messages.length - 1];
             const content = message.content
 
-            if(content.fileURL) {
+            if (content.fileURL) {
                 return `${message.by}: ${content.isImage ? 'Image' : 'File'}`;
             }
 
             return `${message.by}: ${content.text}`;
         }
-    
+
         return 'T';
     }
 
@@ -31,7 +31,7 @@ class ChatRooms extends Component {
         e.stopPropagation();
         e.preventDefault();
     }
-    
+
     onDrop = (e, roomId) => {
         e.stopPropagation();
         e.preventDefault();
@@ -39,10 +39,10 @@ class ChatRooms extends Component {
         // console.log(e.dataTransfer.files);
         this.props.addFiles(e.dataTransfer.files, roomId);
     }
-    
+
     onDragLeave = (e, roomId) => {
         e.stopPropagation();
-        
+
     }
 
     render() {
@@ -60,7 +60,7 @@ class ChatRooms extends Component {
                             message={(() => this.getRoomLastMessage(room))()}
                             droppable
                             onDragOver={e => this.onDragOver(e, room.roomId)}
-                            onDrop={e => this.onDrop(e,room.roomId)}
+                            onDrop={e => this.onDrop(e, room.roomId)}
                             onDragLeave={e => this.onDragLeave(e, room.roomId)}
                         />
                     )
@@ -69,12 +69,12 @@ class ChatRooms extends Component {
         );
     }
 }
- 
+
 const mapStateToProps = state => {
-    return  {
+    return {
         currentChatRoom: state.chat.currentChatRoom,
         chatRoomsObject: state.chat.chatRoomsObject
     }
 }
 
-export default connect(mapStateToProps, { loadRooms, changeChatRoomTo, addFiles })(ChatRooms);
+export default connect(mapStateToProps, { changeChatRoomTo, addFiles })(ChatRooms);

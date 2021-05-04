@@ -5,14 +5,16 @@ const { v4: uuidv4 } = require('uuid')
 module.exports = {
     getRoomsOfUser: async (req, res) => {
         try {
-            // console.log(req.user.rooms)
+            console.log('/api/rooms/user', req.user)
             let allRooms = [];
             for (let roomId of req.user.rooms) {
-                const room = await Room.findOne({ roomId: roomId })
+                const room = await Room.findById(roomId)
                 if (room) allRooms.push(room);
             }
+            console.log('/api/rooms/user rooms', allRooms);
             res.status(200).json({ rooms: allRooms })
         } catch (error) {
+            console.log(error);
             res.status(500).json({ errorMessage: 'error while joining rooms', error })
         }
     },
@@ -27,26 +29,25 @@ module.exports = {
             // people is an array of usernames, convert it into an array of ids
             const newPeople = [];
             const newPeopleObjs = [];
-            if(people != null) {
-                for(let person of people) {
+            if (people != null) {
+                for (let person of people) {
                     const newPersonObj = await User.findOne({ 'auth.username': person.name })
-                    if(newPersonObj) {
+                    if (newPersonObj) {
                         newPeople.push(newPersonObj._id)
                         newPeopleObjs.push(newPersonObj)
                     }
                 }
             }
 
-            const users = newPeople.length == 0 ? [ user.id ] : [ user.id, ...newPeople ]
-            const userObjs = newPeople.length == 0 ? [ user ] : [ user, ...newPeopleObjs ]
+            const users = newPeople.length == 0 ? [user.id] : [user.id, ...newPeople]
+            const userObjs = newPeople.length == 0 ? [user] : [user, ...newPeopleObjs]
 
-            // create a new room and save its roomId in users room list
-            const newRoomId = uuidv4()
+            // create a new room
             const newRoom = new Room({
                 roomName: roomName,
-                roomId: newRoomId,
                 people: users,
-                messages: []
+                messages: [],
+                createdBy: req.user._id
             })
 
             // save the room in database
@@ -54,7 +55,7 @@ module.exports = {
 
             // update the user's room list
             userObjs.forEach(async userObj => {
-                await User.update({ _id: userObj._id }, { rooms: [ ...userObj.rooms, newRoomId.toString() ] })
+                await User.update({ _id: userObj._id }, { $push: { rooms: newRoom._id } })
             })
 
             res.status(201).json({ newRoom })
@@ -63,6 +64,7 @@ module.exports = {
             res.status(500).json({ error, errorMessage: 'Error while creating room' })
         }
     },
+    // TODO: change this method to use findById
     joinRoomById: async (req, res) => {
         // get the room by roomId
         const foundRoom = await Room.findOne({ roomId: req.params.roomid })
@@ -74,61 +76,58 @@ module.exports = {
         // find user in db
         const user = await User.findById(req.user.id)
 
-        if(!user) {
+        if (!user) {
             return res.status(404).json({ error: 'User not found in db' })
         }
 
-        if(user.rooms.includes(foundRoom.roomId)) {
-            if(foundRoom.people.includes(req.user.id)) {
+        if (user.rooms.includes(foundRoom.roomId)) {
+            if (foundRoom.people.includes(req.user.id)) {
                 return res.status(400).json({ error: 'User already joined in the room' })
             }
         }
 
         // update & save user
-        user.rooms = [ ...user.rooms, foundRoom.roomId ]
+        user.rooms = [...user.rooms, foundRoom.roomId]
         await user.save()
 
         // update & save rooms
-        foundRoom.people = [ ...foundRoom.people, req.user.id ]
+        foundRoom.people = [...foundRoom.people, req.user.id]
         await foundRoom.save()
 
         return res.status(200).json({ foundRoom })
     },
     exitRoom: async (req, res) => {
-        // get the room by roomId
-        const foundRoom = await Room.findOne({ roomId: req.params.roomid })
-        if (!foundRoom) {
-            // if not found return not found error
-            return res.status(404).json({ error: 'Room not found' })
-        }
-
-        // find user in db
-        const user = await User.findById(req.user.id)
-
-        if(!user) {
-            return res.status(404).json({ error: 'User not found in db' })
-        }
-
-        if(user.rooms.includes(foundRoom.roomId)) {
-            if(foundRoom.people.includes(req.user.id)) {
-                // only now should we update the data in db
-                user.rooms = user.rooms.filter(room => room !== foundRoom.roomId)
-                foundRoom.people = foundRoom.people.filter(personId => personId.toString() !== req.user.id)
-
-                user.save()
-                foundRoom.save()
-
-                return res.status(200).json({ foundRoom, user })
+        try {
+            console.log(req.params);
+            // get the room by roomId
+            const foundRoom = await Room.findById(req.params.roomid)
+            if (!foundRoom) {
+                // if not found return not found error
+                return res.status(404).json({ error: 'Room not found' })
             }
+
+            // find user in db
+            const user = await User.findById(req.user.id)
+
+            if (!user) {
+                return res.status(404).json({ error: 'User not found in db' })
+            }
+
+            await User.update({ _id: req.user.id }, { $pull: { 'rooms': req.params.roomid } })
+            await Room.update({ _id: req.params.roomid }, { $pull: { 'people': req.user.id } })
+            return res.status(200).json({ foundRoom, user });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error });
         }
     },
-    setProfilePic: async(req,res) => {
+    setProfilePic: async (req, res) => {
         try {
             const { url, roomId } = req.body;
 
-            // console.log(req.body);
-            Room.findOneAndUpdate({ roomId }, { pfpUrl: url }, function(err, doc) {
-                if(err) {
+            console.log(req.body);
+            await Room.findOneAndUpdate({ _id: roomId }, { pfpUrl: url }, function (err, doc) {
+                if (err) {
                     return res.status(500).json({ err });
                 }
 
@@ -139,13 +138,13 @@ module.exports = {
             return res.status(500).json({ err });
         }
     },
-    deleteProfilePic: async(req,res) => {
+    deleteProfilePic: async (req, res) => {
         try {
             const { roomId } = req.body;
 
             // console.log(req.body);
-            Room.findOneAndUpdate({ roomId }, { pfpUrl: '' }, function(err, doc) {
-                if(err) {
+            Room.findOneAndUpdate({ _id: roomId }, { pfpUrl: '' }, function (err, doc) {
+                if (err) {
                     return res.status(500).json({ err });
                 }
 

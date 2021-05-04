@@ -3,7 +3,7 @@ const { ExtractJwt, Strategy: JwtStrategy } = require('passport-jwt');
 const { Strategy: LocalStrategy } = require('passport-local');
 const { Strategy: GoogleTokenStrategy } = require('passport-google-token');
 const User = require('../models/User');
-const { jwtSecret } =  require('./keys');
+const { jwtSecret } = require('./keys');
 
 // jwt strategy, used to get the user from jwt
 passport.use(new JwtStrategy({
@@ -14,7 +14,7 @@ passport.use(new JwtStrategy({
         // console.log(payload)
 
         // Find the user specified in token
-        const user = await User.findById(payload.sub).select('-auth.local.password');
+        const user = await User.findById(payload.sub).populate({ path: 'rooms' }).select('-auth.local.password');
 
         // If user doesn't exists, handle it
         if (!user) {
@@ -23,7 +23,7 @@ passport.use(new JwtStrategy({
 
         // Otherwise, return the user
         done(null, user);
-    } catch(error) {
+    } catch (error) {
         console.log(error);
         done(error, false);
     }
@@ -34,8 +34,8 @@ passport.use(new LocalStrategy({
     usernameField: 'usernameOrEmail'
 }, async (usernameOrEmail, password, done) => {
     try {
-        const foundUserbyUsername = await User.findOne({ 'auth.username': usernameOrEmail });
-        const foundUserbyEmail = await User.findOne({ 'auth.email': usernameOrEmail });
+        const foundUserbyUsername = await User.findOne({ 'auth.username': usernameOrEmail }).populate({ path: 'rooms' });
+        const foundUserbyEmail = await User.findOne({ 'auth.email': usernameOrEmail }).populate({ path: 'rooms' });
 
         // If not, handle it
         if (!foundUserbyEmail && !foundUserbyUsername) {
@@ -49,7 +49,7 @@ passport.use(new LocalStrategy({
         const user = foundUserbyEmail || foundUserbyUsername;
 
         // return error if the user is having social login
-        if(user.config.method !== 'local') {
+        if (user.config.method !== 'local') {
             return done(null, false);
         }
 
@@ -82,14 +82,14 @@ passport.use('googleToken', new GoogleTokenStrategy({
         // console.log('accessToken', accessToken);
         // console.log('refreshToken', refreshToken);
 
-        const existingGoogleUser = await User.findOne({ "auth.google.id": profile.id });
-        const existingLocalUser = await User.findOne({ "auth.email": profile.emails[0].value });
+        const existingGoogleUser = await User.findOne({ "auth.google.id": profile.id }).populate({ path: 'rooms' });
+        const existingLocalUser = await User.findOne({ "auth.email": profile.emails[0].value }).populate({ path: 'rooms' });
 
-        if(existingGoogleUser) {
+        if (existingGoogleUser) {
             return done(null, existingGoogleUser);
         }
 
-        if(existingLocalUser) {
+        if (existingLocalUser) {
             existingLocalUser.auth.google = {
                 id: profile.id
             }
@@ -113,8 +113,8 @@ passport.use('googleToken', new GoogleTokenStrategy({
 
         // console.log('newUser', newUser); 
         newUser.save();
-        done(null, newUser); 
+        done(null, newUser);
     } catch (err) {
-        done(err, false, error.message);   
+        done(err, false, error.message);
     }
 }));

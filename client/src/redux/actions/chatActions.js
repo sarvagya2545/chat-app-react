@@ -38,7 +38,7 @@ export const connectToSocket = (rooms, user) => dispatch => {
         dispatch({ type: CONNECT });
         rooms !== undefined && rooms.forEach(room => {
             socket.sendSocketEvent('connectToRoom', { room });
-            // console.log(`Joined room: ${room.roomName}`)
+            console.log(`Joined room: ${room.roomName} ${room._id}`)
         });
     });
     // console.log(socket);
@@ -60,6 +60,7 @@ export const connectToSocket = (rooms, user) => dispatch => {
     })
 
     socket.defineSocketEvent('addToRoom', ({ room }) => {
+        room = { ...room, roomId: room._id }
         dispatch({ type: JOIN_ROOM, payload: room })
         dispatch({ type: MESSAGES_LOADED, payload: { roomId: room.roomId, messages: [] } })
     })
@@ -79,22 +80,22 @@ export const connectToSocket = (rooms, user) => dispatch => {
         // handle profile pic changed
         // console.log('obj',obj);
         const { isGroupImg, user, payload, currentUserId } = obj;
-        
-        if(isGroupImg) {
+
+        if (isGroupImg) {
             dispatch({ type: GROUP_PIC_UPLOAD, payload })
         } else {
             dispatch({ type: OTHER_PROFILE_PIC_UPLOAD, payload: { url: payload.url, user, id: currentUserId } })
         }
     })
-    
+
     socket.defineSocketEvent('pfpRemove', (obj) => {
         // console.log('obj', obj);
         const { isGroupImg, payload, currentUserId } = obj;
 
-        if(isGroupImg) {
+        if (isGroupImg) {
             dispatch({ type: GROUP_PIC_DELETE, payload })
         } else {
-            if(user !== currentUserId)
+            if (user !== currentUserId)
                 dispatch({ type: OTHER_PROFILE_PIC_DELETE, payload: { id: currentUserId } })
         }
     })
@@ -105,25 +106,8 @@ export const disconnectFromSocket = userId => dispatch => {
     dispatch({ type: DISCONNECT });
 }
 
-export const loadRooms = (token) => async dispatch => {
-    try {
-        const config = tokenConfig(token);
-        let rooms;
-        const res = await axios.get('/api/rooms/user', config)
-        // console.log(res);
-        rooms = res.data.rooms;
-        const roomsObject = convertRoomsArrayToObject(res.data.rooms)
-        const filesObject = createFilesObjectFromRooms(res.data.rooms)
-        dispatch({ type: LOAD_ROOMS, payload: { roomsObject } })
-        dispatch({ type: INIT_FILE_REDUCER, payload: filesObject })
-        return rooms;
-    } catch (error) {
-        console.log(error)
-    }
-}
-
 export const sendMessage = ({ room, message, userName, userId }) => dispatch => {
-    // console.log({ room, message })
+    console.log({ room, message })
     const messageObject = {
         room,
         content: {
@@ -149,7 +133,7 @@ export const createChatRoom = ({ selectedPeople, roomName }) => dispatch => {
 
     axios.post('/api/rooms/new', bodyData, config)
         .then(res => {
-            // console.log(res);
+            console.log(res);
             // implement in future
             // dispatch({ type: ROOM_CREATED, payload: res.data.newRoom })
             socket.sendSocketEvent('createdChatRoom', { room: res.data.newRoom })
@@ -184,20 +168,6 @@ export const changeChatRoomTo = (roomId) => dispatch => {
     dispatch({ type: CHANGE_CURRENT_ROOM, payload: roomId })
 }
 
-const convertRoomsArrayToObject = (rooms) => {
-    const roomsObject = {};
-    rooms.forEach(room => {
-        roomsObject[room.roomId] = {
-            ...room,
-            messages: {
-                messageLoad: true,
-                messages: room.messages
-            }
-        }
-    })
-    return roomsObject;
-}
-
 export const getAllPeopleList = (listOfPeople) => dispatch => {
     const obj = {}
     listOfPeople.forEach(person => {
@@ -211,21 +181,21 @@ export const getMessagesOfRoom = ({ roomId, token }) => dispatch => {
     // set an axios request to the backend and get all the messages from the room
     axios.get(`/api/messages/room/${roomId}`, tokenConfig(token))
         .then(res => {
-            // console.log('messages of the current room', res)
+            console.log('messages of the current room', res)
             let messages = res.data.messages;
-            // console.log(messages);
+            console.log(messages);
             messages = messages.map(message => ({
                 by: message.userName,
                 room: message.roomId,
                 content: message.content,
                 time: new Date(message.timeStamp),
-                senderId: message.senderId                
+                senderId: message.senderId
             }));
             // console.log(messages);
 
             dispatch({ type: MESSAGES_LOADED, payload: { roomId, messages } })
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err, err.response));
 }
 
 export const changePfp = ({ isGroupImg, payload, user, currentUserId }) => {
@@ -241,15 +211,4 @@ export const deletePfp = ({ isGroupImg, payload, user, currentUserId }) => {
 export const closeCurrentRoom = () => dispatch => {
     // console.log('close-current-room')
     dispatch({ type: CLOSE_ROOM });
-}
-
-const createFilesObjectFromRooms = (rooms) => {
-    const obj = {};
-    // console.log('rooms', rooms);
-
-    rooms.forEach(room => {
-        obj[room.roomId] = [];
-    })
-
-    return obj;
 }

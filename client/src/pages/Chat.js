@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ChatBox from '../components/chat/ChatBox';
 import ChatForm from '../components/chat/ChatForm';
 import ChatHeading from '../components/chat/ChatHeading';
-import { connectToSocket, disconnectFromSocket, loadRooms, getMessagesOfRoom } from '../redux/actions/chatActions';
+import { connectToSocket, disconnectFromSocket, getMessagesOfRoom } from '../redux/actions/chatActions';
 import { addFiles } from '../redux/actions/fileActions';
 import { connect } from 'react-redux';
 import EmptyChat from '../components/chat/EmptyChat';
@@ -17,16 +17,20 @@ import DragOver from '../components/chat/DragOver';
 
 class Chat extends Component {
     async componentDidMount() {
-        const rooms = await this.props.loadRooms(this.props.token);
         const userId = this.props.user._id;
-        this.props.connectToSocket(rooms, userId);
+        this.props.connectToSocket(Object.values(this.props.chatRoomsObject), userId);
         await this.loadMessagesOfRooms();
     }
 
     loadMessagesOfRooms = () => {
         const { chatRoomsObject } = this.props;
         Object.values(chatRoomsObject).forEach(async room => {
-            await this.props.getMessagesOfRoom({ roomId: room.roomId, token: this.props.token })
+            try {
+                console.log('room', room);
+                await this.props.getMessagesOfRoom({ roomId: room.roomId, token: this.props.token })
+            } catch (error) {
+                console.log(error);
+            }
         })
     }
 
@@ -48,7 +52,7 @@ class Chat extends Component {
     onDragOver = e => {
         e.preventDefault();
         e.stopPropagation();
-        if(!this.state.draggingOver) {
+        if (!this.state.draggingOver) {
             // console.log('Dragging over');
             this.setState({ draggingOver: true });
         }
@@ -69,31 +73,31 @@ class Chat extends Component {
         this.props.addFiles(e.dataTransfer.files, this.props.currentChatRoom);
     }
 
-    render() { 
+    render() {
         const { currentChatRoom, files } = this.props;
         return (
             <div className="chat-container-main custom-scroll">
-                <AddChat visible={this.state.addChat} addChatToggle={this.addChatToggle}/>
-                <UserInfo visible={this.state.userInfo} userInfoToggle={this.userInfoToggle}/>
-                <ChatPanel addChatToggle={this.addChatToggle} userInfoToggle={this.userInfoToggle}/>
-                <div className={cx("chat-main", { "visible" : currentChatRoom !== null })}>
-                    {currentChatRoom === null ? 
-                        <EmptyChat/> : <>
-                                <ChatHeading/>              
-                                <ChatBox onDragOver={this.onDragOver} onDragEnter={this.onDragEnter} />
-                                <ChatForm/>
-                                {files && files.length !== 0 && <SharePanel/>}
-                                {this.state.draggingOver && <DragOver onDragLeave={this.onDragLeave} onDrop={this.onDrop}/>}
+                <AddChat visible={this.state.addChat} addChatToggle={this.addChatToggle} />
+                <UserInfo visible={this.state.userInfo} userInfoToggle={this.userInfoToggle} />
+                <ChatPanel addChatToggle={this.addChatToggle} userInfoToggle={this.userInfoToggle} />
+                <div className={cx("chat-main", { "visible": currentChatRoom !== null })}>
+                    {currentChatRoom === null ?
+                        <EmptyChat /> : <>
+                            <ChatHeading />
+                            <ChatBox onDragOver={this.onDragOver} onDragEnter={this.onDragEnter} />
+                            <ChatForm />
+                            {files && files.length !== 0 && <SharePanel />}
+                            {this.state.draggingOver && <DragOver onDragLeave={this.onDragLeave} onDrop={this.onDrop} />}
                         </>
                     }
-                    <AttachmentMenu/>
+                    <AttachmentMenu />
                 </div>
-                <ChatInfo/>
+                <ChatInfo />
             </div>
         );
     }
 }
- 
+
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.isAuthenticated,
@@ -105,6 +109,6 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { 
-    connectToSocket, disconnectFromSocket, loadRooms, getMessagesOfRoom, addFiles
+export default connect(mapStateToProps, {
+    connectToSocket, disconnectFromSocket, getMessagesOfRoom, addFiles
 })(Chat);

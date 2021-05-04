@@ -6,7 +6,7 @@ const { createAndSendMail } = require('../../config/nodemailer');
 
 const signToken = (user, expiresIn) => {
 
-    if(expiresIn) {
+    if (expiresIn) {
         return jwt.sign({
             iss: 'Sarvagya',
             sub: user._id,
@@ -32,10 +32,10 @@ const signTokenData = (jsonData, secret) => {
 }
 
 const verifyToken = (token, secret) => {
-    return jwt.verify(token, secret, function(err, decodedData) {
-        if(err)
+    return jwt.verify(token, secret, function (err, decodedData) {
+        if (err)
             return { isErr: true, err }
-        
+
         return {
             isErr: false,
             ...decodedData.sub
@@ -44,17 +44,17 @@ const verifyToken = (token, secret) => {
 }
 
 module.exports = {
-    signup: async (req,res) => {
+    signup: async (req, res) => {
         try {
             const { username, email, password } = req.body;
 
             const foundUser = await User.findOne({ 'auth.email': email });
-            if(foundUser) {
+            if (foundUser) {
                 return res.status(400).json({ errors: { email: 'Email is already in use' } })
             }
-            
+
             const newFoundUser = await User.findOne({ 'auth.username': username });
-            if(newFoundUser) {
+            if (newFoundUser) {
                 return res.status(400).json({ errors: { username: `Username ${username} already exists. Choose a new username` } })
             }
 
@@ -86,7 +86,8 @@ module.exports = {
                     email: newUser.auth.email,
                     username: newUser.auth.username
                 },
-                _id: newUser._id
+                _id: newUser._id,
+                rooms: []
             }
 
             // Respond with token and the user details
@@ -96,7 +97,7 @@ module.exports = {
             console.log(error);
         }
     },
-    login: async (req,res) => {
+    login: async (req, res) => {
         try {
             const user = req.user._doc;
             const token = signToken(user);
@@ -116,7 +117,7 @@ module.exports = {
             console.log(error);
         }
     },
-    googleOAuth: async (req,res) => {
+    googleOAuth: async (req, res) => {
         try {
             console.log('google oauth set up reached');
             console.log('req.user', req.user);
@@ -134,15 +135,15 @@ module.exports = {
             }
 
             res.status(200).json(payload);
-        } catch(err) {
+        } catch (err) {
             console.log('google oauth set up reached but error');
             console.log('err', err);
         }
     },
-    getUser: async (req,res) => {
+    getUser: async (req, res) => {
         try {
             // .select('-auth.local.password') excludes the password from the user data
-            const user = await User.findById(req.user.id).select('-auth.local.password');
+            const user = await User.findById(req.user.id).populate({ path: 'rooms' }).select('-auth.local.password');
             if (!user) throw Error('User does not exist');
             const token = signToken(user);
             res.json({ token, user });
@@ -150,20 +151,20 @@ module.exports = {
             res.status(400).json({ msg: e.message })
         }
     },
-    getUserByHandle: async (req,res) => {
+    getUserByHandle: async (req, res) => {
         try {
             const user = await User.find({ 'auth.username': req.params.handle })
 
-            if(!user) {
+            if (!user) {
                 return res.status(404).json({ error: 'No user found' })
             }
 
             return res.status(200).json({ user })
-        } catch(err) {
+        } catch (err) {
             return res.status(500).json({ err })
         }
     },
-    getAllUsersExceptSelf: async (req,res) => {
+    getAllUsersExceptSelf: async (req, res) => {
         const usersFromDB = await User.find()
 
         // console.log( 'Filtered Users', usersFromDB.filter(user => user._id != req.user.id))
@@ -179,10 +180,10 @@ module.exports = {
 
         res.json({ users })
     },
-    updateUserName: async (req,res) => {
+    updateUserName: async (req, res) => {
         try {
             const getUser = await User.findOne({ "auth.username": req.body.username })
-            if(getUser) {
+            if (getUser) {
                 return res.status(400).json({ error: 'This username is already taken' })
             }
             console.log(req.body);
@@ -195,12 +196,12 @@ module.exports = {
             console.log(err);
         }
     },
-    sendPasswordResetLink: async (req,res) => {
+    sendPasswordResetLink: async (req, res) => {
         try {
             console.log(req.user);
             // create forgot password token
             const obj = { userId: req.user._id, email: req.user.auth.email };
-            
+
             // create unique token for one time use (password will change after 1 use)
             const secret = req.user.auth.local.password + '-' + req.user._id;
             const token = signTokenData(obj, secret);
@@ -212,7 +213,7 @@ module.exports = {
             console.log(err);
         }
     },
-    verifyPasswordChangeLink: async (req,res) => {
+    verifyPasswordChangeLink: async (req, res) => {
         try {
             console.log('reached the controller');
             const { id } = req.params;
@@ -221,17 +222,17 @@ module.exports = {
             const foundUser = await User.findById(id)
             console.log(foundUser);
 
-            if(!foundUser) 
+            if (!foundUser)
                 return res.status(401).json({ msg: 'Not authorized.' })
-        
-            if(foundUser.config.method !== 'local')
+
+            if (foundUser.config.method !== 'local')
                 return res.status(401).json({ msg: 'Unauthorized' })
 
             const password = foundUser.auth.local.password;
             const verificationSecret = password + '-' + id;
 
             const data = verifyToken(token, verificationSecret);
-            if(data.isErr) {
+            if (data.isErr) {
                 return res.status(401).json({ msg: 'Unauthorized / Timeout' })
             }
 
@@ -244,19 +245,19 @@ module.exports = {
             return res.status(500).json({ status: 'Server error', err })
         }
     },
-    changePassword: async (req,res) => {
+    changePassword: async (req, res) => {
         try {
-            const  { newPassword } = req.body;
+            const { newPassword } = req.body;
 
             // hash the password before saving it
             const salt = await bcrypt.genSalt(10);
             const newHashedPassword = await bcrypt.hash(newPassword, salt);
 
             User.findByIdAndUpdate(
-                req.user._id, 
-                { "auth.local.password": newHashedPassword }, 
-                function(err,doc) {
-                    if(err) 
+                req.user._id,
+                { "auth.local.password": newHashedPassword },
+                function (err, doc) {
+                    if (err)
                         return res.status(500).json({ errType: 'server error', err });
 
                     return res.sendStatus(200);
@@ -267,20 +268,20 @@ module.exports = {
             console.log(err);
         }
     },
-    updateProfilePic: async (req,res) => {
+    updateProfilePic: async (req, res) => {
         try {
             const { url } = req.body;
 
             console.log(req.body);
-            if(!url) {
+            if (!url) {
                 return res.status(400).json({ err: 'No profile pic url found in request' });
             }
 
             User.findByIdAndUpdate(
                 req.user._id,
                 { pfpUrl: url },
-                function(err, doc) {
-                    if(err)
+                function (err, doc) {
+                    if (err)
                         return res.status(500).json({ errType: 'server error', err });
 
                     return res.status(200).json({ url })
@@ -291,10 +292,10 @@ module.exports = {
             return res.status(500).json({ errType: 'server error', err });
         }
     },
-    removeProfilePic: async (req,res) => {
+    removeProfilePic: async (req, res) => {
         try {
-            User.findByIdAndUpdate(req.user._id, { pfpUrl: "" }, function(err,doc) {
-                if(err){
+            User.findByIdAndUpdate(req.user._id, { pfpUrl: "" }, function (err, doc) {
+                if (err) {
                     return res.status(500).json({ errType: 'server error', err });
                 }
 

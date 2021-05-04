@@ -11,7 +11,6 @@ let onlineUsers = [];
 
 const Message = require('../models/Message');
 const Room = require('../models/Room');
-const { v4: uuidv4 } = require('uuid')
 
 module.exports = (server) => {
     // Initialize sockets
@@ -22,7 +21,7 @@ module.exports = (server) => {
         }
     };
     let io;
-    if(process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'production') {
         io = require("socket.io")(server);
     } else {
         io = require("socket.io")(server, socketCORSConfig);
@@ -34,18 +33,18 @@ module.exports = (server) => {
             // check if user is already online
             const userAlreadyOnline = onlineUsers.some((onlineuser) => (onlineuser.id === userId))
 
-            if(userAlreadyOnline) {
+            if (userAlreadyOnline) {
                 // if user is already online, then that would mean that the user has logged in from a new device.
                 // push it's socket id to the sockets list
                 onlineUsers.forEach(onlineuser => {
-                    if(onlineuser.id === userId) {
-                        onlineuser.sockets = onlineuser.sockets ? [ ...onlineuser.sockets ] : []
+                    if (onlineuser.id === userId) {
+                        onlineuser.sockets = onlineuser.sockets ? [...onlineuser.sockets] : []
                         onlineuser.sockets.push(socket.id)
                     }
                 })
             } else {
                 // if the user is not already online, then create a new onlineuser
-                const onlineuser = { id: userId, sockets: [ socket.id ] }
+                const onlineuser = { id: userId, sockets: [socket.id] }
                 onlineUsers.push(onlineuser)
             }
 
@@ -56,15 +55,15 @@ module.exports = (server) => {
         })
 
         socket.on('connectToRoom', ({ room }) => {
-            // console.log(room.roomId, room.roomName);
-            socket.join(room.roomId)
+            // console.log(room._id, room.roomName);
+            socket.join(room._id)
         })
 
         socket.on('createdChatRoom', ({ room }) => {
             // if the users in the room are online, they should get connected
             onlineUsers.forEach(onlineuser => {
                 const personIsOnline = room.people.some(person => onlineuser.id === person)
-                if(personIsOnline) {
+                if (personIsOnline) {
                     // send to every instance of the user
                     onlineuser.sockets.forEach(socketId => {
                         io.to(socketId).emit('addToRoom', { room })
@@ -92,29 +91,22 @@ module.exports = (server) => {
                 isImage: messageObject.content.isImage,
                 fileName: messageObject.content.fileName
             }
-
-            const messageId = uuidv4();
-
-            console.log(messageId);
             console.log(content);
-
-
             // Add the message to the database
             const newMessage = new Message({
-                messageId: messageId,
                 senderId: messageObject.senderId,
                 roomId: messageObject.room,
                 userName: messageObject.by,
                 timeStamp: new Date(messageObject.time),
-                content: content 
+                content: content
             })
 
             console.log('new message', newMessage);
-            console.log(messageId);
+            console.log('room', room);
 
             try {
-                await Room.update({ roomId: room },{ $push: { messages: messageId } });
-                await newMessage.save(); 
+                await Room.findByIdAndUpdate(room, { $push: { messages: newMessage._id } });
+                await newMessage.save();
             } catch (err) {
                 console.log(err);
             }
@@ -122,7 +114,7 @@ module.exports = (server) => {
 
         socket.on('pfpChange', (data) => {
             console.log('pfp CHANGED')
-            if(data.isGroupImg) {
+            if (data.isGroupImg) {
                 io.to(data.payload.roomId).sockets.emit('pfpChange', data);
             } else {
                 socket.broadcast.emit('pfpChange', data);
@@ -131,7 +123,7 @@ module.exports = (server) => {
 
         socket.on('pfpRemove', (data) => {
             console.log('pfp REMOVED')
-            if(data.isGroupImg) {
+            if (data.isGroupImg) {
                 io.to(data.payload.roomId).sockets.emit('pfpRemove', data);
             } else {
                 io.sockets.emit('pfpRemove', data);
