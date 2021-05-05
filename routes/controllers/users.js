@@ -198,16 +198,18 @@ module.exports = {
     },
     sendPasswordResetLink: async (req, res) => {
         try {
-            console.log(req.user);
+            console.log('check A');
             // create forgot password token
             const obj = { userId: req.user._id, email: req.user.auth.email };
-
+            
             // create unique token for one time use (password will change after 1 use)
             const secret = req.user.auth.local.password + '-' + req.user._id;
             const token = signTokenData(obj, secret);
-
+            console.log('check B');
+            
             // send the link with the token to the mail of the user.
             createAndSendMail({ to: req.body.email, token, userId: obj.userId })
+            console.log('check C');
             return res.status(200).json({ msg: 'Link sent to your email' })
         } catch (err) {
             console.log(err);

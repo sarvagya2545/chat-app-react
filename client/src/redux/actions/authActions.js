@@ -236,10 +236,9 @@ export const sendResetPasswordLink = (email, changeMessage) => dispatch => {
 
     axios.post(`/api/users/change/password`, { email }, config)
         .then(res => {
-            // console.log(res);
             dispatch({ type: MODAL_LOADED })
             dispatch({ type: MODAL_SUCCESS, payload: res.data.msg })
-            changeMessage('Password Reset Link Sent To Email', false);
+            if(typeof changeMessage === 'function') changeMessage('Password Reset Link Sent To Email', false);
         })
         .catch(err => {
             dispatch({ type: MODAL_LOADED })

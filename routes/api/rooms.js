@@ -9,9 +9,6 @@ const { checkIfUserInRoom } = require('../../middleware/middleware');
 
 const passportJWT = passport.authenticate('jwt', { session: false })
 
-// get the list of all rooms a user has joined
-router.get('/user', passportJWT, RoomController.getRoomsOfUser);
-
 // create a new room
 router.post('/new', passportJWT, createRoomValidationRules(), validate, RoomController.createRoom);
 

@@ -1,23 +1,7 @@
 const User = require('../../models/User')
 const Room = require('../../models/Room')
-const { v4: uuidv4 } = require('uuid')
 
 module.exports = {
-    getRoomsOfUser: async (req, res) => {
-        try {
-            console.log('/api/rooms/user', req.user)
-            let allRooms = [];
-            for (let roomId of req.user.rooms) {
-                const room = await Room.findById(roomId)
-                if (room) allRooms.push(room);
-            }
-            console.log('/api/rooms/user rooms', allRooms);
-            res.status(200).json({ rooms: allRooms })
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({ errorMessage: 'error while joining rooms', error })
-        }
-    },
     createRoom: async (req, res) => {
         try {
             // get the user by its id from database
