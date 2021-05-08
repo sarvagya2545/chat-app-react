@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import ChatBox from '../components/chat/ChatBox';
 import ChatForm from '../components/chat/ChatForm';
 import ChatHeading from '../components/chat/ChatHeading';
@@ -14,88 +14,97 @@ import AttachmentMenu from '../components/chat/AttachmentMenu';
 import SharePanel from '../components/chat/SharePanel';
 import cx from 'classnames';
 import DragOver from '../components/chat/DragOver';
+import usePushNotifications from '../hooks/usePushNotifications';
 
-class Chat extends Component {
-    async componentDidMount() {
-        const userId = this.props.user._id;
-        this.props.connectToSocket(Object.values(this.props.chatRoomsObject), userId);
-        await this.loadMessagesOfRooms();
+const Chat = (props) => {
+    const initState = { addChat: false, userInfo: false, draggingOver: false }
+    const [state, setState] = useState(initState);
+    const [ subscriptionId ] = usePushNotifications();
+
+    useEffect(() => {
+        const loadMessagesOfRooms = () => {
+            const { chatRoomsObject } = props;
+            Object.values(chatRoomsObject).forEach(async room => {
+                try {
+                    // console.log('room', room);
+                    await props.getMessagesOfRoom({ roomId: room.roomId, token: props.token })
+                } catch (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        // IIFE to use async await inside useEffect.
+        // more info: 
+        // https://javascript.plainenglish.io/how-to-use-async-function-in-react-hook-useeffect-typescript-js-6204a788a435
+        (async () => {
+            // component mount
+            const userId = props.user._id;
+            props.connectToSocket(Object.values(props.chatRoomsObject), userId);
+            await loadMessagesOfRooms();
+        })();
+
+        return () => {
+            // component unmount
+            const userId = props.user._id;
+            props.disconnectFromSocket(userId);
+        }
+    }, [])
+
+
+    const addChatToggle = () => {
+        setState({ addChat: !state.addChat })
     }
 
-    loadMessagesOfRooms = () => {
-        const { chatRoomsObject } = this.props;
-        Object.values(chatRoomsObject).forEach(async room => {
-            try {
-                console.log('room', room);
-                await this.props.getMessagesOfRoom({ roomId: room.roomId, token: this.props.token })
-            } catch (error) {
-                console.log(error);
-            }
-        })
+    const userInfoToggle = () => {
+        setState({ userInfo: !state.userInfo })
     }
 
-    componentWillUnmount() {
-        const userId = this.props.user._id;
-        this.props.disconnectFromSocket(userId);
-    }
-
-    state = { addChat: false, userInfo: false, draggingOver: false }
-
-    addChatToggle = () => {
-        this.setState({ addChat: !this.state.addChat })
-    }
-
-    userInfoToggle = () => {
-        this.setState({ userInfo: !this.state.userInfo })
-    }
-
-    onDragOver = e => {
+    const onDragOver = e => {
         e.preventDefault();
         e.stopPropagation();
-        if (!this.state.draggingOver) {
+        if (!state.draggingOver) {
             // console.log('Dragging over');
-            this.setState({ draggingOver: true });
+            setState({ draggingOver: true });
         }
     }
 
-    onDragLeave = e => {
+    const onDragLeave = e => {
         e.preventDefault();
         e.stopPropagation();
 
         // console.log('Leaving');
-        this.setState({ draggingOver: false });
+        setState({ draggingOver: false });
     }
 
-    onDrop = e => {
+    const onDrop = e => {
         e.preventDefault();
-        this.setState({ draggingOver: false });
+        setState({ draggingOver: false });
         // console.log('Dropped', e.dataTransfer.files);
-        this.props.addFiles(e.dataTransfer.files, this.props.currentChatRoom);
+        props.addFiles(e.dataTransfer.files, props.currentChatRoom);
     }
 
-    render() {
-        const { currentChatRoom, files } = this.props;
-        return (
-            <div className="chat-container-main custom-scroll">
-                <AddChat visible={this.state.addChat} addChatToggle={this.addChatToggle} />
-                <UserInfo visible={this.state.userInfo} userInfoToggle={this.userInfoToggle} />
-                <ChatPanel addChatToggle={this.addChatToggle} userInfoToggle={this.userInfoToggle} />
-                <div className={cx("chat-main", { "visible": currentChatRoom !== null })}>
-                    {currentChatRoom === null ?
-                        <EmptyChat /> : <>
-                            <ChatHeading />
-                            <ChatBox onDragOver={this.onDragOver} onDragEnter={this.onDragEnter} />
-                            <ChatForm />
-                            {files && files.length !== 0 && <SharePanel />}
-                            {this.state.draggingOver && <DragOver onDragLeave={this.onDragLeave} onDrop={this.onDrop} />}
-                        </>
-                    }
-                    <AttachmentMenu />
-                </div>
-                <ChatInfo />
+    const { currentChatRoom, files } = props;
+    return (
+        <div className="chat-container-main custom-scroll">
+            <AddChat visible={state.addChat} addChatToggle={addChatToggle} />
+            <UserInfo visible={state.userInfo} userInfoToggle={userInfoToggle} />
+            <ChatPanel addChatToggle={addChatToggle} userInfoToggle={userInfoToggle} />
+            <div className={cx("chat-main", { "visible": currentChatRoom !== null })}>
+                {currentChatRoom === null ?
+                    <EmptyChat /> : <>
+                        <ChatHeading />
+                        <ChatBox onDragOver={onDragOver} />
+                        <ChatForm />
+                        {files && files.length !== 0 && <SharePanel />}
+                        {state.draggingOver && <DragOver onDragLeave={onDragLeave} onDrop={onDrop} />}
+                    </>
+                }
+                <AttachmentMenu />
             </div>
-        );
-    }
+            <ChatInfo />
+        </div>
+    );
 }
 
 const mapStateToProps = state => {

@@ -3,6 +3,7 @@ const { jwtSecret } = require('../../config/keys');
 const User = require('../../models/User');
 const bcrypt = require('bcryptjs');
 const { createAndSendMail } = require('../../config/nodemailer');
+const { addSubscription, sendNotification } = require('../../config/webpush');
 
 const signToken = (user, expiresIn) => {
 
@@ -305,6 +306,22 @@ module.exports = {
             })
         } catch (err) {
             return res.status(500).json({ errType: 'server error', err });
+        }
+    },
+    subscribeToPush: async (req,res) => {
+        try {
+            // console.log(req.body);
+            // console.log(req.user.auth.username);
+            const subObj = JSON.stringify(req.body);
+            const subscriptionId = addSubscription(subObj);
+            await User.findByIdAndUpdate(req.user._id,
+                { $addToSet: { "pushSubs": subObj } }
+            )
+
+            res.status(200).json({ subscriptionId, userId: req.user._id });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ errType: 'server error', error });
         }
     }
 }

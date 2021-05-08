@@ -3,7 +3,8 @@
  * [
  *      {
  *          id: (username),
- *          sockets: [ (id), (id), (id) ]
+ *          sockets: [ (id), (id), (id) ],
+ *          pushSubs: [ (id), (id) ]
  *      }
  * ]
  */
@@ -11,6 +12,7 @@ let onlineUsers = [];
 
 const Message = require('../models/Message');
 const Room = require('../models/Room');
+const { sendNotification } = require('./webpush');
 
 module.exports = (server) => {
     // Initialize sockets
@@ -44,7 +46,7 @@ module.exports = (server) => {
                 })
             } else {
                 // if the user is not already online, then create a new onlineuser
-                const onlineuser = { id: userId, sockets: [socket.id] }
+                const onlineuser = { id: userId, sockets: [socket.id], pushSubs: [] }
                 onlineUsers.push(onlineuser)
             }
 
@@ -104,9 +106,32 @@ module.exports = (server) => {
             console.log('new message', newMessage);
             console.log('room', room);
 
+            const { text, fileURL, fileName, isImage } = messageObject.content
+
+            const body = text ? text : (isImage ? 'Image' : `File ${fileName}`)
+
             try {
                 await Room.findByIdAndUpdate(room, { $push: { messages: newMessage._id } });
                 await newMessage.save();
+
+                const roomWithPeople = await Room.findById(room).populate({ path: 'people', select: 'pushSubs auth.username -_id' }).select('people roomName')
+
+                console.log(roomWithPeople.people);
+
+                // console.log(JSON.stringify(roomWithPeople));
+
+                roomWithPeople.people.forEach(person => {
+                    person.pushSubs.forEach(pushSub => {
+                        sendNotification(JSON.stringify({
+                            title: `New Message from ${roomWithPeople.roomName}`,
+                            text: `${newMessage.userName}: ${body}`,
+                            image: `${isImage ? fileURL : 'http://localhost:3000/images/icon64.svg'}`,
+                            tag: "new-product",
+                            url: "/new-product-jason-leung-HM6TMmevbZQ-unsplash.html"
+                        }), JSON.parse(pushSub))
+                    })
+                })
+
             } catch (err) {
                 console.log(err);
             }

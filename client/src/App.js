@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { loadUser } from './redux/actions/authActions';
 import store from './redux/store';
 import ProtectedRoute from './components/utils/ProtectedRoute';
-import Loading from './components/utils/Loading';
+import Loading from './components/utils/Loading'
 
 const Home = lazy(() => import('./pages/Home'));
 const Chat = lazy(() => import('./pages/Chat'));

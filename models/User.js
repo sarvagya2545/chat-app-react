@@ -41,6 +41,10 @@ const userSchema = mongoose.Schema({
             }
         ],
         default: []
+    },
+    pushSubs: {
+        type: Array,
+        default: []
     }
 })
 

@@ -38,7 +38,7 @@ export const connectToSocket = (rooms, user) => dispatch => {
         dispatch({ type: CONNECT });
         rooms !== undefined && rooms.forEach(room => {
             socket.sendSocketEvent('connectToRoom', { room });
-            console.log(`Joined room: ${room.roomName} ${room._id}`)
+            // console.log(`Joined room: ${room.roomName} ${room._id}`)
         });
     });
     // console.log(socket);
@@ -181,9 +181,9 @@ export const getMessagesOfRoom = ({ roomId, token }) => dispatch => {
     // set an axios request to the backend and get all the messages from the room
     axios.get(`/api/messages/room/${roomId}`, tokenConfig(token))
         .then(res => {
-            console.log('messages of the current room', res)
+            // console.log('messages of the current room', res)
             let messages = res.data.messages;
-            console.log(messages);
+            // console.log(messages);
             messages = messages.map(message => ({
                 by: message.userName,
                 room: message.roomId,

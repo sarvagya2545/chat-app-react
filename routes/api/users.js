@@ -66,4 +66,8 @@ router.route('/profile/pic')
     .delete(passportJWT, UserController.removeProfilePic)
 ;
 
+router.route('/subscribe/push')
+    .post(passportJWT, UserController.subscribeToPush)
+;
+
 module.exports = router;

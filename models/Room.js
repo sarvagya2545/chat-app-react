@@ -34,8 +34,8 @@ const roomSchema = mongoose.Schema({
     }
 })
 
-roomSchema.query.byRoomId = function (roomid) {
-    return this.where({ roomId: roomid })
+roomSchema.statics.getRoomUsers = function(id) {
+    return this.findById(id, { people: 1 })
 }
 
 const Room = mongoose.model('room', roomSchema);
