@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import download from '../../images/download.svg';
+import download from '../../../../images/download.svg';
 import axios from 'axios';
 import fileDownload from 'js-file-download';
 

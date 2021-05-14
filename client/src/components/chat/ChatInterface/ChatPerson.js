@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { openInfoPanel } from '../../redux/actions/uiActions';
+import { openInfoPanel } from '../../../redux/actions/uiActions';
 
 class ChatPerson extends Component {
 

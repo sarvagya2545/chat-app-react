@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Message from './Message';
 import { connect } from 'react-redux';
 import Loader from 'react-loader-spinner';
-import { getMessagesOfRoom } from '../../redux/actions/chatActions';
+import { getMessagesOfRoom } from '../../../redux/actions/chatActions';
 
 class ChatBox extends Component {
 

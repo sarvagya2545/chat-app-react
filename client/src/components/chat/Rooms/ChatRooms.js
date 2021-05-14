@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import ChatRoomListItem from '../chat/ChatRoomListItem';
+import ChatRoomListItem from './ChatRoomListItem';
 import { connect } from 'react-redux';
-import { changeChatRoomTo } from '../../redux/actions/chatActions';
-import { addFiles } from '../../redux/actions/fileActions';
+import { changeChatRoomTo } from '../../../redux/actions/chatActions';
+import { addFiles } from '../../../redux/actions/fileActions';
 
 class ChatRooms extends Component {
 

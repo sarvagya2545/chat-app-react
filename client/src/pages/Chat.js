@@ -1,19 +1,19 @@
 import React, { Component, useEffect, useState } from 'react';
-import ChatBox from '../components/chat/ChatBox';
-import ChatForm from '../components/chat/ChatForm';
-import ChatHeading from '../components/chat/ChatHeading';
+import ChatBox from '../components/chat/ChatInterface/ChatBox';
+import ChatForm from '../components/chat/ChatInterface/ChatForm';
+import ChatHeading from '../components/chat/ChatInterface/ChatHeading';
 import { connectToSocket, disconnectFromSocket, getMessagesOfRoom } from '../redux/actions/chatActions';
 import { addFiles } from '../redux/actions/fileActions';
 import { connect } from 'react-redux';
-import EmptyChat from '../components/chat/EmptyChat';
-import ChatPanel from '../components/chat/ChatPanel';
-import AddChat from '../components/chat/AddChat';
-import ChatInfo from '../components/chat/ChatInfo';
-import UserInfo from '../components/chat/UserInfo';
-import AttachmentMenu from '../components/chat/AttachmentMenu';
-import SharePanel from '../components/chat/SharePanel';
+import EmptyChat from '../components/chat/ChatInterface/utils/EmptyChat';
+import ChatPanel from '../components/chat/Rooms/ChatPanel';
+import AddChat from '../components/chat/AddRoom/AddChat';
+import ChatInfo from '../components/chat/RoomInfo/ChatInfo';
+import UserInfo from '../components/chat/User/UserInfo';
+import AttachmentMenu from '../components/chat/ChatInterface/AttachmentMenu';
+import SharePanel from '../components/chat/ChatInterface/SharePanel';
 import cx from 'classnames';
-import DragOver from '../components/chat/DragOver';
+import DragOver from '../components/chat/ChatInterface/utils/DragOver';
 import usePushNotifications from '../hooks/usePushNotifications';
 
 const Chat = (props) => {

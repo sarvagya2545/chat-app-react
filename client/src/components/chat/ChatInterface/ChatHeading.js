@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 // import Avatar from '../../images/avatar.jpg'
-import pfp from '../../images/pfp.svg';
-import ChatPerson from '../chat/ChatPerson';
+import pfp from '../../../images/pfp.svg';
+import ChatPerson from './ChatPerson';
 import { connect } from 'react-redux';
-import { openInfoPanel } from '../../redux/actions/uiActions';
-import { exitChatRoom, closeCurrentRoom } from '../../redux/actions/chatActions';
-import DropDown from '../utils/DropDown';
-import goBack from '../../images/go_back.svg';
+import { openInfoPanel } from '../../../redux/actions/uiActions';
+import { exitChatRoom, closeCurrentRoom } from '../../../redux/actions/chatActions';
+import DropDown from '../../utils/DropDown';
+import goBack from '../../../images/go_back.svg';
 
 class ChatHeading extends Component {
     listOfItems = [

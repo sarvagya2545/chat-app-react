@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import sendImg from '../../images/send_img.svg';
+import sendImg from '../../../images/send_img.svg';
 import { connect } from 'react-redux';
-import { sendMessage, emitTyping } from '../../redux/actions/chatActions';
-import clip from '../../images/clip.svg';
-import { toggleAttachmentPanel } from '../../redux/actions/uiActions';
+import { sendMessage, emitTyping } from '../../../redux/actions/chatActions';
+import clip from '../../../images/clip.svg';
+import { toggleAttachmentPanel } from '../../../redux/actions/uiActions';
 
 class ChatForm extends Component {
     state = { message: '' }

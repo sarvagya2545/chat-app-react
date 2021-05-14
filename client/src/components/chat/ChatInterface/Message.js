@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
-import FileDownload from './FileDownload';
-import ImageDownload from './ImageDownload';
+import FileDownload from './utils/FileDownload';
+import ImageDownload from './utils/ImageDownload';
 
 class Message extends Component {
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import file from '../../images/document.svg';
-import image from '../../images/image.svg';
+import file from '../../../../images/document.svg';
+import image from '../../../../images/image.svg';
 import cx from 'classnames';
-import { addFiles } from '../../redux/actions/fileActions';
+import { addFiles } from '../../../../redux/actions/fileActions';
 import { connect } from 'react-redux';
 
 class AttachmentInput extends Component {

@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import cx from 'classnames';
-import camera from '../../images/photo-camera.svg';
+import camera from '../../../images/photo-camera.svg';
 import { connect } from 'react-redux';
-import pfp from '../../images/pfp.svg';
-import bin from '../../images/delete.svg';
+import pfp from '../../../images/pfp.svg';
+import bin from '../../../images/delete.svg';
 import Loader from 'react-loader-spinner';
-import { uploadFile, deleteFile } from '../../redux/actions/imageActions';
+import { uploadFile, deleteFile } from '../../../redux/actions/imageActions';
 
 class Pfp extends Component {
 

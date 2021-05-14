@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import Pfp from './Pfp';
-import pfp from '../../images/pfp.svg';
-import closeBtn from '../../images/close_btn.svg';
+import Pfp from '../User/Pfp';
+import pfp from '../../../images/pfp.svg';
+import closeBtn from '../../../images/close_btn.svg';
 import Participant from './Participant';
-import LeaveIcon from '../../images/leave_room.svg';
+import LeaveIcon from '../../../images/leave_room.svg';
 import { connect } from 'react-redux';
-import { exitChatRoom } from '../../redux/actions/chatActions';
-import { closeInfoPanel } from '../../redux/actions/uiActions';
+import { exitChatRoom } from '../../../redux/actions/chatActions';
+import { closeInfoPanel } from '../../../redux/actions/uiActions';
 import cx from 'classnames';
 
 class ChatInfo extends Component {

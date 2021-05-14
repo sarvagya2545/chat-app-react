@@ -116,15 +116,13 @@ module.exports = (server) => {
 
                 const roomWithPeople = await Room.findById(room).populate({ path: 'people', select: 'pushSubs auth.username -_id' }).select('people roomName')
 
-                console.log(roomWithPeople.people);
-
-                // console.log(JSON.stringify(roomWithPeople));
+                // console.log(roomWithPeople.people);
 
                 roomWithPeople.people.forEach(person => {
                     person.pushSubs.forEach(pushSub => {
                         sendNotification(JSON.stringify({
-                            title: `New Message from ${roomWithPeople.roomName}`,
-                            text: `${newMessage.userName}: ${body}`,
+                            title: `${newMessage.userName}: ${body}`,
+                            text: `New message from ${roomWithPeople.roomName}`,
                             image: `${isImage ? fileURL : 'http://localhost:3000/images/icon64.svg'}`,
                             tag: "new-product",
                             url: "/new-product-jason-leung-HM6TMmevbZQ-unsplash.html"

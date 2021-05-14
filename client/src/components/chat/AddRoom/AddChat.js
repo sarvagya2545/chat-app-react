@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import cx from "classnames";
-import goBack from "../../images/go_back.svg";
+import goBack from "../../../images/go_back.svg";
 import PeopleSearch from "./PeopleSearch";
 import axios from "axios";
 import { connect } from 'react-redux';
-import { createChatRoom, getAllPeopleList } from '../../redux/actions/chatActions';
-import { tokenConfig } from '../../redux/actions/authActions';
+import { createChatRoom, getAllPeopleList } from '../../../redux/actions/chatActions';
+import { tokenConfig } from '../../../redux/actions/authActions';
 
 class AddChat extends Component {
     state = {

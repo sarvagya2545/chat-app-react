@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import uploadImg from '../../images/upload.svg';
+import uploadImg from '../../../../images/upload.svg';
 
 class DragOver extends Component {
 

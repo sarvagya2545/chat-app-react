@@ -1,9 +1,9 @@
 import React, { Component, createRef } from 'react';
-import sendIcon from '../../images/send_img.svg';
+import sendIcon from '../../../images/send_img.svg';
 import { connect } from 'react-redux';
-import ImgBox from './img-box';
-import { removeFile, addFiles, clearFiles, sendFiles } from '../../redux/actions/fileActions';
-import fileIcon from '../../images/files.svg';
+import ImgBox from './utils/img-box';
+import { removeFile, addFiles, clearFiles, sendFiles } from '../../../redux/actions/fileActions';
+import fileIcon from '../../../images/files.svg';
 
 class SharePanel extends Component {
   state = {

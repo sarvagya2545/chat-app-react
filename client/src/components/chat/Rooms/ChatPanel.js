@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import ChatPanelHeader from './ChatPanelHeader';
 import ChatRooms from './ChatRooms';
 import { connect } from 'react-redux';
-import EnterUsername from './EnterUsername';
-import AddChatFAB from './AddChatFAB';
+import EnterUsername from '../User/EnterUsername';
+import AddChatFAB from '../AddRoom/AddChatFAB';
 
 class ChatPanel extends Component {
     state = {  }

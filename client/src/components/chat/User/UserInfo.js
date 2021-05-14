@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
-import goBack from '../../images/go_back.svg';
+import goBack from '../../../images/go_back.svg';
 import Pfp from './Pfp';
-import pfp from '../../images/pfp.svg';
+import pfp from '../../../images/pfp.svg';
 import { connect } from 'react-redux';
-import { sendResetPasswordLink } from '../../redux/actions/authActions';
+import { sendResetPasswordLink } from '../../../redux/actions/authActions';
 
 class UserInfo extends Component {
   state = {

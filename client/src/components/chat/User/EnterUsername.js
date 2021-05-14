@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { tokenConfig } from '../../redux/actions/authActions';
+import { tokenConfig } from '../../../redux/actions/authActions';
 import { GoogleLogout } from 'react-google-login';
 import { connect } from 'react-redux';
-import { logout } from '../../redux/actions/authActions';
-import { USERNAME_UPDATE } from '../../redux/actions/types';
-import store from '../../redux/store';
+import { logout } from '../../../redux/actions/authActions';
+import { USERNAME_UPDATE } from '../../../redux/actions/types';
+import store from '../../../redux/store';
 
 class EnterUsername extends Component {
   state = {

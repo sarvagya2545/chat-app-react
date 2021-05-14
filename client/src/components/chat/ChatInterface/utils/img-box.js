@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
-import fileIcon from '../../images/files.svg';
+import fileIcon from '../../../../images/files.svg';
 
 class ImgBox extends Component {
   render() { 

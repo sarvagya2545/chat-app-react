@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ChatRoomListItem from './ChatRoomListItem';
+import ChatRoomListItem from '../Rooms/ChatRoomListItem';
 
 class Participant extends Component {
     render() { 

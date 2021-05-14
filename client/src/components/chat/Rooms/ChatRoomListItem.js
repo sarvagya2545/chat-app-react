@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Pfp from '../chat/Pfp';
-import pfp from '../../images/pfp.svg';
+import Pfp from '../User/Pfp';
+import pfp from '../../../images/pfp.svg';
 import cx from "classnames";
 import Truncate from 'react-truncate';
 

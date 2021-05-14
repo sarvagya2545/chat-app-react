@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PeopleSearchItem from "./PeopleSearchItem";
-import Badge from "../utils/badge";
+import Badge from "../../utils/badge";
 import cx from "classnames";
 import { connect } from 'react-redux';
 

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import pfp from '../../images/pfp.svg';
-import addImage from '../../images/add_img.svg';
-import { logout } from '../../redux/actions/authActions';
-import DropDown from '../utils/DropDown';
+import pfp from '../../../images/pfp.svg';
+import addImage from '../../../images/add_img.svg';
+import { logout } from '../../../redux/actions/authActions';
+import DropDown from '../../utils/DropDown';
 
 class ChatPanelHeader extends Component {
     

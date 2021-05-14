@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AttachmentInput from './AttachementInput';
+import AttachmentInput from './utils/AttachementInput';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 

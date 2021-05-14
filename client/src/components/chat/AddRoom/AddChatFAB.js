@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import addImage from '../../images/add_img.svg';
+import addImage from '../../../images/add_img.svg';
 
 class AddChatFAB extends Component {
     render() { 

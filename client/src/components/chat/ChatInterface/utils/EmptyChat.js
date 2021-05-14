@@ -1,5 +1,5 @@
 import React from 'react';
-import chatIllustration from '../../images/Work chat-amico.svg';
+import chatIllustration from '../../../../images/Work chat-amico.svg';
 
 const EmptyChat = () => {
     return (
