@@ -5,6 +5,7 @@ import Pfp from './Pfp';
 import pfp from '../../../images/pfp.svg';
 import { connect } from 'react-redux';
 import { sendResetPasswordLink } from '../../../redux/actions/authActions';
+import Switch from '../../utils/Switch';
 
 class UserInfo extends Component {
   state = {
@@ -28,27 +29,43 @@ class UserInfo extends Component {
     this.props.sendResetPasswordLink(this.props.email, this.changeMessage);
   }
 
-  render() { 
+  render() {
     const { username, email } = this.props;
     return (
       <div className={cx("user-info", { "hidden": !this.props.visible })}>
         <div className="user-info-header">
-            <button className="btn close-btn" onClick={this.props.userInfoToggle}>
-                <img src={goBack} alt="" />
-            </button>
-            <div className="header">User Info</div>
+          <button className="btn close-btn" onClick={this.props.userInfoToggle}>
+            <img src={goBack} alt="" />
+          </button>
+          <div className="header">User Info</div>
         </div>
         <div className="user-main-details">
-            <Pfp pfp={pfp} size="xl" input username={username} src={this.props.src}/>
-            <h3>{username}</h3>
-            <p>{email}</p>
-            <div className="actions">
-              <h2>User Actions</h2>
-              <p style={{ color: this.colors[this.state.msgStatus], fontSize: '14px' }}>{this.state.msg}</p>
+          <Pfp pfp={pfp} size="xl" input username={username} src={this.props.src} />
+          <h3>{username}</h3>
+          <p>{email}</p>
+          <div className="actions">
+            <h2>User Actions</h2>
+            <p style={{ color: this.colors[this.state.msgStatus], fontSize: '14px' }}>{this.state.msg}</p>
+            <div>
               {this.props.method === 'local' && (
-                <button className="btn btn-submit" onClick={this.changePasswordClick}>Change Password</button>
+                <>
+                  <h4>Password settings:</h4>
+                  <button className="btn btn-submit" onClick={this.changePasswordClick}>Change Password</button>
+                </>
               )}
             </div>
+            <div>
+              <h4>Notification settings:</h4>
+              <div className="notification">
+                <Switch label={""} onClick={() => console.log('Halo')} checkedDefault={true}>
+                  Notifications on or not?
+                  </Switch>
+                <Switch label={""} onClick={() => console.log('Notif')} disabled checkedDefault={false}>
+                  Allow push notifications on desktop?
+                  </Switch>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -63,5 +80,5 @@ const mapStateToProps = state => {
     method: state.auth.user.config.method
   }
 }
- 
+
 export default connect(mapStateToProps, { sendResetPasswordLink })(UserInfo);
