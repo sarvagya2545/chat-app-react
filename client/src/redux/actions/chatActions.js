@@ -41,7 +41,8 @@ export const connectToSocket = (rooms, user) => dispatch => {
             // console.log(`Joined room: ${room.roomName} ${room._id}`)
         });
     });
-    // console.log(socket);
+
+    socket.defineSocketEvent("connect", () => dispatch({ type: CONNECT }));
 
     socket.sendSocketEvent('online', ({ userId: user }));
 
@@ -99,11 +100,12 @@ export const connectToSocket = (rooms, user) => dispatch => {
                 dispatch({ type: OTHER_PROFILE_PIC_DELETE, payload: { id: currentUserId } })
         }
     })
+
+    socket.defineSocketEvent('disconnect', () => dispatch({ type: DISCONNECT }))
 }
 
 export const disconnectFromSocket = userId => dispatch => {
     socket.disconnect();
-    dispatch({ type: DISCONNECT });
 }
 
 export const sendMessage = ({ room, message, userName, userId }) => dispatch => {
@@ -153,7 +155,8 @@ export const exitChatRoom = (roomId, roomName) => dispatch => {
 
     axios.post(`/api/rooms/${roomId}/exit`, {}, config)
         .then(res => {
-            dispatch({ type: EXIT_ROOM, payload: res.data.foundRoom.roomId })
+            // console.log(res);
+            dispatch({ type: EXIT_ROOM, payload: res.data.foundRoom._id })
 
             // console.log('exitRooms', { room: roomId, user: res.data.user })
             socket.sendSocketEvent('exitRoom', { room: roomId, userId: res.data.user._id, userName: res.data.user.auth.username })

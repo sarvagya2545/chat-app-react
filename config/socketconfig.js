@@ -161,6 +161,7 @@ module.exports = (server) => {
         })
 
         socket.on("disconnect", () => {
+            io.to(socket.id).emit('disconnected');
 
             // remove the socket from the online user's list
             onlineUsers.forEach(onlineuser => {

@@ -231,3 +231,17 @@
         }
     }
 }
+
+.disconnect-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 3rem;
+    color: #fff;
+    background-color: red;
+
+    img {
+        width: 50px;
+        filter: invert(1) brightness(100%);
+    }
+}
