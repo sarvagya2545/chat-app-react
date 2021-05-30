@@ -14,6 +14,7 @@
     flex: 1;
 
     @include respond(tab-port) {
+        background-image: url('../../images/bg-login-mobile.jpg');
         padding: 4em;
         padding-bottom: 2em;
     }
