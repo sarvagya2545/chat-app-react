@@ -22,5 +22,5 @@ const openPushNotification = e => {
     e.waitUntil(clients.openWindow(e.notification.data));
 }
 
-self.addEventListener('push', receiveNotif)
+// self.addEventListener('push', receiveNotif)
 self.addEventListener('notificationclick', openPushNotification)

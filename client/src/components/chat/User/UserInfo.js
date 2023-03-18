@@ -54,7 +54,7 @@ class UserInfo extends Component {
                 </>
               )}
             </div>
-            <div>
+            {/* <div>
               <h4>Notification settings:</h4>
               <div className="notification">
                 <Switch label={""} onClick={() => console.log('Halo')} checkedDefault={true}>
@@ -64,7 +64,7 @@ class UserInfo extends Component {
                   Allow push notifications on desktop?
                   </Switch>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
