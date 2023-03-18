@@ -29,6 +29,7 @@ import {
 import socket from '../../utils/socket';
 import axios from 'axios';
 import { tokenConfig } from './authActions';
+// import { createNotification } from '../../utils/notificationBuilder';
 let timeout;
 
 export const connectToSocket = (rooms, user) => dispatch => {
@@ -49,6 +50,7 @@ export const connectToSocket = (rooms, user) => dispatch => {
     socket.defineSocketEvent('message', (res) => {
         // console.log('message: ', res)
         dispatch({ type: RECIEVE_MESSAGE, payload: res })
+        // createNotification(res);
     })
 
     socket.defineSocketEvent('typing', ({ user, roomId }) => {
@@ -64,6 +66,7 @@ export const connectToSocket = (rooms, user) => dispatch => {
         room = { ...room, roomId: room._id }
         dispatch({ type: JOIN_ROOM, payload: room })
         dispatch({ type: MESSAGES_LOADED, payload: { roomId: room.roomId, messages: [] } })
+        socket.sendSocketEvent('connectToRoom', { room: { _id: room.roomId } })
     })
 
     socket.defineSocketEvent('exitRoom', ({ user: { userId, userName }, room }) => {
