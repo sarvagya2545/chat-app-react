@@ -26,7 +26,7 @@ import {
     CLOSE_ROOM
 } from './types';
 
-import socket from '../../socket';
+import socket from '../../utils/socket';
 import axios from 'axios';
 import { tokenConfig } from './authActions';
 let timeout;
