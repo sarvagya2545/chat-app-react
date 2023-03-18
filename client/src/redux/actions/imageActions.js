@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { app } from '../../firebase';
+import { app } from '../../utils/firebase';
 import { tokenConfig } from './authActions';
 import { PROFILE_PIC_UPLOAD, GROUP_PIC_UPLOAD, GROUP_PIC_DELETE, PROFILE_PIC_DELETE } from './types';
 import { changePfp, deletePfp } from './fileActions';

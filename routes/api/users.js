@@ -2,7 +2,6 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 const UserController = require('../controllers/users');
-require('../../config/passport')
 const { signupValidationRules, loginValidationRules, usernameUpdateValidationRules, resetPasswordValidationRules } = require('../../validators/authValidators');
 const validate = require('../../validators/validate');
 const { debugMiddleware, checkIfRequiresUsernameUpdate, checkIfUserEmailExists, checkIfSocialAccount } = require('../../middleware/middleware');

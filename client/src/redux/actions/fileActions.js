@@ -1,6 +1,6 @@
 import { ADD_FILES, CLEAR_GROUP_FILES, CLOSE_ATTACHMENT_PANEL, REMOVE_FILE } from "./types";
-import socket from '../../socket';
-import { app } from '../../firebase';
+import socket from '../../utils/socket';
+import { app } from '../../utils/firebase';
 
 export const addFiles = (files, currentChatRoom) => dispatch => {
     // console.log('files', files);
@@ -76,7 +76,7 @@ export const sendFiles = ({ room, files, userName, userId }) => async dispatch =
 }
 
 export const changePfp = ({ isGroupImg, payload, user, currentUserId }) => {
-    console.log('change pfp')
+    // console.log('change pfp')
     socket.sendSocketEvent('pfpChange', { isGroupImg, payload, user, currentUserId })
 }
 

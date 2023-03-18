@@ -2,7 +2,6 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 const RoomController = require('../controllers/rooms');
-require('../../config/passport')
 const { createRoomValidationRules } = require('../../validators/roomValidators');
 const validate = require('../../validators/validate');
 const { checkIfUserInRoom } = require('../../middleware/middleware');

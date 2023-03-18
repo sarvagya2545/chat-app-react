@@ -53,7 +53,8 @@
 
         &.disabled {
             .switch {
-                    div {
+                div {
+                    cursor: not-allowed;
                     background-color: $color-grey-4;
                     
                     &::before {
