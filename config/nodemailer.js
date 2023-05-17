@@ -14,7 +14,7 @@ let transporter = nodemailer.createTransport({
   }
 })
 
-const BASE_URL = process.env.NODE_ENV === 'production' ? `https://chat2545.herokuapp.com` : 'http://localhost:3000';
+const BASE_URL = process.env.NODE_ENV === 'production' ? `https://chat-app-02dd.onrender.com` : 'http://localhost:3000';
 
 module.exports.createAndSendMail = ({ to, token, userId }) => {
   const subject = "Password change link of chat2545.herokuapp.com";
@@ -30,12 +30,12 @@ module.exports.createAndSendMail = ({ to, token, userId }) => {
     subject,
     html
   }
-  
+
   transporter.sendMail(mailOptions, (err, info) => {
-    if(err) {
+    if (err) {
       throw err;
     }
-  
+
     console.log('Message sent: ', info.messageId);
   })
 }
